@@ -1,0 +1,7 @@
+{
+  "name": "PetCommunityApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
