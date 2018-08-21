@@ -1,0 +1,30 @@
+{
+  "TAB_MAIN": {
+    "MY_PETS": "MY PETS",
+    "SERVICES": "SERVICES",
+    "SOS": "SOS"
+  },
+  "LOGIN": {
+    "LOGIN": "Login",
+    "USER_LABEL": "User",
+    "PASSWORD_LABEL": "Password",
+    "FORGOT": "Forgot password?"
+  },
+  "SIGNUP": {
+    "SIGNUP": "Sign Up",
+    "NAME": "Name",
+    "EMAIL": "Email",
+    "PASS": "Password",
+    "REPEAT_PASS": "Repeat password"
+  },
+  "USER": {},
+  "MENU": {
+    "TITLE": "Menu",
+    "EXIT": "Exit"
+  },
+  "MY_PETS_MAIN": {
+    "TITLE": "My Pets",
+    "AGE": "{{ age }} years old",
+    "NO_AGE": "Age unknown"
+  }
+}

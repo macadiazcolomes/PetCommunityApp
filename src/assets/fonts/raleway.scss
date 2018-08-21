@@ -1,23 +1,13 @@
-// http://ionicframework.com/docs/theming/
+// Raleway Font
+// Google
+// Apache License, version 2.0
+// http://www.apache.org/licenses/LICENSE-2.0.html
 
-// App Global Sass
-// --------------------------------------------------
-// Put style rules here that you want to apply globally. These
-// styles are for the entire app and not just one component.
-// Additionally, this file can be also used as an entry point
-// to import other Sass files to be included in the output CSS.
-//
-// Shared Sass variables, which can be used to adjust Ionic's
-// default Sass variables, belong in "theme/variables.scss".
-//
-// To declare rules for a specific mode, create a child rule
-// for the .md, .ios, or .wp mode classes. The mode class is
-// automatically applied to the <body> element in the app.
 $raleway-font-path: $font-path !default;
 
 @font-face {
   font-family: 'Raleway';
-  font-style: light;
+  font-style: normal;
   font-weight: 300;
   src: local('Raleway Light'), local('Raleway-Light'),
     url('#{$raleway-font-path}/raleway-light.woff2') format('woff2'),
@@ -37,7 +27,7 @@ $raleway-font-path: $font-path !default;
 
 @font-face {
   font-family: 'Raleway';
-  font-style: medium;
+  font-style: normal;
   font-weight: 500;
   src: local('Raleway Medium'), local('Raleway-Medium'),
     url('#{$raleway-font-path}/raleway-medium.woff2') format('woff2'),
@@ -47,7 +37,7 @@ $raleway-font-path: $font-path !default;
 
 @font-face {
   font-family: 'Raleway';
-  font-style: bold;
+  font-style: normal;
   font-weight: 700;
   src: local('Raleway Bold'), local('Raleway-Bold'),
     url('#{$raleway-font-path}/raleway-bold.woff2') format('woff2'),

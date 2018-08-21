@@ -1,0 +1,17 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>{{ 'MENU.TITLE' | translate }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <button ion-item menuClose (click)="doExit()">
+        <ion-icon item-start name="exit">
+          {{ 'MENU.EXIT' | translate }}
+        </ion-icon>
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-nav [root]="rootPage" #content></ion-nav>
