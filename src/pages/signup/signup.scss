@@ -28,3 +28,9 @@
 
   pointer-events: none;
 }
+
+.error {
+  color: color($colors, danger, base);
+  font-size: 1 rem;
+  padding-left: 16px;
+}

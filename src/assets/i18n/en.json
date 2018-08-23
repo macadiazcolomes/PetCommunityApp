@@ -15,12 +15,31 @@
     "NAME": "Name",
     "EMAIL": "Email",
     "PASS": "Password",
-    "REPEAT_PASS": "Repeat password"
+    "REPEAT_PASS": "Repeat password",
+    "ERROR_MESSAGES": {
+      "USERNAME": {
+        "REQUIRED": "Username is required.",
+        "MINLENGTH": "Must be at least 4 characters long."
+      },
+      "USEREMAIL": {
+        "REQUIRED": "Email is required.",
+        "EMAIL": "Must be a valid email."
+      },
+      "USERPASSWORD": {
+        "REQUIRED": "Password is required.",
+        "MINLENGTH": "Must be at least 6 characters long.",
+        "MISMATCH": "Passwords are different"
+      }
+    }
   },
   "USER": {},
   "MENU": {
     "TITLE": "Menu",
-    "EXIT": "Exit"
+    "VIEW_PROFILE": "View profile",
+    "EDIT_PROFILE": "Edit profile",
+    "SOS_SUBSCRIPTION": "SOS Subscription",
+    "LOGOUT": "Logout",
+    "DELETE_ACCOUNT": "Delete account?"
   },
   "MY_PETS_MAIN": {
     "TITLE": "My Pets",

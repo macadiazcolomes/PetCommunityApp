@@ -21,35 +21,56 @@
 </ion-header>
 
 <ion-content padding>
-  
-
-
   <ion-row>
       <ion-col col-4></ion-col>
       <ion-col col-4><img src="assets/imgs/logo.png"></ion-col>
       <ion-col col-4></ion-col>
     </ion-row>
+  <form novalidate (ngSubmit)="doCreateUser()" [formGroup]="signupForm">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>{{ 'SIGNUP.NAME' | translate }}</ion-label>
+        <ion-input type="text" [(ngModel)]= "user.name" formControlName="userName"></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.userName">
+        <div class="error" *ngIf="signupForm.get('userName').hasError(message.type) && signupForm.get('userName').dirty && signupForm.get('userName').touched">
+            {{  message.message |translate }}
+        </div>
+      </ng-container>
+      
+      <ion-item>
+        <ion-label floating>{{ 'SIGNUP.EMAIL' | translate }}</ion-label>
+        <ion-input type="email" [(ngModel)]= "user.email" formControlName="userEmail"></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.userEmail">
+        <div class="error" *ngIf="signupForm.get('userEmail').hasError(message.type) && signupForm.get('userEmail').dirty && signupForm.get('userEmail').touched">
+            {{  message.message |translate }}
+        </div>
+      </ng-container>
 
-  <ion-list>
-    <ion-item>
-      <ion-label floating>{{ 'SIGNUP.NAME' | translate }}</ion-label>
-      <ion-input type="text" [(ngModel)]= "user.name"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating>{{ 'SIGNUP.EMAIL' | translate }}</ion-label>
-      <ion-input type="email" [(ngModel)]= "user.email"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating> {{ 'SIGNUP.PASS' | translate }}</ion-label>
-      <ion-input type="password" [(ngModel)]= "user.password"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating> {{ 'SIGNUP.REPEAT_PASS' | translate }}</ion-label>
-      <ion-input type="password" [(ngModel)]= "user.password"></ion-input>
-    </ion-item>
-    <ion-item></ion-item>
-  </ion-list>
-  
-  <button ion-button color="primary" block (click)="doCreateUser()">{{ 'SIGNUP.SIGNUP' | translate }}</button>
+      <ion-item>
+        <ion-label floating> {{ 'SIGNUP.PASS' | translate }}</ion-label>
+        <ion-input type="password" [(ngModel)]= "user.password" formControlName="userPassword"></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.userPassword">
+        <div class="error" *ngIf="signupForm.get('userPassword').hasError(message.type) && signupForm.get('userPassword').dirty && signupForm.get('userPassword').touched">
+            {{  message.message |translate }}
+        </div>
+      </ng-container>
 
+      <ion-item>
+        <ion-label floating> {{ 'SIGNUP.REPEAT_PASS' | translate }}</ion-label>
+        <ion-input type="password" [(ngModel)]= "passwordConfirm" formControlName="userPasswordConfirm"></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.userPasswordConfirm">
+        <div class="error" *ngIf="signupForm.get('userPasswordConfirm').hasError(message.type) && signupForm.get('userPasswordConfirm').dirty && signupForm.get('userPasswordConfirm').touched">
+            {{  message.message |translate }}
+        </div>
+      </ng-container>
+
+      <ion-item></ion-item>
+    </ion-list>
+    
+    <button type="submit" ion-button color="primary" block [disabled]="signupForm.invalid">{{ 'SIGNUP.SIGNUP' | translate }}</button>
+  </form>
 </ion-content>

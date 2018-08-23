@@ -1,17 +1,51 @@
 <ion-menu [content]="content">
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
       <ion-title>{{ 'MENU.TITLE' | translate }}</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content>
+    <ion-row>
+        <ion-col col-3></ion-col>
+        <ion-col col-6>
+            <ion-avatar>
+                <img class="big_avatar" src="assets/imgs/avatar.png">
+              </ion-avatar>
+        </ion-col>
+        <ion-col col-3></ion-col>
+    </ion-row>
     <ion-list>
-      <button ion-item menuClose (click)="doExit()">
-        <ion-icon item-start name="exit">
-          {{ 'MENU.EXIT' | translate }}
-        </ion-icon>
-      </button>
+      <ion-item>
+          <h1>My Name</h1>
+      </ion-item>
+      <ion-item>
+        <button ion-button >
+          <ion-icon item-start name="person"></ion-icon>
+        </button>
+        {{ 'MENU.VIEW_PROFILE' | translate }}
+      </ion-item>
+      <ion-item>
+        <button ion-button>
+          <ion-icon item-start name="create"></ion-icon>
+        </button>
+        {{ 'MENU.EDIT_PROFILE' | translate }}
+      </ion-item>
+
+
+      <ion-item>
+        <ion-label>{{ 'MENU.SOS_SUBSCRIPTION' | translate }}</ion-label>
+        <ion-toggle  checked="false"></ion-toggle>
+      </ion-item>
+
+      <ion-item>
+        <button ion-button block color="primary" (click)="doExit()">{{ 'MENU.LOGOUT' | translate | uppercase }}</button>
+      </ion-item>
+
+     
     </ion-list>
   </ion-content>
+  <ion-footer>
+    <p ion-text text-right>{{ 'MENU.DELETE_ACCOUNT' | translate }}</p>
+  </ion-footer>
 </ion-menu>
 <ion-nav [root]="rootPage" #content></ion-nav>
