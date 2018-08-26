@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 import { Pet } from '../../models/pet';
 import { LoginProvider } from '../login/login';
+import { SpeciesTypesProvider } from '../../providers/species-types/species-types';
 
 /*
   Generated class for the PetsProvider provider.
@@ -30,7 +31,11 @@ export class PetsProvider {
     return age;
   };
 
-  constructor(public http: HttpClient, private login: LoginProvider) {
+  constructor(
+    private speciesTypes: SpeciesTypesProvider,
+    public http: HttpClient,
+    private login: LoginProvider
+  ) {
     enum species_types {
       cat = 'Cat',
       dog = 'Dog',

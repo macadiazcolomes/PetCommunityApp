@@ -16,23 +16,19 @@
     </ion-row>
     <ion-list>
       <ion-item>
-          <h1>My Name</h1>
+          <h1>{{ user?.name }}</h1>
       </ion-item>
-      <ion-item>
-        <button ion-button >
-          <ion-icon item-start name="person"></ion-icon>
-        </button>
+      <ion-item (click)="doViewUser()">
+        <ion-icon item-start name="person" color="primary"></ion-icon>
         {{ 'MENU.VIEW_PROFILE' | translate }}
       </ion-item>
-      <ion-item>
-        <button ion-button>
-          <ion-icon item-start name="create"></ion-icon>
-        </button>
+      <ion-item (click)="doEditUser()">
+        <ion-icon item-start name="create" color="primary"></ion-icon>
         {{ 'MENU.EDIT_PROFILE' | translate }}
       </ion-item>
 
-
       <ion-item>
+          <ion-icon item-start name="megaphone" color="primary"></ion-icon>
         <ion-label>{{ 'MENU.SOS_SUBSCRIPTION' | translate }}</ion-label>
         <ion-toggle  checked="false"></ion-toggle>
       </ion-item>
@@ -45,7 +41,7 @@
     </ion-list>
   </ion-content>
   <ion-footer>
-    <p ion-text text-right>{{ 'MENU.DELETE_ACCOUNT' | translate }}</p>
+    <p ion-item ion-text text-right (click)="doDeleteUser()" >{{ 'MENU.DELETE_ACCOUNT' | translate }}</p>
   </ion-footer>
 </ion-menu>
 <ion-nav [root]="rootPage" #content></ion-nav>

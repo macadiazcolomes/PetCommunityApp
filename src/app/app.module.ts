@@ -11,6 +11,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MyApp } from './app.component';
 import { LoginProvider } from '../providers/login/login';
 import { PetsProvider } from '../providers/pets/pets';
+import { SocialMediaTypesProvider } from '../providers/social-media-types/social-media-types';
+import { SpeciesTypesProvider } from '../providers/species-types/species-types';
 
 @NgModule({
   declarations: [MyApp],
@@ -34,6 +36,8 @@ import { PetsProvider } from '../providers/pets/pets';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     LoginProvider,
     PetsProvider,
+    SocialMediaTypesProvider,
+    SpeciesTypesProvider,
   ],
 })
 export class AppModule {}

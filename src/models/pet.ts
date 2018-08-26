@@ -1,4 +1,4 @@
-import { SocialMedia } from './social_media';
+import { SocialMedia } from './social-media';
 import { User } from './user';
 
 export interface Pet {

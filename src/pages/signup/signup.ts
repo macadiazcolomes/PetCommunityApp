@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { User } from '../../models/user';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  FormBuilder,
-  AbstractControl,
-} from '@angular/forms';
+
+import { validateEqualsTo } from '../../shared/form-validators/custom-form-validation-functions';
+
+import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 /**
  * Generated class for the SignupPage page.
@@ -52,7 +49,7 @@ export class SignupPage {
         [
           Validators.required,
           Validators.minLength(6),
-          this.validateEqualsTo('userPassword'),
+          validateEqualsTo('userPassword'),
         ],
       ],
     });
@@ -110,18 +107,6 @@ export class SignupPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupPage');
-  }
-
-  validateEqualsTo(fieldName: string) {
-    return (control: AbstractControl): { [key: string]: any } => {
-      let input = control.value;
-
-      let isValid = control.root.value[fieldName] == input;
-      if (!isValid) {
-        return { mismatch: { isValid } };
-      }
-      return null;
-    };
   }
 
   close() {

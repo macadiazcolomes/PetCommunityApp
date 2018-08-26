@@ -1,5 +1,5 @@
 import { Service } from './service';
-import { SocialMedia } from './social_media';
+import { SocialMedia } from './social-media';
 export interface SOS {
   id?: number;
   short_description: string;

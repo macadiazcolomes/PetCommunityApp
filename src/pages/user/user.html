@@ -6,13 +6,78 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
-    <ion-title>User</ion-title>
-  </ion-navbar>
-
+  <ion-toolbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ 'USER.TITLE' | translate }}</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only (click)="save()" [disabled]="userProfileForm.invalid" >
+        <ion-icon *ngIf="mode==='view' " name="create"></ion-icon>
+        <ion-icon *ngIf="mode!=='view'" name="checkmark" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+  
 </ion-header>
 
 
 <ion-content padding>
+  <form novalidate [formGroup]="userProfileForm">
+    <ion-row>
+      <ion-col col-4></ion-col>
+      <ion-col col-4>
+        <img src="assets/imgs/avatar.png">
+      </ion-col>
+      <ion-col col-4>
+        <ion-fab top left #fab *ngIf="mode!=='view'" >
+          <button ion-fab mini>
+            <ion-icon name="create"></ion-icon>
+          </button>
+          <ion-fab-list>
+            <button ion-fab>
+              <ion-icon name="images"></ion-icon>
+            </button>
+            <button ion-fab>
+              <ion-icon name="camera"></ion-icon>
+            </button>
+          </ion-fab-list>
+        </ion-fab>
+      </ion-col>
+    </ion-row>
+    <ion-list> 
+        <ion-item-divider color="light">{{ 'USER.REQUIRED_INFO' | translate }}</ion-item-divider>
+        <ion-item>
+          <ion-label floating>{{ 'USER.NAME_LABEL' | translate }}</ion-label>
+          <ion-input type="text" [readonly]="mode==='view'" [(ngModel)]="user.name" formControlName="userName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>{{ 'USER.EMAIL_LABEL' | translate }}</ion-label>
+          <ion-input type="text" [readonly]="mode==='view'" [(ngModel)]="user.email" formControlName="userEmail"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>{{ 'USER.CITY_LABEL' | translate }}</ion-label>
+          <ion-input type="text" [readonly]="mode==='view'"[(ngModel)]="user.city" formControlName="userCity"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>{{ 'USER.COUNTRY_LABEL' | translate }}</ion-label>
+          <ion-input type="text" [readonly]="mode==='view'"[(ngModel)]="user.country" formControlName="userCountry"></ion-input>
+        </ion-item>
+        <ion-item-divider color="light">{{ 'USER.RESET_PASSWORD' | translate }}</ion-item-divider>
+        <ion-item>
+          <ion-label floating>{{ 'USER.PASSWORD_LABEL' | translate }}</ion-label>
+          <ion-input type="text" [readonly]="mode==='view'"  formControlName="userPassword"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label floating>{{ 'USER.REPEAT_PASSWORD_LABEL' | translate }}</ion-label>
+          <ion-input type="text" [readonly]="mode==='view'" formControlName="userPasswordConfirm"></ion-input>
+        </ion-item>
+        <ion-item-divider color="light">{{ 'USER.SOCIAL_MEDIA' | translate }}</ion-item-divider>
+        <social-media-form [parent]="userProfileForm"  [socialMedia]="user?.social_media" > aaa </social-media-form>
+    </ion-list>
+    
+  </form>
 
 </ion-content>

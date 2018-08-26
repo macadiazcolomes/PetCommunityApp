@@ -1,11 +1,10 @@
-import { SocialMedia } from './social_media';
+import { SocialMedia } from './social-media';
 
 export interface User {
   id?: number;
   email: string;
   password: string;
   name: string;
-  birthday?: number;
   city?: string;
   country?: string;
   avatar?: string;

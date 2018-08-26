@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user';
-
+import { socialMediaFormat } from '../../shared/functions/social-media-format';
+import { SocialMediaTypesProvider } from '../../providers/social-media-types/social-media-types';
+import { SocialMediaTypes } from '../../models/social-media-types';
 /*
   Generated class for the LoginProvider provider.
 
@@ -11,8 +13,14 @@ import { User } from '../../models/user';
 @Injectable()
 export class LoginProvider {
   private user: User;
+  private socialMediaTypes: SocialMediaTypes[];
 
-  constructor(public http: HttpClient) {
+  constructor(
+    private SMTypesProvider: SocialMediaTypesProvider,
+    public http: HttpClient
+  ) {
+    this.socialMediaTypes = SMTypesProvider.getSocialMediaTypes();
+
     this.user = {
       id: 1,
       email: 'user@user.com',
@@ -22,6 +30,11 @@ export class LoginProvider {
       country: 'Chile',
       sos_subscription: false,
     };
+    console.log('LoginProvider');
+    this.user.social_media = socialMediaFormat(
+      this.user.social_media,
+      this.socialMediaTypes
+    );
   }
 
   login(user: string, password: string): boolean {
