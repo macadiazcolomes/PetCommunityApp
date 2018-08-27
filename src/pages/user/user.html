@@ -14,9 +14,11 @@
     </ion-buttons>
     <ion-title>{{ 'USER.TITLE' | translate }}</ion-title>
     <ion-buttons right>
-      <button ion-button icon-only (click)="save()" [disabled]="userProfileForm.invalid" >
-        <ion-icon *ngIf="mode==='view' " name="create"></ion-icon>
-        <ion-icon *ngIf="mode!=='view'" name="checkmark" ></ion-icon>
+      <button ion-button icon-only *ngIf="mode!=='view'" (click)="save()" [disabled]="userProfileForm.invalid" >
+        <ion-icon name="checkmark" ></ion-icon>
+      </button>
+      <button ion-button icon-only *ngIf="mode==='view' " (click)="edit()">
+          <ion-icon  name="create"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
@@ -53,29 +55,65 @@
           <ion-label floating>{{ 'USER.NAME_LABEL' | translate }}</ion-label>
           <ion-input type="text" [readonly]="mode==='view'" [(ngModel)]="user.name" formControlName="userName"></ion-input>
         </ion-item>
+        <ng-container *ngFor="let message of errorMessages.userName">
+          <div class="error" *ngIf="userProfileForm.get('userName').hasError(message.type) && signupForm.get('userName').dirty && signupForm.get('userName').touched">
+              {{  message.message |translate }}
+          </div>
+        </ng-container>
+
         <ion-item>
           <ion-label floating>{{ 'USER.EMAIL_LABEL' | translate }}</ion-label>
           <ion-input type="text" [readonly]="mode==='view'" [(ngModel)]="user.email" formControlName="userEmail"></ion-input>
         </ion-item>
+        <ng-container *ngFor="let message of errorMessages.userEmail">
+          <div class="error" *ngIf="userProfileForm.get('userEmail').hasError(message.type) && signupForm.get('userEmail').dirty && signupForm.get('userEmail').touched">
+              {{  message.message |translate }}
+          </div>
+        </ng-container>
+
         <ion-item>
           <ion-label floating>{{ 'USER.CITY_LABEL' | translate }}</ion-label>
           <ion-input type="text" [readonly]="mode==='view'"[(ngModel)]="user.city" formControlName="userCity"></ion-input>
         </ion-item>
+        <ng-container *ngFor="let message of errorMessages.userCity">
+          <div class="error" *ngIf="userProfileForm.get('userCity').hasError(message.type) && signupForm.get('userCity').dirty && signupForm.get('userCity').touched">
+              {{  message.message |translate }}
+          </div>
+        </ng-container>
+
         <ion-item>
           <ion-label floating>{{ 'USER.COUNTRY_LABEL' | translate }}</ion-label>
           <ion-input type="text" [readonly]="mode==='view'"[(ngModel)]="user.country" formControlName="userCountry"></ion-input>
         </ion-item>
+        <ng-container *ngFor="let message of errorMessages.userCountry">
+          <div class="error" *ngIf="userProfileForm.get('userCountry').hasError(message.type) && signupForm.get('userCountry').dirty && signupForm.get('userCountry').touched">
+              {{  message.message |translate }}
+          </div>
+        </ng-container>
+
         <ion-item-divider color="light">{{ 'USER.RESET_PASSWORD' | translate }}</ion-item-divider>
         <ion-item>
           <ion-label floating>{{ 'USER.PASSWORD_LABEL' | translate }}</ion-label>
           <ion-input type="text" [readonly]="mode==='view'"  formControlName="userPassword"></ion-input>
         </ion-item>
+        <ng-container *ngFor="let message of errorMessages.userPassword">
+          <div class="error" *ngIf="userProfileForm.get('userPassword').hasError(message.type) && signupForm.get('userPassword').dirty && signupForm.get('userPassword').touched">
+              {{  message.message |translate }}
+          </div>
+        </ng-container>
+
         <ion-item>
           <ion-label floating>{{ 'USER.REPEAT_PASSWORD_LABEL' | translate }}</ion-label>
           <ion-input type="text" [readonly]="mode==='view'" formControlName="userPasswordConfirm"></ion-input>
         </ion-item>
+        <ng-container *ngFor="let message of errorMessages.userPasswordConfirm">
+          <div class="error" *ngIf="userProfileForm.get('userPasswordConfirm').hasError(message.type) && signupForm.get('userPasswordConfirm').dirty && signupForm.get('userPasswordConfirm').touched">
+              {{  message.message |translate }}
+          </div>
+        </ng-container>
+
         <ion-item-divider color="light">{{ 'USER.SOCIAL_MEDIA' | translate }}</ion-item-divider>
-        <social-media-form [parent]="userProfileForm"  [socialMedia]="user?.social_media" > aaa </social-media-form>
+        <social-media-form [parent]="userProfileForm"  [socialMedia]="user?.social_media" > </social-media-form>
     </ion-list>
     
   </form>

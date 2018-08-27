@@ -19,7 +19,7 @@ export class LoginProvider {
     private SMTypesProvider: SocialMediaTypesProvider,
     public http: HttpClient
   ) {
-    this.socialMediaTypes = SMTypesProvider.getSocialMediaTypes();
+    this.socialMediaTypes = this.SMTypesProvider.getSocialMediaTypes();
 
     this.user = {
       id: 1,
@@ -30,7 +30,7 @@ export class LoginProvider {
       country: 'Chile',
       sos_subscription: false,
     };
-    console.log('LoginProvider');
+
     this.user.social_media = socialMediaFormat(
       this.user.social_media,
       this.socialMediaTypes

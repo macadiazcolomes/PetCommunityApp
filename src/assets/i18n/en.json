@@ -44,7 +44,28 @@
     "OPTIONAL_INFO": "Optional info",
     "BIRTHDAY_LABEL": "Birthday",
     "CITY_LABEL": "City",
-    "COUNTRY_LABEL": "Country"
+    "COUNTRY_LABEL": "Country",
+    "ERROR_MESSAGES": {
+      "USERNAME": {
+        "REQUIRED": "Username is required.",
+        "MINLENGTH": "Must be at least 4 characters long."
+      },
+      "USEREMAIL": {
+        "REQUIRED": "Email is required.",
+        "EMAIL": "Must be a valid email."
+      },
+      "USERPASSWORD": {
+        "MINLENGTH": "Must be at least 6 characters long.",
+        "MISMATCH": "Passwords are different"
+      },
+      "USERCITY": {
+        "REQUIRED": "City is required",
+        "INVALID": "The city is invalid"
+      },
+      "USERCOUNTRY": {
+        "REQUIRED": "Country is required"
+      }
+    }
   },
   "MENU": {
     "TITLE": "Menu",
@@ -62,5 +83,23 @@
     "TITLE": "My Pets",
     "AGE": "{{ age }} years old",
     "NO_AGE": "Age unknown"
+  },
+  "PET": {
+    "TITLE": "Pet profile",
+    "REQUIRED_INFO": "Required info",
+    "NAME_LABEL": "Name",
+    "SPECIES_LABEL": "Species",
+    "OPTIONAL_INFO": "Optional info",
+    "BREED_LABEL": "Breed",
+    "GENDER_LABEL": "Gender",
+    "BIRTHDAY_LABEL": "Birthday",
+    "COLOR_LABEL": "Color",
+    "NEUTERED_LABEL": "Neutered/Sprayed",
+    "MICROCHIP_LABEL": "Microchip",
+    "PERMANENT_HOME_LABEL": "Permanent home",
+    "PASS_AWAY_LABEL": "Pass away",
+    "SOCIAL_MEDIA_QUESTION": "Does your pet have social media?",
+    "GENDER_MALE": "Male",
+    "GENDER_FEMALE": "Female"
   }
 }

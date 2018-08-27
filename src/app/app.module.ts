@@ -13,6 +13,9 @@ import { LoginProvider } from '../providers/login/login';
 import { PetsProvider } from '../providers/pets/pets';
 import { SocialMediaTypesProvider } from '../providers/social-media-types/social-media-types';
 import { SpeciesTypesProvider } from '../providers/species-types/species-types';
+import { DirectivesModule } from '../directives/directives.module';
+import { PipesModule } from '../pipes/pipes.module';
+import { SocialMediaFormModule } from '../shared/forms/social-media/social-media-form.module';
 
 @NgModule({
   declarations: [MyApp],
@@ -27,6 +30,9 @@ import { SpeciesTypesProvider } from '../providers/species-types/species-types';
         deps: [HttpClient],
       },
     }),
+    DirectivesModule,
+    PipesModule,
+    SocialMediaFormModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [MyApp],

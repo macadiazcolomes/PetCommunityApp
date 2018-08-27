@@ -3,7 +3,10 @@ import { Injectable } from '@angular/core';
 
 import { Pet } from '../../models/pet';
 import { LoginProvider } from '../login/login';
-import { SpeciesTypesProvider } from '../../providers/species-types/species-types';
+
+import { socialMediaFormat } from '../../shared/functions/social-media-format';
+import { SocialMediaTypesProvider } from '../../providers/social-media-types/social-media-types';
+import { SocialMediaTypes } from '../../models/social-media-types';
 
 /*
   Generated class for the PetsProvider provider.
@@ -15,6 +18,7 @@ import { SpeciesTypesProvider } from '../../providers/species-types/species-type
 export class PetsProvider {
   private id: number = 0;
   private pets: Pet[] = [];
+  private socialMediaTypes: SocialMediaTypes[];
 
   private getAge = function(birthday: Date): number {
     var today = new Date();
@@ -32,30 +36,23 @@ export class PetsProvider {
   };
 
   constructor(
-    private speciesTypes: SpeciesTypesProvider,
+    private SMTypesProvider: SocialMediaTypesProvider,
     public http: HttpClient,
     private login: LoginProvider
   ) {
-    enum species_types {
-      cat = 'Cat',
-      dog = 'Dog',
-      other = 'Other',
-    }
+    this.socialMediaTypes = this.SMTypesProvider.getSocialMediaTypes();
 
     this.addPet({
       name: 'Novak',
-      owner: login.getUser(),
-      species: species_types.cat,
+      species: 'cat',
     });
     this.addPet({
       name: 'Mona',
-      owner: login.getUser(),
-      species: species_types.dog,
+      species: 'dog',
     });
     this.addPet({
       name: 'Maratito',
-      owner: login.getUser(),
-      species: species_types.cat,
+      species: 'dog',
     });
   }
 
@@ -70,8 +67,11 @@ export class PetsProvider {
       return {
         id: pet.id,
         name: pet.name,
-        owner: pet.owner,
         species: pet.species,
+        social_media: socialMediaFormat(
+          pet.social_media,
+          this.socialMediaTypes
+        ),
       };
     });
   }

@@ -23,7 +23,7 @@
           <h1 ion-text color="primary" class="title">Novak</h1>
           <h3 *ngIf="pet.birthday">{{ 'MY_PETS_MAIN.AGE' | translate:{age:2} }}</h3>
           <h3 *ngIf="!pet.birthday">{{ 'MY_PETS_MAIN.NO_AGE' | translate }}</h3>
-          <ion-icon name="more" item-right></ion-icon>
+          <ion-icon name="more" item-right (click)="doViewPetProfile(pet)" ></ion-icon>
         </ion-item>
       </ion-card-header>
       <ion-card-content>

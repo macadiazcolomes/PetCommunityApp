@@ -18,3 +18,11 @@ export function socialMediaFormat(
   });
   return sm;
 }
+
+export function createSocialMediaGroup(smT: SocialMediaTypes[]) {
+  let sm2 = {};
+  smT.forEach(sm => {
+    sm2[sm.name] = '';
+  });
+  return sm2;
+}

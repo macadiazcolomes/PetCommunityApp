@@ -6,9 +6,9 @@
     </ion-item>-->
 
     <ion-item *ngFor="let sm of socialMedia" >
-        <ion-label floating> {{ sm.type }} </ion-label>
-        <ion-input type="url" [readonly]="mode==='view'" [(ngModel)]="sm.url" [formControlName]="sm.type" ></ion-input>
-      </ion-item>
+      <ion-label floating> {{ sm.type }} </ion-label>
+      <ion-input type="url" [readonly]="mode==='view'" [(ngModel)]="sm.url" [formControlName]="sm.type" ></ion-input>
+    </ion-item>
 
   </div>
 </div>

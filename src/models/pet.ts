@@ -5,12 +5,13 @@ export interface Pet {
   id?: number;
   name: string;
   species: string;
-  owner: User;
   breed?: string;
   gender?: string;
   birthday?: number;
   color?: string;
   neutered?: boolean;
   microchip?: string;
+  permanent_home?: boolean;
+  pass_away?: boolean;
   social_media?: SocialMedia[];
 }

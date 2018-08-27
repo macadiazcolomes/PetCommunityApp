@@ -1,4 +1,5 @@
 import { AbstractControl } from '@angular/forms';
+import { SpeciesTypes } from '../../models/species-types';
 
 export function validateEqualsTo(fieldName: string) {
   return (control: AbstractControl): { [key: string]: any } => {
@@ -18,6 +19,32 @@ export function validateEqualsTo(fieldName: string) {
 export function validateCity() {
   return (control: AbstractControl): { [key: string]: any } => {
     let input = control.value;
+    return null;
+  };
+}
+
+export function validateSpecies(speciesList: SpeciesTypes[]) {
+  return (control: AbstractControl): { [key: string]: any } => {
+    let input = control.value;
+    let specie = speciesList.find(element => {
+      return element.code == input;
+    });
+    if (specie === undefined) {
+      return { invalid: true };
+    }
+    return null;
+  };
+}
+
+export function validateGender(genderList: Array<string>) {
+  return (control: AbstractControl): { [key: string]: any } => {
+    let input = control.value;
+    let gender = genderList.find(element => {
+      return element == input;
+    });
+    if (gender === undefined) {
+      return { invalid: true };
+    }
     return null;
   };
 }

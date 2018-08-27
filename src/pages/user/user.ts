@@ -11,6 +11,8 @@ import {
   validateCity,
 } from '../../shared/form-validators/custom-form-validation-functions';
 
+import { createSocialMediaGroup } from '../../shared/functions/social-media-format';
+
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 
 /**
@@ -26,12 +28,12 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
   templateUrl: 'user.html',
 })
 export class UserPage {
-  public title: string = 'User details';
   public userProfileForm: FormGroup;
   public mode: string = 'view';
   public user: User;
 
   private smT: SocialMediaTypes[];
+  private errorMessages: object;
 
   constructor(
     private smTypes: SocialMediaTypesProvider,
@@ -45,6 +47,7 @@ export class UserPage {
     this.smT = this.smTypes.getSocialMediaTypes();
 
     this.initUserProfileForm();
+    this.initErrorMessages();
   }
 
   ionViewDidLoad() {
@@ -65,16 +68,70 @@ export class UserPage {
       ],
       userCity: [this.user.city || '', [Validators.required, validateCity()]], //Once here the city and country are required values
       userCountry: [this.user.country || '', [Validators.required]],
-      social_media: this.createSocialMediaGroup(),
+      social_media: this.formBuilder.group(createSocialMediaGroup(this.smT)),
     });
   }
 
-  createSocialMediaGroup() {
-    let sm2 = {};
-    this.smT.forEach(sm => {
-      sm2[sm.name] = '';
-    });
-    return this.formBuilder.group(sm2);
+  initErrorMessages() {
+    const erBase: string = 'USER.ERROR_MESSAGES.';
+    this.errorMessages = {
+      userName: [
+        {
+          type: 'required',
+          message: `${erBase}USERNAME.REQUIRED`,
+        },
+        {
+          type: 'minlength',
+          message: `${erBase}USERNAME.MINLENGTH`,
+        },
+      ],
+      userEmail: [
+        {
+          type: 'required',
+          message: `${erBase}USEREMAIL.REQUIRED`,
+        },
+        {
+          type: 'email',
+          message: `${erBase}USEREMAIL.EMAIL`,
+        },
+      ],
+      userPassword: [
+        {
+          type: 'minlength',
+          message: `${erBase}USERPASSWORD.MINLENGTH`,
+        },
+      ],
+      userPasswordConfirm: [
+        {
+          type: 'minlength',
+          message: `${erBase}USERPASSWORD.MINLENGTH`,
+        },
+        {
+          type: 'mismatch',
+          message: `${erBase}USERPASSWORD.MISMATCH`,
+        },
+      ],
+      userCity: [
+        {
+          type: 'required',
+          message: `${erBase}USERCITY.REQUIRED`,
+        },
+        {
+          type: 'invalid',
+          message: `${erBase}USERCITY.INVALID`,
+        },
+      ],
+      userCountry: [
+        {
+          type: 'required',
+          message: `${erBase}USERCOUNTRY.REQUIRED`,
+        },
+      ],
+    };
+  }
+
+  edit() {
+    this.mode = 'edit';
   }
 
   close() {

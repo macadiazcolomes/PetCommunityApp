@@ -10,4 +10,5 @@ export interface User {
   avatar?: string;
   sos_subscription: boolean;
   social_media?: SocialMedia[];
+  pets?: string[];
 }

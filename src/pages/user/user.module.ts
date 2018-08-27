@@ -4,11 +4,14 @@ import { UserPage } from './user';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SocialMediaForm } from '../../shared/forms/social-media/social-media-form';
+import { SocialMediaFormModule } from '../../shared/forms/social-media/social-media-form.module';
 
 @NgModule({
-  declarations: [UserPage, SocialMediaForm],
-  imports: [IonicPageModule.forChild(UserPage), TranslateModule.forChild()],
-  exports: [SocialMediaForm],
+  declarations: [UserPage],
+  imports: [
+    IonicPageModule.forChild(UserPage),
+    TranslateModule.forChild(),
+    SocialMediaFormModule,
+  ],
 })
 export class UserPageModule {}
