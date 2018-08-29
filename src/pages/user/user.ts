@@ -30,10 +30,10 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 export class UserPage {
   public userProfileForm: FormGroup;
   public mode: string = 'view';
-  public user: User;
+  private user: User;
 
   private smT: SocialMediaTypes[];
-  private errorMessages: object;
+  public errorMessages: object;
 
   constructor(
     private smTypes: SocialMediaTypesProvider,

@@ -35,6 +35,7 @@ export class MyPetsProfilePage {
   public smT: SocialMediaTypes[];
   public petProfileForm: FormGroup;
   public petGenderList = ['male', 'female'];
+  public errorMessages: object;
 
   constructor(
     private species: SpeciesTypesProvider,
@@ -50,6 +51,7 @@ export class MyPetsProfilePage {
     this.smT = this.smTypes.getSocialMediaTypes();
 
     this.initPetProfileForm();
+    this.initErrorMessages();
   }
 
   ionViewDidLoad() {
@@ -61,7 +63,7 @@ export class MyPetsProfilePage {
       petName: [this.pet.name, [Validators.required, Validators.minLength(3)]],
       petSpecies: [
         { value: this.pet.species, disabled: this.mode == 'view' },
-        [validateSpecies(this.speciesList)],
+        [Validators.required, validateSpecies(this.speciesList)],
       ],
       petBreed: [this.pet.breed || '', [Validators.minLength(3)]],
       petGender: [this.pet.gender || '', [validateGender(this.petGenderList)]],
@@ -87,6 +89,27 @@ export class MyPetsProfilePage {
       ],
       social_media: this.formBuilder.group(createSocialMediaGroup(this.smT)),
     });
+  }
+
+  initErrorMessages() {
+    const erBase: string = 'PET.ERROR_MESSAGES.';
+    this.errorMessages = {
+      petName: [
+        { type: 'required', message: `${erBase}PETNAME.REQUIRED` },
+        { type: 'minlength', message: `${erBase}PETNAME.MINLENGTH` },
+      ],
+      petSpecies: [
+        { type: 'required', message: `${erBase}PETSPECIES.REQUIRED` },
+        { type: 'invalid', message: `${erBase}PETSPECIES.MINLENGTH` },
+      ],
+      petBreed: [{ type: 'minlength', message: `${erBase}PETBREED.MINLENGTH` }],
+      petGender: [{ type: 'invalid', message: `${erBase}PETGENDER.INVALID` }],
+      petColor: [{ type: 'minlength', message: `${erBase}PETCOLOR.MINLENGTH` }],
+      petMicrochip: [
+        { type: 'minlength', message: `${erBase}PETMICROCHIP.MINLENGTH` },
+        { type: 'maxlength', message: `${erBase}PETMICROCHIP.MAXLENGTH` },
+      ],
+    };
   }
 
   close() {

@@ -100,6 +100,40 @@
     "PASS_AWAY_LABEL": "Pass away",
     "SOCIAL_MEDIA_QUESTION": "Does your pet have social media?",
     "GENDER_MALE": "Male",
-    "GENDER_FEMALE": "Female"
+    "GENDER_FEMALE": "Female",
+    "ERROR_MESSAGES": {
+      "PETNAME": {
+        "REQUIRED": "Petname is required.",
+        "MINLENGTH": "Must be at least 3 characters long."
+      },
+      "PETSPECIES": {
+        "REQUIRED": "Species is required.",
+        "INVALID": "The species is invalid"
+      },
+      "PETBREED": {
+        "MINLENGTH": "Must be at least 3 characters long."
+      },
+      "PETGENDER": {
+        "INVALID": "The gender is invalid."
+      },
+      "PETCOLOR": {
+        "MINLENGTH": "Must be at least 3 characters long."
+      },
+      "PETMICROCHIP": {
+        "MINLENGTH": "Must be at least 10 characters long.",
+        "MAXLENGTH": "Must be at most 20 characters long."
+      }
+    },
+    "MENU": {
+      "VIEW_PROFILE": "View profile",
+      "EDIT_PROFILE": "Edit profile",
+      "DELETE_PROFILE": "Delete profile"
+    },
+    "DELETE_ALERT": {
+      "TITLE": "Delete pet",
+      "MESSAGE": "Are you sure?",
+      "CANCEL_BTN": "Cancel",
+      "OK_BTN": "Accept"
+    }
   }
 }
