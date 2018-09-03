@@ -18,11 +18,11 @@
       <ion-item>
           <h1>{{ user?.name }}</h1>
       </ion-item>
-      <ion-item (click)="doViewUser()">
+      <ion-item  menuClose (click)="doViewUser()">
         <ion-icon item-start name="person" color="primary"></ion-icon>
         {{ 'MENU.VIEW_PROFILE' | translate }}
       </ion-item>
-      <ion-item (click)="doEditUser()">
+      <ion-item menuClose (click)="doEditUser()">
         <ion-icon item-start name="create" color="primary"></ion-icon>
         {{ 'MENU.EDIT_PROFILE' | translate }}
       </ion-item>

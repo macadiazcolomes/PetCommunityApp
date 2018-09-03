@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ServicesMainPage } from './services-main';
+import { MyPetsAlertListPage } from './my-pets-alert-list';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
-  declarations: [ServicesMainPage],
+  declarations: [MyPetsAlertListPage],
   imports: [
-    IonicPageModule.forChild(ServicesMainPage),
+    IonicPageModule.forChild(MyPetsAlertListPage),
     TranslateModule.forChild(),
     PipesModule,
   ],
 })
-export class ServicesMainPageModule {}
+export class MyPetsAlertListPageModule {}

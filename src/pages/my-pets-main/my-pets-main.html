@@ -35,19 +35,18 @@
           </ion-col>
           <ion-col col-8>
             <ion-list>
-              <ion-item>
+              <ion-item (click)="showAlertList(pet,'vaccines')">
                 <ion-icon name="medical" item-start color="primary"></ion-icon>
-                <h2>Vaccines</h2>
+                <h2>{{ 'MY_PETS_MAIN.ALERTS.VACCINES' | translate }}</h2>
                 <ion-badge item-end>1</ion-badge>
               </ion-item>
               <ion-item>
                 <ion-icon name="pulse" item-start color="primary"></ion-icon>
-                <h2>Veterinary</h2>
+                <h2>{{ 'MY_PETS_MAIN.ALERTS.VETERINARY' | translate }}</h2>
               </ion-item>
               <ion-item>
                 <ion-icon name="alert" item-start color="primary"></ion-icon>
-                <h2>Other
-                </h2>
+                <h2>{{ 'MY_PETS_MAIN.ALERTS.OTHER' | translate }}</h2>
                 <ion-badge item-end>2</ion-badge>
               </ion-item>
             </ion-list>

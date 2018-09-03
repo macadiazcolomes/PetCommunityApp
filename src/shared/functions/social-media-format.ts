@@ -1,5 +1,6 @@
 import { SocialMedia } from '../../models/social-media';
 import { SocialMediaTypes } from '../../models/social-media-types';
+import { Validators } from '@angular/forms';
 export function socialMediaFormat(
   socialMedia: SocialMedia[] | undefined,
   types: SocialMediaTypes[]
@@ -22,7 +23,15 @@ export function socialMediaFormat(
 export function createSocialMediaGroup(smT: SocialMediaTypes[]) {
   let sm2 = {};
   smT.forEach(sm => {
-    sm2[sm.name] = '';
+    //sm2[sm.name] = '';
+    sm2[sm.name] = [
+      '',
+      [
+        Validators.pattern(
+          '(?:(?:(?:ht|f)tp)s?://)?[\\w_-]+(?:\\.[\\w_-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'
+        ),
+      ],
+    ];
   });
   return sm2;
 }

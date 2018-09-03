@@ -11,4 +11,5 @@ export interface User {
   sos_subscription: boolean;
   social_media?: SocialMedia[];
   pets?: string[];
+  services?: string[];
 }

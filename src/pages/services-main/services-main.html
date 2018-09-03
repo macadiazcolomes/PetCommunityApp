@@ -6,16 +6,77 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>ServicesMain</ion-title>
+    <ion-title>{{ 'SERVICES_MAIN.TITLE' | translate }}</ion-title>
   </ion-navbar>
-
+  
+  <ion-toolbar no-border-top color="primary">
+    <ion-segment [(ngModel)]="serviceSection" color="light">
+      <ion-segment-button value="saved">{{ 'SERVICES_MAIN.SECTION_SAVED_TITLE' | translate }}</ion-segment-button>
+      <ion-segment-button value="search">{{ 'SERVICES_MAIN.SECTION_SEARCH_TITLE' | translate }}</ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  
 </ion-header>
 
 
 <ion-content padding>
+  <div [ngSwitch]="serviceSection">
+    <!--saved-->
+    <div *ngSwitchCase="'saved'">
+      <ion-list>
+        <ion-item no-padding *ngFor="let savedService of savedServices">
+          <ion-avatar item-start>
+            <img src='assets/imgs/avatar.png'>
+          </ion-avatar>
+          <h2> {{ savedService.business_name }}</h2>
+          <p> {{ savedService.phone }}</p>
+          <button ion-button clear item-end (click)="showServiceMenu(savedService)" >
+            <ion-icon name="more"></ion-icon>
+          </button>
+        </ion-item>
+      </ion-list> 
+    </div>
+    <!--search-->
+    <div *ngSwitchCase="'search'">
+      <ion-list>
+        <ion-item>
+          <ion-label>{{ 'SERVICES_MAIN.SERVICE_TYPE_LABEL' | translate }}</ion-label>
+          <ion-select [(ngModel)]="serviceSearchType" (ionChange)="findServices()" >
+            <ion-option *ngFor="let serviceType of serviceTypesList" [value]="serviceType">{{ serviceType | serviceTypeCode | translate }}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{ 'SERVICES_MAIN.LOCATION_TYPE_LABEL' | translate }}</ion-label>
+          <ion-select [(ngModel)]="serviceLocationType" (ionChange)="findServices()">
+            <ion-option *ngFor="let locationType of locationTypesList" [value]="locationType">{{ locationType | serviceLocationTypeCode | translate }}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="serviceLocationType == 'other'">
+          <ion-label>{{ 'SERVICES_MAIN.LOCATION_TYPE_LABEL' | translate }}</ion-label>
+          <ion-input [(ngModel)]="location"></ion-input>
+          <button ion-button clear item-end   (click)= "findServices()">
+            <ion-icon name="search"></ion-icon>
+          </button>
+        </ion-item>
 
+    </ion-list>
+ 
+    <ion-list>
+      <ion-item no-padding *ngFor="let service of foundServices">
+        <ion-avatar item-start>
+          <img src='assets/imgs/avatar.png'>
+        </ion-avatar>
+        <h2> {{ service.business_name }}</h2>
+        <p> {{ service.phone }}</p>
+      </ion-item>
+      
+    </ion-list>
+    </div>
+
+  </div>
 </ion-content>

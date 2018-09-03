@@ -16,6 +16,10 @@ import { SpeciesTypesProvider } from '../providers/species-types/species-types';
 import { DirectivesModule } from '../directives/directives.module';
 import { PipesModule } from '../pipes/pipes.module';
 import { SocialMediaFormModule } from '../shared/forms/social-media/social-media-form.module';
+import { SavedServicesProvider } from '../providers/services/saved';
+import { SearchServicesProvider } from '../providers/services/search';
+import { AlertTypesProvider } from '../providers/alert-types/alert-types';
+import { PetAlertsProvider } from '../providers/pet-alerts/pet-alerts';
 
 @NgModule({
   declarations: [MyApp],
@@ -44,6 +48,10 @@ import { SocialMediaFormModule } from '../shared/forms/social-media/social-media
     PetsProvider,
     SocialMediaTypesProvider,
     SpeciesTypesProvider,
+    SavedServicesProvider,
+    SearchServicesProvider,
+    AlertTypesProvider,
+    PetAlertsProvider,
   ],
 })
 export class AppModule {}

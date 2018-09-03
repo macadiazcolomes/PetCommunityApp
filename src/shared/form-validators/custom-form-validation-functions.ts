@@ -1,5 +1,8 @@
 import { AbstractControl } from '@angular/forms';
 import { SpeciesTypes } from '../../models/species-types';
+import { serviceTypesList } from '../variables/variables';
+
+import * as libphonenumber from 'google-libphonenumber';
 
 export function validateEqualsTo(fieldName: string) {
   return (control: AbstractControl): { [key: string]: any } => {
@@ -46,5 +49,39 @@ export function validateGender(genderList: Array<string>) {
       return { invalid: true };
     }
     return null;
+  };
+}
+
+export function validateServiceType() {
+  return (control: AbstractControl): { [key: string]: any } => {
+    let input = control.value;
+    let type = serviceTypesList.find(element => {
+      return element == input;
+    });
+    if (type === undefined) {
+      return { invalid: true };
+    }
+    return null;
+  };
+}
+
+export function validatePhoneNumber() {
+  return (control: AbstractControl): { [key: string]: any } => {
+    let input = control.value;
+    let isValid: boolean;
+    const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
+    try {
+      let phoneNumber = phoneUtil.parse(input);
+      //let region = phoneUtil.getRegionCodeForNumber(phoneNumber);
+      isValid = phoneUtil.isValidNumber(phoneNumber);
+    } catch (e) {
+      //console.log(e.message);
+      isValid = false;
+    }
+    if (isValid) {
+      return null;
+    } else {
+      return { invalid: true };
+    }
   };
 }

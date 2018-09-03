@@ -1,0 +1,39 @@
+<!--
+  Generated template for the MyPetsAlertListPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-toolbar color="primary">
+    <ion-buttons left>
+      <button ion-button icon-only (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{ pet.name }}</ion-title>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h1 ion-text color="primary">{{ alertType | alertTypeCode | translate }}</h1>
+  <ion-list>
+    <ion-item no-padding *ngFor="let alert of alerts">
+      <ion-icon *ngIf="alertType==='vaccines'" name="medical" item-start color="primary"></ion-icon>
+      <ion-icon *ngIf="alertType==='vet'" name="pulse" item-start color="primary"></ion-icon>
+      <ion-icon *ngIf="alertType==='other'" name="alert" item-start color="primary"></ion-icon>
+      <h2>{{ alert.name }}</h2>
+      <p>{{ alert.date | date }}</p>
+      <ion-note item-end>ON</ion-note>
+      <button ion-button clear item-end (click)="showAlertMenu(alert)" >
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-item>
+  </ion-list>
+  <ion-fab bottom right>
+    <button ion-fab><ion-icon name="add"></ion-icon></button>
+  </ion-fab>
+</ion-content>

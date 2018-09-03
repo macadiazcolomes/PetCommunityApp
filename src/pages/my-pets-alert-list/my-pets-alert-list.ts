@@ -3,17 +3,18 @@ import {
   IonicPage,
   NavController,
   NavParams,
-  ModalController,
   ActionSheetController,
+  ModalController,
   AlertController,
 } from 'ionic-angular';
 
-import { PetsProvider } from '../../providers/pets/pets';
+import { PetAlertsProvider } from '../../providers/pet-alerts/pet-alerts';
+import { Alert } from '../../models/alert';
 import { Pet } from '../../models/pet';
 import { TranslateService } from '@ngx-translate/core';
 
 /**
- * Generated class for the MyPetsMainPage page.
+ * Generated class for the MyPetsAlertListPage page.
  *
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
@@ -21,12 +22,10 @@ import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
-  selector: 'page-my-pets-main',
-  templateUrl: 'my-pets-main.html',
+  selector: 'page-my-pets-alert-list',
+  templateUrl: 'my-pets-alert-list.html',
 })
-export class MyPetsMainPage {
-  private myPets: Pet[];
-
+export class MyPetsAlertListPage {
   //translation vars
   private alert_title: string;
   private alert_message: string;
@@ -37,75 +36,82 @@ export class MyPetsMainPage {
   private action_edit_title: string;
   private action_delete_title: string;
 
+  public alertType: string;
+  public alerts: Alert[];
+  public pet: Pet;
+
   constructor(
-    private translate: TranslateService,
-    private alertCtrl: AlertController,
-    private actionSheetCtrl: ActionSheetController,
-    private modalCtrl: ModalController,
-    private pets: PetsProvider,
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    public translate: TranslateService,
+    public actionSheetCtrl: ActionSheetController,
+    public petAlertsProvider: PetAlertsProvider,
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
+    this.alertType = this.navParams.get('alertType');
+    this.pet = this.navParams.get('pet');
+
+    this.listPetAlerts();
+
     //translations
     translate
-      .get('PET.MENU.VIEW_PROFILE')
+      .get('ALERT_LIST.MENU.VIEW_ALERT')
       .subscribe((text: string) => (this.action_view_title = text));
     translate
-      .get('PET.MENU.EDIT_PROFILE')
+      .get('ALERT_LIST.MENU.EDIT_ALERT')
       .subscribe((text: string) => (this.action_edit_title = text));
     translate
-      .get('PET.MENU.DELETE_PROFILE')
+      .get('ALERT_LIST.MENU.DELETE_ALERT')
       .subscribe((text: string) => (this.action_delete_title = text));
 
     translate
-      .get('PET.DELETE_ALERT.TITLE')
+      .get('ALERT_LIST.DELETE_ALERT.TITLE')
       .subscribe((text: string) => (this.alert_title = text));
     translate
-      .get('PET.DELETE_ALERT.MESSAGE')
+      .get('ALERT_LIST.DELETE_ALERT.MESSAGE')
       .subscribe((text: string) => (this.alert_message = text));
     translate
-      .get('PET.DELETE_ALERT.CANCEL_BTN')
+      .get('ALERT_LIST.DELETE_ALERT.CANCEL_BTN')
       .subscribe((text: string) => (this.alert_cancel_btn = text));
     translate
-      .get('PET.DELETE_ALERT.OK_BTN')
+      .get('ALERT_LIST.DELETE_ALERT.OK_BTN')
       .subscribe((text: string) => (this.alert_ok_btn = text));
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MyPetsMainPage');
-    this.listPets();
+    console.log('ionViewDidLoad MyPetsAlertListPage');
   }
 
-  listPets() {
-    console.log('[MyPetsMainPage] listPets()');
-    this.myPets = this.pets.listPets().sort();
+  listPetAlerts() {
+    this.alerts = this.petAlertsProvider.listPetAlerts(this.alertType).sort();
   }
 
-  showPetMenu(pet: Pet) {
+  showAlertMenu(alert: Alert) {
     let actionSheet = this.actionSheetCtrl.create({
       buttons: [
         {
           text: this.action_view_title,
           icon: 'eye',
           handler: () => {
-            console.log('View pet profile');
-            this.doViewPetProfile(pet);
+            console.log('View alert detail');
+            this.doViewAlertDetail(alert);
           },
         },
         {
           text: this.action_edit_title,
           icon: 'create',
           handler: () => {
-            console.log('Edit profile');
-            this.doEditPetProfile(pet);
+            console.log('Edit alert');
+            this.doEditAlertDetail(alert);
           },
         },
         {
           text: this.action_delete_title,
           icon: 'trash',
           handler: () => {
-            console.log('delete profile');
-            this.doDeleteProfile(pet);
+            console.log('delete alert ');
+            this.doDeleteAlert(alert);
           },
         },
       ],
@@ -113,20 +119,20 @@ export class MyPetsMainPage {
     actionSheet.present();
   }
 
-  doViewPetProfile(pet: Pet) {
-    console.log('[MyPetsMainPage] doViewPetProfile()');
-    let dlg = this.modalCtrl.create('MyPetsProfilePage', {
+  doViewAlertDetail(alert: Alert) {
+    console.log('[MyPetsAlertListPage] doViewAlertDetail()');
+    let dlg = this.modalCtrl.create('MyPetsAlertDetailPage', {
       mode: 'view',
-      pet: pet,
+      alert: alert,
     });
     dlg.present();
   }
 
-  doEditPetProfile(pet: Pet) {
-    console.log('[MyPetsMainPage] doEditPetProfile()');
-    let dlg = this.modalCtrl.create('MyPetsProfilePage', {
+  doEditAlertDetail(alert: Alert) {
+    console.log('[MyPetsAlertListPage] doEditAlertDetail()');
+    let dlg = this.modalCtrl.create('MyPetsAlertDetailPage', {
       mode: 'edit',
-      pet: pet,
+      alert: alert,
     });
 
     //TODO
@@ -134,9 +140,9 @@ export class MyPetsMainPage {
     dlg.present();
   }
 
-  doDeleteProfile(pet: Pet) {
-    console.log('[MyPetsMainPage] doDeleteEditProfile()');
-    let alert = this.alertCtrl.create({
+  doDeleteAlert(alert: Alert) {
+    console.log('[MyPetsAlertListPage] doDeleteAlert()');
+    let al = this.alertCtrl.create({
       title: this.alert_title,
       message: this.alert_message,
       buttons: [
@@ -156,14 +162,10 @@ export class MyPetsMainPage {
         },
       ],
     });
-    alert.present();
+    al.present();
   }
 
-  showAlertList(pet: Pet, type: string) {
-    let dlg = this.modalCtrl.create('MyPetsAlertListPage', {
-      alertType: type,
-      pet: pet,
-    });
-    dlg.present();
+  close() {
+    this.navCtrl.pop();
   }
 }

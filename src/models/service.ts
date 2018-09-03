@@ -5,8 +5,8 @@ export interface Service {
   business_name: string;
   type: string;
   phone: string;
-  address: string;
+  address?: string;
   notes?: string;
   image?: string;
-  social_media: SocialMedia[];
+  social_media?: SocialMedia[];
 }

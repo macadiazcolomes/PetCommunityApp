@@ -82,7 +82,12 @@
   "MY_PETS_MAIN": {
     "TITLE": "My Pets",
     "AGE": "{{ age }} years old",
-    "NO_AGE": "Age unknown"
+    "NO_AGE": "Age unknown",
+    "ALERTS": {
+      "VACCINES": "Vaccines",
+      "VETERINARY": "Veterinary",
+      "OTHER": "Other"
+    }
   },
   "PET": {
     "TITLE": "Pet profile",
@@ -134,6 +139,87 @@
       "MESSAGE": "Are you sure?",
       "CANCEL_BTN": "Cancel",
       "OK_BTN": "Accept"
+    }
+  },
+  "SERVICES_MAIN": {
+    "TITLE": "Professional services",
+    "SECTION_SAVED_TITLE": "Saved",
+    "SECTION_SEARCH_TITLE": "Search",
+    "SERVICE_TYPE_LABEL": "Type:",
+    "SERVICE_TYPE": {
+      "VETERINARY_CARE": "Veterinary",
+      "PET_STORE": "Pet Store",
+      "OTHER": "Other"
+    },
+    "LOCATION_TYPE_LABEL": "Location:",
+    "LOCATION_TYPE": {
+      "CURRENT": "Current",
+      "OTHER": "Other"
+    },
+    "MENU": {
+      "VIEW_SERVICE": "View service",
+      "EDIT_SERVICE": "Edit service",
+      "DELETE_SERVICE": "Delete service"
+    },
+    "DELETE_ALERT": {
+      "TITLE": "Delete service",
+      "MESSAGE": "Are you sure?",
+      "CANCEL_BTN": "Cancel",
+      "OK_BTN": "Accept"
+    }
+  },
+  "SERVICE_DETAIL": {
+    "TITLE": "Service Detail",
+    "BUSINESS_NAME_LABEL": "Business Name",
+    "TYPE_LABEL": "Type",
+    "PHONE_LABEL": "Phone",
+    "ADDRESS_LABEL": "Address",
+    "NOTES_LABEL": "Notes",
+    "SOCIAL_MEDIA_LABEL": "Social media",
+    "ERROR_MESSAGES": {
+      "SERVICEBUSINESSNAME": {
+        "REQUIRED": "Business name is required.",
+        "MINLENGTH": "Must be at least 3 characters long."
+      },
+      "SERVICETYPE": {
+        "REQUIRED": "Type name is required.",
+        "INVALID": "The type is invalid."
+      },
+      "SERVICEPHONE": {
+        "REQUIRED": "Phone is required.",
+        "INVALID": "The phone number is invalid."
+      },
+      "SERVICEADDRESS": {
+        "MAXLENGTH": "Must be at most 150 characters long."
+      },
+      "SERVICENOTES": {
+        "MAXLENGTH": "Must be at most 500 characters long."
+      }
+    }
+  },
+  "ALERT_LIST": {
+    "MENU": {
+      "VIEW_ALERT": "View alert",
+      "EDIT_ALERT": "Edit alert",
+      "DELETE_ALERT": "Delete alert"
+    },
+    "DELETE_ALERT": {
+      "TITLE": "Delete alert",
+      "MESSAGE": "Are you sure?",
+      "CANCEL_BTN": "Cancel",
+      "OK_BTN": "Accept"
+    }
+  },
+  "SOCIAL_MEDIA": {
+    "ERROR_MESSAGES": {
+      "URL": "The URL is invalid."
+    }
+  },
+  "PET_ALERTS": {
+    "TYPE": {
+      "VACCINES": "Vaccines",
+      "VET": "Veterinary",
+      "OTHER": "Other Alerts"
     }
   }
 }
