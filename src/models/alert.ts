@@ -7,8 +7,6 @@ export interface Alert {
   date: number;
   service?: Service;
   notes?: string;
-  alarm?: boolean;
+  reminder?: boolean;
   reminder_time?: number;
-  repeat?: boolean;
-  repeat_each?: string;
 }

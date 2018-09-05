@@ -85,3 +85,12 @@ export function validatePhoneNumber() {
     }
   };
 }
+
+//TODO
+export function validateServiceID() {
+  return (control: AbstractControl): { [key: string]: any } => {
+    let input = control.value;
+
+    return null;
+  };
+}

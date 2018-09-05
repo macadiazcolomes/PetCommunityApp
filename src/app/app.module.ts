@@ -20,6 +20,8 @@ import { SavedServicesProvider } from '../providers/services/saved';
 import { SearchServicesProvider } from '../providers/services/search';
 import { AlertTypesProvider } from '../providers/alert-types/alert-types';
 import { PetAlertsProvider } from '../providers/pet-alerts/pet-alerts';
+import { SosProvider } from '../providers/sos/sos';
+import { UsersProvider } from '../providers/users/users';
 
 @NgModule({
   declarations: [MyApp],
@@ -52,6 +54,8 @@ import { PetAlertsProvider } from '../providers/pet-alerts/pet-alerts';
     SearchServicesProvider,
     AlertTypesProvider,
     PetAlertsProvider,
+    SosProvider,
+    UsersProvider,
   ],
 })
 export class AppModule {}

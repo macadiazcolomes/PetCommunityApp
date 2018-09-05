@@ -119,11 +119,25 @@ export class MyPetsAlertListPage {
     actionSheet.present();
   }
 
+  doAddAlert() {
+    console.log('[MyPetsAlertListPage] doAddAlert()');
+    let dlg = this.modalCtrl.create('MyPetsAlertDetailPage', {
+      mode: 'add',
+      alert: this.petAlertsProvider.getEmptyPetAlert(this.alertType),
+      pet: this.pet,
+    });
+    //TODO
+    //dlg.onDidDismiss((alert) => {});
+
+    dlg.present();
+  }
+
   doViewAlertDetail(alert: Alert) {
     console.log('[MyPetsAlertListPage] doViewAlertDetail()');
     let dlg = this.modalCtrl.create('MyPetsAlertDetailPage', {
       mode: 'view',
       alert: alert,
+      pet: this.pet,
     });
     dlg.present();
   }
@@ -133,6 +147,7 @@ export class MyPetsAlertListPage {
     let dlg = this.modalCtrl.create('MyPetsAlertDetailPage', {
       mode: 'edit',
       alert: alert,
+      pet: this.pet,
     });
 
     //TODO

@@ -45,6 +45,7 @@ export class PetsProvider {
     this.addPet({
       name: 'Novak',
       species: 'cat',
+      breed: 'Russian Blue',
     });
     this.addPet({
       name: 'Mona',
@@ -68,6 +69,7 @@ export class PetsProvider {
         id: pet.id,
         name: pet.name,
         species: pet.species,
+        breed: pet.breed,
         social_media: socialMediaFormat(
           pet.social_media,
           this.socialMediaTypes

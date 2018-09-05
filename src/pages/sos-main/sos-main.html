@@ -6,16 +6,37 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>SOSMain</ion-title>
+    <ion-title>{{ 'SOS_MAIN.TITLE' | translate }}</ion-title>
   </ion-navbar>
+
+  <ion-toolbar no-border-top color="primary">
+    <ion-segment [(ngModel)]="sosSection" color="light">
+      <ion-segment-button value="current">{{ 'SOS_MAIN.SECTION_CURRENT_TITLE' | translate }}</ion-segment-button>
+      <ion-segment-button value="helping">{{ 'SOS_MAIN.SECTION_HELPING_TITLE' | translate }}</ion-segment-button>
+      <ion-segment-button value="mySOS">{{ 'SOS_MAIN.SECTION_MYSOS_TITLE' | translate }}</ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+  <div [ngSwitch]="sosSection">
+    <!--current-->
+    <div *ngSwitchCase="'current'">
+      CURRENT SOS!
+    </div>
+    <!--helping out-->
+    <div *ngSwitchCase="'helping'">
+      HELPING OUT!
+    </div>
+    <!--my sos-->
+    <div *ngSwitchCase="'mySOS'">
+      My SOS!
+    </div>
+  </div>
 </ion-content>

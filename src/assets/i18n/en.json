@@ -210,6 +210,40 @@
       "OK_BTN": "Accept"
     }
   },
+  "ALERT_DETAIL": {
+    "TITLE": {
+      "VACCINES": "Vaccine",
+      "VET": "Veterinary",
+      "OTHER": "Other alert"
+    },
+    "NAME_LABEL": "Name",
+    "DATE_LABEL": "Date",
+    "SERVICE_LABEL": "Service",
+    "REMINDER_LABEL": "Remind",
+    "REMINDER_TIME_LABEL": "Reminder time",
+    "NOTES_LABEL": "Notes",
+    "ERROR_MESSAGES": {
+      "ALERTNAME": {
+        "REQUIRED": "Alert name is required.",
+        "MINLENGTH": "Must be at least 3 characters long."
+      },
+      "ALERTDATE": {
+        "REQUIRED": "Date is required."
+      },
+      "ALERTSERVICE": {
+        "INVALID": "The service is invalid."
+      },
+      "ALERTNOTES": {
+        "MAXLENGTH": "Must be at most 500 characters long."
+      }
+    }
+  },
+  "SOS_MAIN": {
+    "TITLE": "SOS",
+    "SECTION_CURRENT_TITLE": "Current SOS",
+    "SECTION_HELPING_TITLE": "Helping OUT",
+    "SECTION_MYSOS_TITLE": "My SOS"
+  },
   "SOCIAL_MEDIA": {
     "ERROR_MESSAGES": {
       "URL": "The URL is invalid."

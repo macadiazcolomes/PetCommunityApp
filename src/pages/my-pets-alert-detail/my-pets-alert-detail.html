@@ -6,13 +6,85 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>MyPetsAlertDetail</ion-title>
-  </ion-navbar>
+    <ion-toolbar color="primary">
+      <ion-buttons left>
+        <button ion-button icon-only (click)="close()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title>{{ pet.name }}</ion-title>
+      <ion-buttons right>
+        <button ion-button icon-only *ngIf="mode!=='view'" (click)="save()" [disabled]="petAlertDetailForm.invalid" >
+          <ion-icon name="checkmark" ></ion-icon>
+        </button>
+        <button ion-button icon-only *ngIf="mode==='view' " (click)="edit()">
+            <ion-icon  name="create"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <form novalidate [formGroup]="petAlertDetailForm" >
+    <h1 ion-text color="primary">{{ alert.type | alertDetailTitleCode | translate }}</h1>
+    
+    
+    <ion-list>
+      <ion-item>
+        <ion-label floating>{{ 'ALERT_DETAIL.NAME_LABEL' | translate }}</ion-label>
+        <ion-input tyoe="text" [readonly]="mode ==='view'" formControlName="alertName" ></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.alertName">
+        <div class="error" *ngIf="petAlertDetailForm.get('alertName').hasError(message.type) && petAlertDetailForm.get('alertName').dirty && petAlertDetailForm.get('alertName').touched">
+          {{ message.message | translate }}
+        </div>
+      </ng-container>
 
+      <ion-item>
+        <ion-label floating>{{ 'ALERT_DETAIL.DATE_LABEL' | translate }}</ion-label>
+        <ion-datetime [disableControl]="mode==='view'" displayFormat="MM/DD/YYYY" formControlName="alertDate" ></ion-datetime>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.alertDate">
+        <div class="error" *ngIf="petAlertDetailForm.get('alertDate').hasError(message.type) && petAlertDetailForm.get('alertDate').dirty && petAlertDetailForm.get('alertDate').touched">
+          {{ message.message | translate }}
+        </div>
+      </ng-container>
+
+      <ion-item>
+        <ion-label floating>{{ 'ALERT_DETAIL.SERVICE_LABEL' | translate }}</ion-label>
+        <ion-select [disableControl]="mode === 'view'" formControlName="alertService">
+          <ion-option *ngFor="let service of serviceList" [value] ="service.id">{{ service.business_name }}</ion-option> 
+        </ion-select>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.alertService">
+        <div class="error" *ngIf="petAlertDetailForm.get('alertService').hasError(message.type) && petAlertDetailForm.get('alertService').dirty && petAlertDetailForm.get('alertService').touched">
+          {{ message.message | translate }}
+        </div>
+      </ng-container>
+
+      <ion-item>
+        <ion-label>{{ 'ALERT_DETAIL.REMINDER_LABEL' | translate }}</ion-label>
+        <ion-toggle [disableControl]="mode==='view'" formControlName="alertReminder"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="petAlertDetailForm.get('alertReminder').value === true" >
+        <ion-label floating>{{ 'ALERT_DETAIL.REMINDER_TIME_LABEL' | translate }}</ion-label>
+        <ion-datetime [disableControl]="mode==='view'" displayFormat="MM/DD/YYYY HH:MM" formControlName="alertReminderTime" ></ion-datetime>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label floating>{{ 'ALERT_DETAIL.NOTES_LABEL' | translate }}</ion-label>
+        <ion-textarea type="text" [readonly]="mode==='view'" formControlName="alertNotes"></ion-textarea>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.alertNotes">
+        <div class="error" *ngIf="petAlertDetailForm.get('alertNotes').hasError(message.type) && petAlertDetailForm.get('alertNotes').dirty && petAlertDetailForm.get('alertNotes').touched">
+          {{ message.message | translate }}
+        </div>
+      </ng-container>
+
+      <ion-item></ion-item>
+    </ion-list>
+  </form>
 </ion-content>

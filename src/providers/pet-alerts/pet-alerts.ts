@@ -19,15 +19,23 @@ export class PetAlertsProvider {
     console.log('Hello PetAlertsProvider Provider');
 
     this.addPetAlert({
-      type: 'vaccine',
+      type: 'vaccines',
       name: 'Triple',
       date: 1538458827,
     });
     this.addPetAlert({
-      type: 'vaccine',
+      type: 'vaccines',
       name: 'FeLV',
       date: 1538458827,
     });
+  }
+
+  getEmptyPetAlert(type: string): Alert {
+    return {
+      type: type,
+      name: '',
+      date: new Date().getTime(),
+    };
   }
 
   listPetAlerts(alertType: string): Alert[] {
