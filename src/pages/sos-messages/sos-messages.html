@@ -1,0 +1,36 @@
+<!--
+  Generated template for the SosMessagesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-toolbar color="primary">
+      <ion-buttons left>
+        <button ion-button icon-only (click)="close()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title>{{ 'SOS_MESSAGES.TITLE' | translate }}</ion-title>
+      
+    </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item no-lines >
+    <ion-icon name="mail" item-start color="primary"></ion-icon>
+    <h1 ion-text color="primary"> {{ sos.short_description }}</h1>
+  </ion-item>
+  <ion-list>
+    <ion-item *ngFor="let user of usersList" (click)="showDetail(user)" >
+      <ion-avatar item-start>
+        <img src="assets/imgs/avatar.png">
+      </ion-avatar>
+      <h2> {{ user.name }}</h2>
+      <ion-badge item-end>{{ getNotReadCount(user.id) }}</ion-badge>
+    </ion-item>
+  </ion-list>
+</ion-content>

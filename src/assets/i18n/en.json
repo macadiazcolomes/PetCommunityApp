@@ -242,7 +242,87 @@
     "TITLE": "SOS",
     "SECTION_CURRENT_TITLE": "Current SOS",
     "SECTION_HELPING_TITLE": "Helping OUT",
-    "SECTION_MYSOS_TITLE": "My SOS"
+    "SECTION_MYSOS_TITLE": "My SOS",
+    "MENU": {
+      "VIEW_SOS": "View SOS",
+      "EDIT_SOS": "Edit SOS",
+      "DELETE_SOS": "Delete SOS",
+      "HELPOUT_SOS": "Help OUT",
+      "CANCEL_HELPOUT_SOS": "Cancel Help OUT",
+      "MESSAGES_SOS": "Messages",
+      "MARKED_AS_RESOLVED": "Mark as resolved"
+    },
+    "DELETE_ALERT": {
+      "TITLE": "Delete SOS",
+      "MESSAGE": "Are you sure?",
+      "CANCEL_BTN": "Cancel",
+      "OK_BTN": "Accept"
+    },
+    "HELPOUT_ALERT": {
+      "TITLE_YES": "Help OUT",
+      "TITLE_NO": "Cancel Help OUT",
+      "MESSAGE": "Are you sure?",
+      "CANCEL_BTN": "Cancel",
+      "OK_BTN": "Accept"
+    },
+    "MARK_AS_RESOLVED_ALERT": {
+      "TITLE": "Mark as resolved",
+      "MESSAGE": "Are you sure?",
+      "CANCEL_BTN": "Cancel",
+      "OK_BTN": "Accept"
+    }
+  },
+  "SOS_DETAIL": {
+    "TITLE": "SOS Detail",
+    "STATUS_LABEL": "Status:",
+    "SHORT_DESCRIPTION_LABEL": "SOS",
+    "SHORT_DESCRIPTION_PLACEHOLDER": "Describe the emergency",
+    "NEED_LABEL": "Need",
+    "NEED_PLACEHOLDER": "What do you need?",
+    "CONTACT_INFO_DIVIDER": "Contact info",
+    "CONTACT_NAME_LABEL": "Name",
+    "CONTACT_PHONE_LABEL": "Phone",
+    "CONTACT_EMAIL_LABEL": "Email",
+    "NOTES_DIVIDER": "Notes",
+    "ERROR_MESSAGES": {
+      "SOSSHORTDESCRIPTION": {
+        "REQUIRED": "SOS description is required.",
+        "MINLENGTH": "Must be at least 10 characters long.",
+        "MAXLENGTH": "Must be at most 100 characters long."
+      },
+      "SOSNEED": {
+        "REQUIRED": "SOS need is required.",
+        "MINLENGTH": "Must be at least 5 characters long.",
+        "MAXLENGTH": "Must be at most 100 characters long."
+      },
+      "SOSSTATUS": {
+        "REQUIRED": "SOS status is required.",
+        "INVALID": "The status is invalid"
+      },
+      "SOSCONTACTNAME": {
+        "REQUIRED": "SOS contact name is required.",
+        "MINLENGTH": "Must be at least 3 characters long.",
+        "MAXLENGTH": "Must be at most 50 characters long."
+      },
+      "SOSCONTACTPHONE": {
+        "INVALID": "The phone number is invalid."
+      },
+      "SOSCONTACTEMAIL": {
+        "REQUIRED": "SOS contact email is required.",
+        "EMAIL": "The email is invalid"
+      }
+    },
+    "SECTION_GENERAL_INFO_TITLE": "General",
+    "SECTION_CONTACT_INFO_TITLE": "Contact",
+    "SECTION_NOTES_INFO_TITLE": "Notes",
+    "SECTION_HELPERS_TITLE": "Helpers"
+  },
+  "SOS_MESSAGES": {
+    "TITLE": "SOS messages"
+  },
+  "SOS_MESSAGES_DETAIL": {
+    "TITLE": "SOS message detail",
+    "SUBTITLE": "Chatting with"
   },
   "SOCIAL_MEDIA": {
     "ERROR_MESSAGES": {
@@ -255,5 +335,9 @@
       "VET": "Veterinary",
       "OTHER": "Other Alerts"
     }
+  },
+  "SOS_STATUS": {
+    "ACTIVE": "Active",
+    "INACTIVE": "Reslved"
   }
 }

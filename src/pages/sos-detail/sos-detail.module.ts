@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { SosMainPage } from './sos-main';
+import { SosDetailPage } from './sos-detail';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { DirectivesModule } from '../../directives/directives.module';
 import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
-  declarations: [SosMainPage],
+  declarations: [SosDetailPage],
   imports: [
-    IonicPageModule.forChild(SosMainPage),
+    IonicPageModule.forChild(SosDetailPage),
     TranslateModule.forChild(),
+    DirectivesModule,
     PipesModule,
   ],
 })
-export class SosMainPageModule {}
+export class SosDetailPageModule {}

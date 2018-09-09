@@ -37,6 +37,10 @@ export class SosProvider {
       location: { lat: 111, lng: 222 },
       city: 'San Antonio',
       country: 'Chile',
+      date: 1536152400000,
+      userID_creator: 1,
+      contact_name: 'Peter Parker',
+      contact_email: 'pparker@spiderman.com',
     });
 
     this.addSOS({
@@ -46,7 +50,12 @@ export class SosProvider {
       location: { lat: 333, lng: 444 },
       city: 'San Antonio',
       country: 'Chile',
+      date: 1536152400000,
+      userID_creator: 1,
+      contact_name: 'Bruce Wayne',
+      contact_email: 'bwayne@batman.com',
     });
+    this.addSOSHelper('1', '1');
   }
 
   addSOS(sos: SOS): SOS {
@@ -105,5 +114,9 @@ export class SosProvider {
     return this.soshelpers.map(sos_helper => {
       return this.getSOS(sos_helper.sosID);
     });
+  }
+
+  isUserHelpingOut(userID: string, sos: SOS): boolean {
+    return true;
   }
 }

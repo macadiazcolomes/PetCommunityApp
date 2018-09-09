@@ -1,12 +1,9 @@
-import { SOS } from './sos';
-import { User } from './user';
-
 export interface Message {
   id?: number;
-  sos: SOS;
+  sosID: string;
   timestamp: number;
-  from: User;
-  to: User;
+  from: string; //userID
+  to: string; //userID
   message: string;
   read: boolean;
 }

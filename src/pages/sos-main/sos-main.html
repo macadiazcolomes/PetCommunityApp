@@ -28,15 +28,54 @@
   <div [ngSwitch]="sosSection">
     <!--current-->
     <div *ngSwitchCase="'current'">
-      CURRENT SOS!
+      <ion-list>
+        <ion-item no-padding *ngFor="let current of currentSOSList">
+          <ion-avatar item-start>
+            <img src="assets/imgs/avatar.png">
+          </ion-avatar>
+          <h2>{{ current.short_description }}</h2>
+          <p>{{ current.need }}</p>
+          <p>{{ current.date | date }}</p>
+          <ion-note item-end>3,2 km</ion-note>
+          <button ion-button clear item-end (click)="showSOSMenu(current)" >
+            <ion-icon name="more"></ion-icon>
+          </button>
+        </ion-item>
+      </ion-list>
     </div>
     <!--helping out-->
     <div *ngSwitchCase="'helping'">
-      HELPING OUT!
+      <ion-list>
+        <ion-item no-padding *ngFor="let helping of helpingOutSOSList">
+            <ion-avatar item-start>
+              <img src="assets/imgs/avatar.png">
+            </ion-avatar>
+            <h2>{{ helping.short_description }}</h2>
+            <p>{{ helping.need }}</p>
+            <p>{{ helping.date | date }}</p>
+            <ion-note item-end>3,2 km</ion-note>
+            <button ion-button clear item-end (click)="showSOSMenu(helping)" >
+              <ion-icon name="more"></ion-icon>
+            </button>
+          </ion-item>
+        </ion-list>
     </div>
     <!--my sos-->
     <div *ngSwitchCase="'mySOS'">
-      My SOS!
+        <ion-list>
+            <ion-item no-padding *ngFor="let mySOS of mySOSList">
+                <ion-avatar item-start>
+                  <img src="assets/imgs/avatar.png">
+                </ion-avatar>
+                <h2>{{ mySOS.short_description }}</h2>
+                <p>{{ mySOS.need }}</p>
+                <p>{{ mySOS.date | date }}</p>
+                <ion-note item-end>{{ mySOS.status | sosStatusCode | translate  }}</ion-note>
+                <button ion-button clear item-end (click)="showSOSMenu(mySOS)" >
+                  <ion-icon name="more"></ion-icon>
+                </button>
+              </ion-item>
+            </ion-list>
     </div>
   </div>
 </ion-content>

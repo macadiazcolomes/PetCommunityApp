@@ -3,6 +3,7 @@ import { SpeciesTypes } from '../../models/species-types';
 import { serviceTypesList } from '../variables/variables';
 
 import * as libphonenumber from 'google-libphonenumber';
+import { stat } from 'fs';
 
 export function validateEqualsTo(fieldName: string) {
   return (control: AbstractControl): { [key: string]: any } => {
@@ -68,6 +69,9 @@ export function validateServiceType() {
 export function validatePhoneNumber() {
   return (control: AbstractControl): { [key: string]: any } => {
     let input = control.value;
+    if (input === null) {
+      return null;
+    }
     let isValid: boolean;
     const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
     try {
@@ -91,6 +95,19 @@ export function validateServiceID() {
   return (control: AbstractControl): { [key: string]: any } => {
     let input = control.value;
 
+    return null;
+  };
+}
+
+export function validateSOSStatus(sosStatusList: string[]) {
+  return (control: AbstractControl): { [key: string]: any } => {
+    let input = control.value;
+    let status = sosStatusList.find(element => {
+      return element === input;
+    });
+    if (status === undefined) {
+      return { invalid: true };
+    }
     return null;
   };
 }

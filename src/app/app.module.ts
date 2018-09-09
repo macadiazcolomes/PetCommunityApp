@@ -22,6 +22,8 @@ import { AlertTypesProvider } from '../providers/alert-types/alert-types';
 import { PetAlertsProvider } from '../providers/pet-alerts/pet-alerts';
 import { SosProvider } from '../providers/sos/sos';
 import { UsersProvider } from '../providers/users/users';
+import { SosStatusProvider } from '../providers/sos-status/sos-status';
+import { SosMessagesProvider } from '../providers/sos-messages/sos-messages';
 
 @NgModule({
   declarations: [MyApp],
@@ -56,6 +58,8 @@ import { UsersProvider } from '../providers/users/users';
     PetAlertsProvider,
     SosProvider,
     UsersProvider,
+    SosStatusProvider,
+    SosMessagesProvider,
   ],
 })
 export class AppModule {}

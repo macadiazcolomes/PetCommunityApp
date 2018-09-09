@@ -8,4 +8,9 @@ export interface SOS {
   city: string;
   country: string;
   notes?: string;
+  date: number;
+  userID_creator: number;
+  contact_name: string;
+  contact_phone?: string;
+  contact_email: string;
 }

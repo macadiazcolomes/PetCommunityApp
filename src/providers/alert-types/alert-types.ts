@@ -9,7 +9,7 @@ import { Injectable } from '@angular/core';
 */
 @Injectable()
 export class AlertTypesProvider {
-  public alertTypes: String[];
+  public alertTypes: string[];
 
   constructor(public http: HttpClient) {
     console.log('Hello AlertTypesProvider Provider');
