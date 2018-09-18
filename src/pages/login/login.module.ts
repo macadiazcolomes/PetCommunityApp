@@ -3,9 +3,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { LoginPage } from './login';
 
 import { TranslateModule } from '@ngx-translate/core';
+import { PipesModule } from '../../pipes/pipes.module';
 
 @NgModule({
   declarations: [LoginPage],
-  imports: [IonicPageModule.forChild(LoginPage), TranslateModule.forChild()],
+  imports: [
+    IonicPageModule.forChild(LoginPage),
+    TranslateModule.forChild(),
+    PipesModule,
+  ],
 })
 export class LoginPageModule {}

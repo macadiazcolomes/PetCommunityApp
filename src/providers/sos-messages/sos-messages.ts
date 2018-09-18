@@ -36,14 +36,14 @@ export class SosMessagesProvider {
   getUsersList(sosID: string): User[] {
     let usersList: User[] = [
       {
-        id: 5,
+        id: '5',
         email: 'aaa@aaa.com',
         password: '',
         name: 'Victor Stone',
         sos_subscription: false,
       },
       {
-        id: 6,
+        id: '6',
         email: 'bbb@bbb.com',
         password: '',
         name: 'Diana Prince',

@@ -1,5 +1,8 @@
 {
   "TAB_MAIN": {
     "MY_PETS": "MIS MASCOTAS"
+  },
+  "LOGIN": {
+    "LOGIN": "Inicio de sesión"
   }
 }

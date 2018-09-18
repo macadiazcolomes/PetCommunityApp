@@ -1,0 +1,105 @@
+<!--
+  Generated template for the ForgotPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title ion-text text-center> {{ 'FORGOT.TITLE' | translate | uppercase }} </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-row>
+    <ion-col col-2></ion-col>
+    <ion-col col-8><img src="assets/imgs/logo.png" class="logo"></ion-col>
+    <ion-col col-2></ion-col>
+  </ion-row>
+
+  <!--STEP 1-->
+  <div *ngIf="step ==='step1'">
+    <form novalidate [formGroup]="resetPassForm">
+      <ion-list>
+        <ion-item no-lines>
+          <p text-wrap> {{ 'FORGOT.STEP1_MESSAGE' | translate }} </p>
+        </ion-item>
+        <ion-item>
+          <ion-label floating> {{ 'FORGOT.STEP1_EMAIL_LABEL' | translate }} </ion-label>
+          <ion-input type="text" formControlName="email"></ion-input>
+        </ion-item>
+        <ng-container *ngFor="let message of errorMessages.email">
+          <div class="error" *ngIf="resetPassForm.get('email').hasError(message.type) && resetPassForm.get('email').dirty && resetPassForm.get('email').touched">
+          {{ message.message | translate }} 
+          </div>
+        </ng-container>
+        <div hidden></div>
+      </ion-list>
+      <div class="div_buttons">
+        <button ion-button color="primary" block (click)="doSendEmail()" [disabled]="resetPassForm.invalid || resetPassFormButtonClicked">
+          {{ 'FORGOT.STEP1_SEND_CODE_BUTTON' | translate }}
+          <ion-spinner *ngIf="showSpinner === true"></ion-spinner>
+        </button>
+      </div>
+    </form> 
+  </div>
+
+  <!--STEP 2-->
+  <div *ngIf="step==='step2'">
+    <form novalidate [formGroup]="validateCodeForm">
+      <ion-list>
+        <ion-item no-lines>
+          <p text-wrap> {{ 'FORGOT.STEP2_MESSAGE' | translate }} </p>
+        </ion-item>
+        <ion-item>
+          <ion-label floating> {{ 'FORGOT.STEP2_CODE_LABEL' | translate }} </ion-label>
+          <ion-input type="text" formControlName="code"></ion-input>
+        </ion-item>
+        <ng-container *ngFor="let message of errorMessagesCodeForm.code">
+          <div class="error" *ngIf="validateCodeForm.get('code').hasError(message.type) && validateCodeForm.get('code').dirty && validateCodeForm.get('code').touched">
+          {{ message.message | translate }} 
+          </div>
+        </ng-container>
+        <div hidden></div>
+      </ion-list>
+      <div class="div_buttons">
+        <button ion-button color="primary" block (click)="doValidateCode()" [disabled]="validateCodeForm.invalid"> {{ 'FORGOT.STEP2_VALIDATE_CODE_BUTTON' | translate }} </button>
+      </div>
+    </form>
+  </div>
+
+  <!--STEP 3-->
+  <div *ngIf="step==='step3'">
+    <form novalidate [formGroup]="changePasswordForm">
+      <ion-list>
+        <ion-item no-lines>
+          <p text-wrap> {{ 'FORGOT.STEP3_MESSAGE' | translate }} </p>
+        </ion-item>
+        <ion-item>
+          <ion-label floating> {{ 'FORGOT.STEP3_PASSWORD_LABEL' | translate }}</ion-label>
+          <ion-input type="password" formControlName="password"></ion-input>
+        </ion-item>
+        <ng-container *ngFor="let message of errorMessagesPasswordForm.password">
+          <div class="error" *ngIf="changePasswordForm.get('password').hasError(message.type) && changePasswordForm.get('password').dirty && changePasswordForm.get('password').touched">
+              {{  message.message |translate }}
+          </div>
+        </ng-container>
+  
+        <ion-item>
+          <ion-label floating> {{ 'FORGOT.STEP3_REPEAT_PASSWORD_LABEL' | translate }}</ion-label>
+          <ion-input type="password"  formControlName="passwordConfirm"></ion-input>
+        </ion-item>
+        <ng-container *ngFor="let message of errorMessagesPasswordForm.passwordConfirm">
+          <div class="error" *ngIf="changePasswordForm.get('passwordConfirm').hasError(message.type) && changePasswordForm.get('passwordConfirm').dirty && changePasswordForm.get('passwordConfirm').touched">
+              {{  message.message |translate }}
+          </div>
+        </ng-container>
+        <div hidden></div>
+      </ion-list>
+      <div class="div_buttons">
+        <button ion-button color="primary" block (click)="doChangePassword()" [disabled]="changePasswordForm.invalid"> {{ 'FORGOT.STEP3_RESET_PASSWORD_BUTTON' | translate }} </button>
+      </div>
+    </form>
+  </div>
+</ion-content>
+

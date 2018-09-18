@@ -16,26 +16,41 @@
     <ion-col col-8><img src="assets/imgs/logo.png" class="logo"></ion-col>
     <ion-col col-2></ion-col>
   </ion-row>
-    
-  
-  <ion-list>
-    <ion-item>
-      <ion-label floating>{{ 'LOGIN.USER_LABEL' | translate }}</ion-label>
-      <ion-input type="text" [(ngModel)]="user"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>{{ 'LOGIN.PASSWORD_LABEL' | translate }}</ion-label>
-      <ion-input type="password" [(ngModel)]="password"></ion-input>
-    </ion-item>
-    <ion-item>
-        <p>{{ 'LOGIN.FORGOT' | translate }}</p>
-    </ion-item>
-  </ion-list>
-  <div style="padding-top: 20px;">
-    <button ion-button color="primary" block (click)="doLogin()">Login</button>
-    <button ion-button clear icon-end block (click)="signup()">
-      Sign up
-      <ion-icon name="arrow-forward"></ion-icon>
-    </button>
-  </div>
+    <p> {{ test_date | moment:'L'}} </p>
+  <form novalidate [formGroup]="loginForm">
+    <ion-list>
+      <ion-item>
+        <ion-label>{{ 'LOGIN.USER_LABEL' | translate }}</ion-label>
+        <ion-input type="email" formControlName="email"  ></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.email">
+        <div class="error" *ngIf="loginForm.get('email').hasError(message.type) && loginForm.get('email').dirty && loginForm.get('email').touched">
+          {{ message.message | translate }}
+        </div>
+      </ng-container>
+
+      <ion-item>
+        <ion-label>{{ 'LOGIN.PASSWORD_LABEL' | translate }}</ion-label>
+        <ion-input type="password" formControlName="password"></ion-input>
+      </ion-item>
+      <ng-container *ngFor="let message of errorMessages.password">
+        <div class="error" *ngIf="loginForm.get('password').hasError(message.type) && loginForm.get('password').dirty && loginForm.get('password').touched">
+          {{ message.message | translate }}
+        </div>
+      </ng-container>
+
+      <ion-item no-lines (click)="doForgot()">
+          <p>{{ 'LOGIN.FORGOT' | translate }}</p>
+      </ion-item>
+      <div hidden></div>
+
+    </ion-list>
+    <div class="div_buttons">
+      <button ion-button color="primary" block (click)="doLogin()" [disabled]="loginForm.invalid"> {{ 'LOGIN.LOGIN_BUTTON' | translate }} </button>
+      <button ion-button clear icon-end block (click)="doSignup()">
+          {{ 'LOGIN.SIGNUP_BUTTON' | translate }}
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </div>
+  </form>
 </ion-content>

@@ -53,9 +53,12 @@ export class SosDetailPage {
     this.sos = this.navParams.get('sos');
     this.SOSHelpersList = this.navParams.get('helpersList');
 
-    this.user = login.getUser();
+    this.login
+      .getUser()
+      .then((user: User) => (this.user = user))
+      .catch(err => console.log(err));
 
-    this.isOwner = this.user.id === this.sos.userID_creator;
+    this.isOwner = this.user.id === this.sos.userID_creator.toString();
 
     this.SOSStatusList = this.sosStatusProvider.getSosStatus();
 

@@ -1,14 +1,16 @@
 <div [formGroup]="parent">
   <div formGroupName="social_media">
-    <div *ngFor="let sm of socialMedia" >
-      <ion-item >
-        <ion-label floating> {{ sm.type }} </ion-label>
-        <ion-input type="url" [readonly]="mode==='view'" [(ngModel)]="sm.url" [formControlName]="sm.type" ></ion-input>
-      </ion-item>
-      <div class="error" *ngIf="invalid(sm.type)">
-        {{ 'SOCIAL_MEDIA.ERROR_MESSAGES.URL' | translate }}
+    <ion-list>
+      <div *ngFor="let sm of socialMedia" >
+        <ion-item>
+          <ion-label floating> {{ sm.type }} </ion-label>
+          <ion-input type="url" [readonly]="mode==='view'"  [formControlName]="sm.type" ></ion-input>
+        </ion-item>
+        <div hidden></div>
+        <div class="error" *ngIf="invalid(sm.type)">
+          {{ 'SOCIAL_MEDIA.ERROR_MESSAGES.URL' | translate }}
+        </div>
       </div>
-    </div>
-    
+    </ion-list>
   </div>
 </div>

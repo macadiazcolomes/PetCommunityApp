@@ -14,7 +14,7 @@
     </ion-buttons>
     <ion-title>{{ 'USER.TITLE' | translate }}</ion-title>
     <ion-buttons right>
-      <button ion-button icon-only *ngIf="mode!=='view'" (click)="save()" [disabled]="userProfileForm.invalid" >
+      <button ion-button icon-only *ngIf="mode!=='view'" (click)="doSaveChanges()" [disabled]="userProfileForm.invalid" >
         <ion-icon name="checkmark" ></ion-icon>
       </button>
       <button ion-button icon-only *ngIf="mode==='view' " (click)="edit()">
@@ -31,7 +31,7 @@
     <ion-row>
       <ion-col col-4></ion-col>
       <ion-col col-4>
-        <img src="assets/imgs/avatar.png">
+        <img [src]=" user.avatar ? user.avatar : 'assets/imgs/avatar.png'">
       </ion-col>
       <ion-col col-4>
         <ion-fab top left #fab *ngIf="mode!=='view'" >
@@ -39,10 +39,10 @@
             <ion-icon name="create"></ion-icon>
           </button>
           <ion-fab-list>
-            <button ion-fab>
+            <button ion-fab (click) ="selectAvatar()">
               <ion-icon name="images"></ion-icon>
             </button>
-            <button ion-fab>
+            <button ion-fab (click) ="captureAvatar()">
               <ion-icon name="camera"></ion-icon>
             </button>
           </ion-fab-list>
@@ -53,40 +53,40 @@
         <ion-item-divider color="light">{{ 'USER.REQUIRED_INFO' | translate }}</ion-item-divider>
         <ion-item>
           <ion-label floating>{{ 'USER.NAME_LABEL' | translate }}</ion-label>
-          <ion-input type="text" [readonly]="mode==='view'" formControlName="userName"></ion-input>
+          <ion-input type="text" [readonly]="mode==='view'" formControlName="name"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.userName">
-          <div class="error" *ngIf="userProfileForm.get('userName').hasError(message.type) && userProfileForm.get('userName').dirty && userProfileForm.get('userName').touched">
+        <ng-container *ngFor="let message of errorMessages.name">
+          <div class="error" *ngIf="userProfileForm.get('name').hasError(message.type) && userProfileForm.get('name').dirty && userProfileForm.get('name').touched">
               {{  message.message |translate }}
           </div>
         </ng-container>
 
         <ion-item>
           <ion-label floating>{{ 'USER.EMAIL_LABEL' | translate }}</ion-label>
-          <ion-input type="text" [readonly]="mode==='view'" formControlName="userEmail"></ion-input>
+          <ion-input type="text" [readonly]="mode==='view'" formControlName="email"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.userEmail">
-          <div class="error" *ngIf="userProfileForm.get('userEmail').hasError(message.type) && userProfileForm.get('userEmail').dirty && userProfileForm.get('userEmail').touched">
+        <ng-container *ngFor="let message of errorMessages.email">
+          <div class="error" *ngIf="userProfileForm.get('email').hasError(message.type) && userProfileForm.get('email').dirty && userProfileForm.get('email').touched">
               {{  message.message |translate }}
           </div>
         </ng-container>
 
         <ion-item>
           <ion-label floating>{{ 'USER.CITY_LABEL' | translate }}</ion-label>
-          <ion-input type="text" [readonly]="mode==='view'" formControlName="userCity"></ion-input>
+          <ion-input type="text" [readonly]="mode==='view'" formControlName="city"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.userCity">
-          <div class="error" *ngIf="userProfileForm.get('userCity').hasError(message.type) && userProfileForm.get('userCity').dirty && userProfileForm.get('userCity').touched">
+        <ng-container *ngFor="let message of errorMessages.city">
+          <div class="error" *ngIf="userProfileForm.get('city').hasError(message.type) && userProfileForm.get('city').dirty && userProfileForm.get('city').touched">
               {{  message.message |translate }}
           </div>
         </ng-container>
 
         <ion-item>
           <ion-label floating>{{ 'USER.COUNTRY_LABEL' | translate }}</ion-label>
-          <ion-input type="text" [readonly]="mode==='view'" formControlName="userCountry"></ion-input>
+          <ion-input type="text" [readonly]="mode==='view'" formControlName="country"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.userCountry">
-          <div class="error" *ngIf="userProfileForm.get('userCountry').hasError(message.type) && userProfileForm.get('userCountry').dirty && userProfileForm.get('userCountry').touched">
+        <ng-container *ngFor="let message of errorMessages.country">
+          <div class="error" *ngIf="userProfileForm.get('country').hasError(message.type) && userProfileForm.get('country').dirty && userProfileForm.get('country').touched">
               {{  message.message |translate }}
           </div>
         </ng-container>
@@ -94,20 +94,20 @@
         <ion-item-divider color="light">{{ 'USER.RESET_PASSWORD' | translate }}</ion-item-divider>
         <ion-item>
           <ion-label floating>{{ 'USER.PASSWORD_LABEL' | translate }}</ion-label>
-          <ion-input type="password" [readonly]="mode==='view'"  formControlName="userPassword"></ion-input>
+          <ion-input type="password" [readonly]="mode==='view'"  formControlName="password"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.userPassword">
-          <div class="error" *ngIf="userProfileForm.get('userPassword').hasError(message.type) && userProfileForm.get('userPassword').dirty && userProfileForm.get('userPassword').touched">
+        <ng-container *ngFor="let message of errorMessages.password">
+          <div class="error" *ngIf="userProfileForm.get('password').hasError(message.type) && userProfileForm.get('password').dirty && userProfileForm.get('password').touched">
               {{  message.message |translate }}
           </div>
         </ng-container>
 
         <ion-item>
           <ion-label floating>{{ 'USER.REPEAT_PASSWORD_LABEL' | translate }}</ion-label>
-          <ion-input type="password" [readonly]="mode==='view'" formControlName="userPasswordConfirm"></ion-input>
+          <ion-input type="password" [readonly]="mode==='view'" formControlName="passwordConfirm"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.userPasswordConfirm">
-          <div class="error" *ngIf="userProfileForm.get('userPasswordConfirm').hasError(message.type) && userProfileForm.get('userPasswordConfirm').dirty && userProfileForm.get('userPasswordConfirm').touched">
+        <ng-container *ngFor="let message of errorMessages.passwordConfirm">
+          <div class="error" *ngIf="userProfileForm.get('passwordConfirm').hasError(message.type) && userProfileForm.get('passwordConfirm').dirty && userProfileForm.get('passwordConfirm').touched">
               {{  message.message |translate }}
           </div>
         </ng-container>

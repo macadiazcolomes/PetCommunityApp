@@ -20,12 +20,18 @@ export function socialMediaFormat(
   return sm;
 }
 
-export function createSocialMediaGroup(smT: SocialMediaTypes[]) {
+export function createSocialMediaGroup(
+  smT: SocialMediaTypes[],
+  values: SocialMedia[]
+) {
+  console.log(values);
   let sm2 = {};
   smT.forEach(sm => {
     //sm2[sm.name] = '';
     sm2[sm.name] = [
-      '',
+      values.find(value => {
+        return value.type === sm.name;
+      }).url || '',
       [
         Validators.pattern(
           '(?:(?:(?:ht|f)tp)s?://)?[\\w_-]+(?:\\.[\\w_-]+)+([\\w.,@?^=%&:/~+#-]*[\\w@?^=%&/~+#-])?'

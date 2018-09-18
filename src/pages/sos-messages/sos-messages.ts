@@ -37,7 +37,10 @@ export class SosMessagesPage {
     public navParams: NavParams
   ) {
     this.sos = this.navParams.get('sos');
-    this.user = this.login.getUser();
+    this.login
+      .getUser()
+      .then((user: User) => (this.user = user))
+      .catch(err => console.log(err));
     this.usersList = this.msgProvider.getUsersList(this.sos.id.toString());
   }
 

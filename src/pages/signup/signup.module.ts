@@ -4,14 +4,8 @@ import { SignupPage } from './signup';
 
 import { TranslateModule } from '@ngx-translate/core';
 
-import { SocialMediaFormModule } from '../../shared/forms/social-media/social-media-form.module';
-
 @NgModule({
   declarations: [SignupPage],
-  imports: [
-    IonicPageModule.forChild(SignupPage),
-    TranslateModule.forChild(),
-    SocialMediaFormModule,
-  ],
+  imports: [IonicPageModule.forChild(SignupPage), TranslateModule.forChild()],
 })
 export class SignupPageModule {}

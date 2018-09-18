@@ -87,7 +87,10 @@ export class MyPetsProfilePage {
       petPassAway: [
         { value: this.pet.pass_away || false, disabled: this.mode == 'view' },
       ],
-      social_media: this.formBuilder.group(createSocialMediaGroup(this.smT)),
+      social_media: this.formBuilder.group(
+        createSocialMediaGroup(this.smT, this.pet.social_media),
+        this.pet.social_media
+      ),
     });
   }
 

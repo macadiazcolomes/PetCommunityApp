@@ -9,7 +9,7 @@
         <ion-col col-3></ion-col>
         <ion-col col-6>
             <ion-avatar>
-                <img class="big_avatar" src="assets/imgs/avatar.png">
+                <img class="big_avatar" [src]=" user?.avatar ? user?.avatar : 'assets/imgs/avatar.png'">
               </ion-avatar>
         </ion-col>
         <ion-col col-3></ion-col>
@@ -30,11 +30,11 @@
       <ion-item>
           <ion-icon item-start name="megaphone" color="primary"></ion-icon>
         <ion-label>{{ 'MENU.SOS_SUBSCRIPTION' | translate }}</ion-label>
-        <ion-toggle  checked="false"></ion-toggle>
+        <ion-toggle  [checked]="user?.sos_subscription" (ionChange)="doChangeSOSSubscription($event.checked)"></ion-toggle>
       </ion-item>
 
       <ion-item>
-        <button ion-button block color="primary" (click)="doExit()">{{ 'MENU.LOGOUT' | translate | uppercase }}</button>
+        <button ion-button block color="primary" (click)="doLogout()">{{ 'MENU.LOGOUT' | translate | uppercase }}</button>
       </ion-item>
 
      

@@ -63,7 +63,10 @@ export class SosMainPage {
     public navParams: NavParams
   ) {
     this.sosSection = 'current';
-    this.user = this.login.getUser();
+    this.login
+      .getUser()
+      .then((user: User) => (this.user = user))
+      .catch(err => console.log(err));
     this.translate = translateService;
     //translations
     this.translate.get('SOS_MAIN.MENU.VIEW_SOS').subscribe((text: string) => {
@@ -210,7 +213,7 @@ export class SosMainPage {
 
     if (
       (this.sosSection === 'current' || this.sosSection === 'mySOS') &&
-      sos.userID_creator === this.user.id
+      sos.userID_creator.toString() === this.user.id
     ) {
       buttons.push(viewSOSButton);
       buttons.push(editSOSButton);
@@ -222,7 +225,7 @@ export class SosMainPage {
       buttons.push(messagesSOSButton);
     } else if (
       this.sosSection === 'current' &&
-      sos.userID_creator !== this.user.id
+      sos.userID_creator.toString() !== this.user.id
     ) {
       buttons.push(viewSOSButton);
       if (this.SOSProvider.isUserHelpingOut(this.user.id.toString(), sos)) {

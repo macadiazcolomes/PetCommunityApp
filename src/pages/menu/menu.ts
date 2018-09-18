@@ -9,8 +9,9 @@ import {
 
 import { User } from '../../models/user';
 import { LoginProvider } from '../../providers/login/login';
-
+import { UsersProvider } from '../../providers/users/users';
 import { TranslateService } from '@ngx-translate/core';
+import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
 
 /**
  * Generated class for the MenuPage page.
@@ -35,6 +36,8 @@ export class MenuPage {
   private alert_ok_btn: string;
 
   constructor(
+    private generalUtilities: GeneralUtilitiesProvider,
+    private users: UsersProvider,
     private translate: TranslateService,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
@@ -42,7 +45,10 @@ export class MenuPage {
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
-    this.user = this.login.getUser();
+    this.login
+      .getUser()
+      .then((user: User) => (this.user = user))
+      .catch(err => console.log(err));
 
     //translations
     translate
@@ -62,10 +68,21 @@ export class MenuPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad MenuPage');
   }
+  ionViewCanEnter() {
+    return this.login.isLoggedIn();
+  }
 
-  doExit() {
-    console.log('[MenuPage] doExit()');
-    this.navCtrl.setRoot('LoginPage');
+  doLogout() {
+    console.log('[MenuPage] doLogout()');
+    this.login
+      .logout()
+      .then(() => {
+        this.navCtrl.setRoot('LoginPage');
+      })
+      .catch(err => {
+        //console.log(JSON.stringify(err));
+        this.generalUtilities.errorCatching(err);
+      });
   }
 
   doViewUser() {
@@ -74,8 +91,28 @@ export class MenuPage {
       mode: 'view',
       user: this.user,
     });
-    dlg.onDidDismiss(data => (this.user = this.login.getUser()));
+    dlg.onDidDismiss(data => {
+      this.login
+        .getUser()
+        .then((user: User) => (this.user = user))
+        .catch(err => this.generalUtilities.errorCatching(err));
+    });
     dlg.present();
+  }
+
+  doChangeSOSSubscription(sos_subscription: boolean) {
+    if (sos_subscription !== this.user.sos_subscription) {
+      console.log(
+        '[MenuPage] doChangeSOSSubscription(' + sos_subscription + ')'
+      );
+      this.users
+        .updateUserSOSSubscription(this.user.id, sos_subscription)
+        .then(() => {
+          console.log('sos subscription change successfully');
+          this.user.sos_subscription = sos_subscription;
+        })
+        .catch(err => this.generalUtilities.errorCatching(err));
+    }
   }
 
   doEditUser() {
@@ -84,7 +121,12 @@ export class MenuPage {
       mode: 'edit',
       user: this.user,
     });
-    dlg.onDidDismiss(data => (this.user = this.login.getUser()));
+    dlg.onDidDismiss(data => {
+      this.login
+        .getUser()
+        .then((user: User) => (this.user = user))
+        .catch(err => this.generalUtilities.errorCatching(err));
+    });
     dlg.present();
   }
 
@@ -104,7 +146,20 @@ export class MenuPage {
         },
         {
           text: this.alert_ok_btn,
-          handler: () => console.log('Ok clicked'),
+          handler: () => {
+            console.log('Ok clicked');
+            this.users
+              .deleteUser(this.user)
+              .then(() =>
+                this.generalUtilities.presentToast(
+                  'MENU.DELETE_ACCOUNT_SUCCESSFULL_MESSAGE',
+                  () => {
+                    this.navCtrl.setRoot('LoginPage');
+                  }
+                )
+              )
+              .catch(err => this.generalUtilities.errorCatching(err));
+          },
         },
       ],
     });

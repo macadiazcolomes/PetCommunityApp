@@ -67,7 +67,9 @@ export class ServicesDetailPage {
       ],
       serviceAddress: [this.service.address || '', [Validators.maxLength(150)]],
       serviceNotes: [this.service.notes || '', [Validators.maxLength(500)]],
-      social_media: this.formBuilder.group(createSocialMediaGroup(this.smT)),
+      social_media: this.formBuilder.group(
+        createSocialMediaGroup(this.smT, this.service.social_media)
+      ),
     });
   }
 

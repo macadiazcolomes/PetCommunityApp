@@ -25,6 +25,19 @@ import { UsersProvider } from '../providers/users/users';
 import { SosStatusProvider } from '../providers/sos-status/sos-status';
 import { SosMessagesProvider } from '../providers/sos-messages/sos-messages';
 
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { IonicStorageModule, Storage } from '@ionic/storage';
+import { MONGODB_URL_BASE, LOGIN_TOKEN_STORAGE_VAR } from '../providers/config';
+import { GeneralUtilitiesProvider } from '../providers/general-utilities/general-utilities';
+
+import { Globalization } from '@ionic-native/globalization';
+import { NativeGeocoder } from '@ionic-native/native-geocoder';
+import { Geolocation } from '@ionic-native/geolocation';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { Camera } from '@ionic-native/camera';
+import { LocationProvider } from '../providers/location/location';
+import { CameraProvider } from '../providers/camera/camera';
+
 @NgModule({
   declarations: [MyApp],
   imports: [
@@ -41,6 +54,14 @@ import { SosMessagesProvider } from '../providers/sos-messages/sos-messages';
     DirectivesModule,
     PipesModule,
     SocialMediaFormModule,
+    IonicStorageModule.forRoot(),
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+        deps: [Storage],
+      },
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [MyApp],
@@ -60,9 +81,35 @@ import { SosMessagesProvider } from '../providers/sos-messages/sos-messages';
     UsersProvider,
     SosStatusProvider,
     SosMessagesProvider,
+    GeneralUtilitiesProvider,
+    Globalization,
+    NativeGeocoder,
+    Geolocation,
+    AndroidPermissions,
+    Camera,
+    LocationProvider,
+    CameraProvider,
   ],
 })
 export class AppModule {}
 export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+  return new TranslateHttpLoader(
+    http,
+    location.origin + '/assets/i18n/',
+    '.json'
+  );
+}
+
+export function jwtOptionsFactory(storage) {
+  return {
+    tokenGetter: () => {
+      return storage.get(LOGIN_TOKEN_STORAGE_VAR);
+    },
+    whitelistedDomains: [MONGODB_URL_BASE],
+    blacklistedRoutes: [
+      MONGODB_URL_BASE + '/pca/sessions/',
+      MONGODB_URL_BASE + '/pca/users/',
+      MONGODB_URL_BASE + '/pca/forgot/',
+    ],
+  };
 }

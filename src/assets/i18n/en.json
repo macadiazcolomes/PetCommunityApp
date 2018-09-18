@@ -6,9 +6,56 @@
   },
   "LOGIN": {
     "LOGIN": "Login",
-    "USER_LABEL": "User",
+    "USER_LABEL": "Email",
     "PASSWORD_LABEL": "Password",
-    "FORGOT": "Forgot password?"
+    "FORGOT": "Forgot password?",
+    "LOGIN_BUTTON": "Login",
+    "SIGNUP_BUTTON": "Sing Up",
+    "ERROR_MESSAGES": {
+      "EMAIL": {
+        "REQUIRED": "Email name is required.",
+        "EMAIL": "Must be a valid email."
+      },
+      "PASSWORD": {
+        "REQUIRED": "Password is required.",
+        "MINLENGTH": "Must be at least 6 characters long.",
+        "INCORRECT": "Incorrect email or password"
+      }
+    }
+  },
+  "FORGOT": {
+    "TITLE": "Reset Password",
+    "STEP1_MESSAGE": "Don't panic. Give us the email address you use to log in to Pet Community and we'll send you the code for resetting your password.",
+    "STEP1_EMAIL_LABEL": "Email",
+    "STEP1_SEND_CODE_BUTTON": "Send me the Code!",
+    "STEP1_OK_TOAST_MESSAGE": "An email has been sent to your account",
+    "STEP1_ERROR_MESSAGES": {
+      "EMAIL": {
+        "REQUIRED": "Email is required.",
+        "EMAIL": "Must be a valid email.",
+        "NOTEXISTS": "Email does not exist in our records"
+      }
+    },
+    "STEP2_MESSAGE": "Please, enter the code we sent to your email address.",
+    "STEP2_CODE_LABEL": "Code",
+    "STEP2_VALIDATE_CODE_BUTTON": "Validate code",
+    "STEP2_ERROR_MESSAGES": {
+      "CODE": {
+        "REQUIRED": "Code is required.",
+        "INVALID": "The code is invalid"
+      }
+    },
+    "STEP3_MESSAGE": "Please, enter a new password.",
+    "STEP3_PASSWORD_LABEL": "Password",
+    "STEP3_REPEAT_PASSWORD_LABEL": "Repeat password",
+    "STEP3_RESET_PASSWORD_BUTTON": "Reset Password!",
+    "STEP3_ERROR_MESSAGES": {
+      "PASSWORD": {
+        "REQUIRED": "Password is required.",
+        "MINLENGTH": "Must be at least 6 characters long.",
+        "MISMATCH": "Passwords are different"
+      }
+    }
   },
   "SIGNUP": {
     "SIGNUP": "Sign Up",
@@ -16,6 +63,7 @@
     "EMAIL": "Email",
     "PASS": "Password",
     "REPEAT_PASS": "Repeat password",
+    "OK_TOAST_MESSAGE": "Congrats!, your account has been created. Please login",
     "ERROR_MESSAGES": {
       "USERNAME": {
         "REQUIRED": "Username is required.",
@@ -23,7 +71,8 @@
       },
       "USEREMAIL": {
         "REQUIRED": "Email is required.",
-        "EMAIL": "Must be a valid email."
+        "EMAIL": "Must be a valid email.",
+        "REGISTERED": "This email is already registered."
       },
       "USERPASSWORD": {
         "REQUIRED": "Password is required.",
@@ -45,6 +94,10 @@
     "BIRTHDAY_LABEL": "Birthday",
     "CITY_LABEL": "City",
     "COUNTRY_LABEL": "Country",
+    "CITY_ALERT_TITLE": "City change detected",
+    "CITY_ALERT_MESSAGE": "We've detected that your city has change. Do you want to save the new city?",
+    "CITY_ALERT_CANCEL_BTN": "No",
+    "CITY_ALERT_OK_BTN": "Yes",
     "ERROR_MESSAGES": {
       "USERNAME": {
         "REQUIRED": "Username is required.",
@@ -55,12 +108,13 @@
         "EMAIL": "Must be a valid email."
       },
       "USERPASSWORD": {
+        "REQUIRED": "Password is required.",
         "MINLENGTH": "Must be at least 6 characters long.",
         "MISMATCH": "Passwords are different"
       },
       "USERCITY": {
         "REQUIRED": "City is required",
-        "INVALID": "The city is invalid"
+        "INVALID": "Invalid city or country"
       },
       "USERCOUNTRY": {
         "REQUIRED": "Country is required"
@@ -77,7 +131,8 @@
     "DELETE_ACCOUNT_ALERT_TITLE": "Delete account confirmation",
     "DELETE_ACCOUNT_ALERT_MESSAGE": "Are you sure you want to delete this account? ",
     "DELETE_ACCOUNT_ALERT_CANCEL_BTN": "Cancel",
-    "DELETE_ACCOUNT_ALERT_OK_BTN": "OK"
+    "DELETE_ACCOUNT_ALERT_OK_BTN": "OK",
+    "DELETE_ACCOUNT_SUCCESSFULL_MESSAGE": "Your account has been deleted. We'll miss you!"
   },
   "MY_PETS_MAIN": {
     "TITLE": "My Pets",
@@ -339,5 +394,9 @@
   "SOS_STATUS": {
     "ACTIVE": "Active",
     "INACTIVE": "Reslved"
+  },
+  "SERVER_ERRORS": {
+    "INTERNAL": "Internal error, please try again",
+    "GENERIC": "There was a problem. Please, try again"
   }
 }

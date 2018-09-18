@@ -4,8 +4,16 @@ import { User } from '../../models/user';
 
 import { validateEqualsTo } from '../../shared/form-validators/custom-form-validation-functions';
 
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import {
+  FormGroup,
+  Validators,
+  FormBuilder,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 
+import { UsersProvider } from '../../providers/users/users';
+import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
 /**
  * Generated class for the SignupPage page.
  *
@@ -19,37 +27,31 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
   templateUrl: 'signup.html',
 })
 export class SignupPage {
-  private user: User;
   private signupForm: FormGroup;
-  private passwordConfirm: string;
-  private errorMessages: object;
+  public errorMessages: object;
 
   constructor(
+    private generalUtilities: GeneralUtilitiesProvider,
+    private usersProvider: UsersProvider,
     private formBuilder: FormBuilder,
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
-    this.user = {
-      name: '',
-      email: '',
-      password: '',
-      sos_subscription: false,
-    };
     this.initSignupForm();
     this.initErrorsessages();
   }
 
   initSignupForm() {
     this.signupForm = this.formBuilder.group({
-      userName: ['', [Validators.required, Validators.minLength(4)]],
-      userEmail: ['', [Validators.required, Validators.email]],
-      userPassword: ['', [Validators.required, Validators.minLength(6)]],
-      userPasswordConfirm: [
+      name: ['', [Validators.required, Validators.minLength(4)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      passwordConfirm: [
         '',
         [
           Validators.required,
           Validators.minLength(6),
-          validateEqualsTo('userPassword'),
+          validateEqualsTo('password'),
         ],
       ],
     });
@@ -58,7 +60,7 @@ export class SignupPage {
   initErrorsessages() {
     const erBase: string = 'SIGNUP.ERROR_MESSAGES.';
     this.errorMessages = {
-      userName: [
+      name: [
         {
           type: 'required',
           message: `${erBase}USERNAME.REQUIRED`,
@@ -68,7 +70,7 @@ export class SignupPage {
           message: `${erBase}USERNAME.MINLENGTH`,
         },
       ],
-      userEmail: [
+      email: [
         {
           type: 'required',
           message: `${erBase}USEREMAIL.REQUIRED`,
@@ -77,8 +79,12 @@ export class SignupPage {
           type: 'email',
           message: `${erBase}USEREMAIL.EMAIL`,
         },
+        {
+          type: 'registered',
+          message: `${erBase}USEREMAIL.REGISTERED`,
+        },
       ],
-      userPassword: [
+      password: [
         {
           type: 'required',
           message: `${erBase}USERPASSWORD.REQUIRED`,
@@ -88,7 +94,7 @@ export class SignupPage {
           message: `${erBase}USERPASSWORD.MINLENGTH`,
         },
       ],
-      userPasswordConfirm: [
+      passwordConfirm: [
         {
           type: 'required',
           message: `${erBase}USERPASSWORD.REQUIRED`,
@@ -107,6 +113,32 @@ export class SignupPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupPage');
+  }
+
+  doCreateUser() {
+    if (this.signupForm.valid) {
+      let values = this.signupForm.value;
+      let user: User = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        sos_subscription: false,
+      };
+      let pswdConfirm = {
+        confirm_password: values.passwordConfirm,
+      };
+      this.usersProvider
+        .createUser(user, pswdConfirm)
+        .then(() => {
+          console.log('user created successfully');
+          this.generalUtilities.presentToast('SIGNUP.OK_TOAST_MESSAGE', () =>
+            this.navCtrl.setRoot('LoginPage')
+          );
+        })
+        .catch(err =>
+          this.generalUtilities.errorCatching(err, this.signupForm)
+        );
+    }
   }
 
   close() {

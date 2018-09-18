@@ -1,9 +1,9 @@
 import { SocialMedia } from './social-media';
 
 export interface User {
-  id?: number;
+  id?: string;
   email: string;
-  password: string;
+  password?: string;
   name: string;
   city?: string;
   country?: string;
@@ -12,4 +12,6 @@ export interface User {
   social_media?: SocialMedia[];
   pets?: string[];
   services?: string[];
+  resetPasswordToken?: string;
+  resetPasswordExpires?: Date;
 }
