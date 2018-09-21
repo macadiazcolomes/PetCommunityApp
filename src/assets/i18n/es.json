@@ -1,8 +1,402 @@
 {
   "TAB_MAIN": {
-    "MY_PETS": "MIS MASCOTAS"
+    "MY_PETS": "MIS MASCOTAS",
+    "SERVICES": "SERVICIOS",
+    "SOS": "SOS"
   },
   "LOGIN": {
-    "LOGIN": "Inicio de sesión"
+    "LOGIN": "Ingresar",
+    "USER_LABEL": "Email",
+    "PASSWORD_LABEL": "contraseña",
+    "FORGOT": "¿Olvidó la contraseña?",
+    "LOGIN_BUTTON": "Ingresar",
+    "SIGNUP_BUTTON": "Inscribirse",
+    "ERROR_MESSAGES": {
+      "EMAIL": {
+        "REQUIRED": "Debes escribir el email.",
+        "EMAIL": "Debe escribir un email válido."
+      },
+      "PASSWORD": {
+        "REQUIRED": "Debes escribir la contraseña.",
+        "MINLENGTH": "Debe contener por lo menos 6 caracteres.",
+        "INCORRECT": "Email o contraseña incorrecta"
+      }
+    }
+  },
+  "FORGOT": {
+    "TITLE": "Restablecer contraseña",
+    "STEP1_MESSAGE": "No se asuste. Denos el email que utiliza para ingresar a Pet Community y le enviaremos el código para restablecer su contraseña.",
+    "STEP1_EMAIL_LABEL": "Email",
+    "STEP1_SEND_CODE_BUTTON": "Envíenme el código",
+    "STEP1_OK_TOAST_MESSAGE": "Se envió un email a su cuenta.",
+    "STEP1_ERROR_MESSAGES": {
+      "EMAIL": {
+        "REQUIRED": "Debes escribir el email.",
+        "EMAIL": "Debe escribir un email válido.",
+        "NOTEXISTS": "El email no se encuentra registrado."
+      }
+    },
+    "STEP2_MESSAGE": "Por favor, ingresa el código que te enviamos a tu email.",
+    "STEP2_CODE_LABEL": "Código",
+    "STEP2_VALIDATE_CODE_BUTTON": "Validar código",
+    "STEP2_ERROR_MESSAGES": {
+      "CODE": {
+        "REQUIRED": "Debe escribir el código.",
+        "INVALID": "El código es inválido"
+      }
+    },
+    "STEP3_MESSAGE": "Por favor, ingresa una contraseña nueva.",
+    "STEP3_PASSWORD_LABEL": "Contraseña",
+    "STEP3_REPEAT_PASSWORD_LABEL": "Repetir contraseña",
+    "STEP3_RESET_PASSWORD_BUTTON": "Restablecer contraseña",
+    "STEP3_ERROR_MESSAGES": {
+      "PASSWORD": {
+        "REQUIRED": "Debes escribir la contraseña.",
+        "MINLENGTH": "Debe contener por lo menos 6 caracteres.",
+        "MISMATCH": "Las contraseñas son diferentes"
+      }
+    }
+  },
+  "SIGNUP": {
+    "SIGNUP": "Registrarse",
+    "NAME": "Nombre",
+    "EMAIL": "Email",
+    "PASS": "Contraseña",
+    "REPEAT_PASS": "Repetir contraseña",
+    "OK_TOAST_MESSAGE": "¡Felicitaciones!, ya creaste tu cuenta. Por favor, ingresa a ella.",
+    "ERROR_MESSAGES": {
+      "USERNAME": {
+        "REQUIRED": "Debes escribir el nombre de usuario.",
+        "MINLENGTH": "Debe contener por lo menos 4 caracteres."
+      },
+      "USEREMAIL": {
+        "REQUIRED": "Debes escribir el email.",
+        "EMAIL": "Debe ser un email válido.",
+        "REGISTERED": "Este email ya se encuentra registrado."
+      },
+      "USERPASSWORD": {
+        "REQUIRED": "Debes escribir la contraseña.",
+        "MINLENGTH": "Debe contener por lo menos 6 caracteres.",
+        "MISMATCH": "Las contraseñas son diferentes"
+      }
+    }
+  },
+  "USER": {
+    "TITLE": "Detalles del usuario",
+    "REQUIRED_INFO": "Información necesaria",
+    "NAME_LABEL": "Nombre",
+    "EMAIL_LABEL": "Email",
+    "RESET_PASSWORD": "Restablecer contraseña",
+    "PASSWORD_LABEL": "Contraseña",
+    "REPEAT_PASSWORD_LABEL": "Restablecer contraseña",
+    "SOCIAL_MEDIA": "Redes sociales",
+    "OPTIONAL_INFO": "Información opcional",
+    "BIRTHDAY_LABEL": "Fecha de cumpleaños",
+    "CITY_LABEL": "Ciudad",
+    "COUNTRY_LABEL": "País",
+    "CITY_ALERT_TITLE": "Se detectó un cambio de ubicación.",
+    "CITY_ALERT_MESSAGE": "Detectamos que tu ubicación cambió. ¿Quieres guardar la nueva ubicación?",
+    "CITY_ALERT_CANCEL_BTN": "No",
+    "CITY_ALERT_OK_BTN": "Sí",
+    "ERROR_MESSAGES": {
+      "USERNAME": {
+        "REQUIRED": "Debes escribir el nombre de usuario.",
+        "MINLENGTH": "Debe contener por lo menos 4 caracteres."
+      },
+      "USEREMAIL": {
+        "REQUIRED": "Debes escribir el email.",
+        "EMAIL": "Debe ser un email válido."
+      },
+      "USERPASSWORD": {
+        "REQUIRED": "Debes escribir la contraseña.",
+        "MINLENGTH": "Debe contener por lo menos 6 caracteres.",
+        "MISMATCH": "Las contraseñas son diferentes."
+      },
+      "USERCITY": {
+        "REQUIRED": "Debes escribir la ciudad.",
+        "INVALID": "Ciudad o país inválido."
+      },
+      "USERCOUNTRY": {
+        "REQUIRED": "Debes escribir el país."
+      }
+    }
+  },
+  "MENU": {
+    "TITLE": "Menú",
+    "VIEW_PROFILE": "Ver perfil",
+    "EDIT_PROFILE": "Editar perfil",
+    "SOS_SUBSCRIPTION": "Suscribirse a SOS",
+    "LOGOUT": "Salir",
+    "DELETE_ACCOUNT": "¿Eliminar cuenta?",
+    "DELETE_ACCOUNT_ALERT_TITLE": "Eliminar cuenta",
+    "DELETE_ACCOUNT_ALERT_MESSAGE": "¿Estás seguro de que deseas eliminar esta cuenta?",
+    "DELETE_ACCOUNT_ALERT_CANCEL_BTN": "Cancelar",
+    "DELETE_ACCOUNT_ALERT_OK_BTN": "Aceptar",
+    "DELETE_ACCOUNT_SUCCESSFULL_MESSAGE": "Tu cuenta ha sido eliminada. ¡Te extrañaremos!"
+  },
+  "MY_PETS_MAIN": {
+    "TITLE": "Mis mascotas",
+    "AGE": "{{ age }} años",
+    "NO_AGE": "Edad desconocida",
+    "ALERTS": {
+      "VACCINES": "Vacunas",
+      "VETERINARY": "Veterinaria",
+      "OTHER": "Otros"
+    }
+  },
+  "PET": {
+    "TITLE": "Perfil de la mascota",
+    "REQUIRED_INFO": "Información necesaria",
+    "NAME_LABEL": "Nombre",
+    "SPECIES_LABEL": "Especie",
+    "OPTIONAL_INFO": "Información opcional",
+    "BREED_LABEL": "Raza",
+    "GENDER_LABEL": "Género",
+    "BIRTHDAY_LABEL": "Fecha de cumpleaños",
+    "COLOR_LABEL": "Color",
+    "NEUTERED_LABEL": "Castrado",
+    "MICROCHIP_LABEL": "Microchip",
+    "PERMANENT_HOME_LABEL": "Hogar permanente",
+    "PASS_AWAY_LABEL": "Difunto",
+    "SOCIAL_MEDIA_QUESTION": "Tu mascota, ¿tiene alguna red social?",
+    "GENDER_MALE": "Macho",
+    "GENDER_FEMALE": "Hembra",
+    "ERROR_MESSAGES": {
+      "PETNAME": {
+        "REQUIRED": "Debe escribir el nombre de la mascota.",
+        "MINLENGTH": "Debe contener por lo menos 3 caracteres."
+      },
+      "PETSPECIES": {
+        "REQUIRED": "Debe escribir la especie.",
+        "INVALID": "La especie es inválida."
+      },
+      "PETBREED": {
+        "MINLENGTH": "Debe contener por lo menos 3 caracteres."
+      },
+      "PETGENDER": {
+        "INVALID": "El género es inválido."
+      },
+      "PETCOLOR": {
+        "MINLENGTH": "Debe contener por lo menos 3 caracteres."
+      },
+      "PETMICROCHIP": {
+        "MINLENGTH": "Debe contener por lo menos 10 caracteres.",
+        "MAXLENGTH": "Debe contener 20 caracteres como máximo."
+      }
+    },
+    "MENU": {
+      "VIEW_PROFILE": "Ver perfil",
+      "EDIT_PROFILE": "Editar perfil",
+      "DELETE_PROFILE": "Eliminar perfil"
+    },
+    "DELETE_ALERT": {
+      "TITLE": "Eliminar mascota",
+      "MESSAGE": "¿Estás seguro?",
+      "CANCEL_BTN": "Cancelar",
+      "OK_BTN": "Aceptar"
+    }
+  },
+  "SERVICES_MAIN": {
+    "TITLE": "Servicios profesionales",
+    "SECTION_SAVED_TITLE": "Guardado",
+    "SECTION_SEARCH_TITLE": "Buscar",
+    "SERVICE_TYPE_LABEL": "Tipo:",
+    "SERVICE_TYPE": {
+      "VETERINARY_CARE": "Veterinaria",
+      "PET_STORE": "Tienda de mascotas",
+      "OTHER": "Otros"
+    },
+    "LOCATION_TYPE_LABEL": "Ubicación:",
+    "LOCATION_TYPE": {
+      "CURRENT": "Actual",
+      "OTHER": "Otros"
+    },
+    "MENU": {
+      "VIEW_SERVICE": "Ver servicio",
+      "EDIT_SERVICE": "Editar servicio",
+      "DELETE_SERVICE": "Eliminar servicio"
+    },
+    "DELETE_ALERT": {
+      "TITLE": "Eliminar servicio",
+      "MESSAGE": "¿Estás seguro?",
+      "CANCEL_BTN": "Cancelar",
+      "OK_BTN": "Aceptar"
+    }
+  },
+  "SERVICE_DETAIL": {
+    "TITLE": "Detalle del servicio",
+    "BUSINESS_NAME_LABEL": "Nombre del comercio/empresa",
+    "TYPE_LABEL": "Tipo",
+    "PHONE_LABEL": "Teléfono",
+    "ADDRESS_LABEL": "Domicilio",
+    "NOTES_LABEL": "Notas",
+    "SOCIAL_MEDIA_LABEL": "Redes sociales",
+    "ERROR_MESSAGES": {
+      "SERVICEBUSINESSNAME": {
+        "REQUIRED": "Debe escribir el nombre del comercio/empresa.",
+        "MINLENGTH": "Debe contener por lo menos 3 caracteres."
+      },
+      "SERVICETYPE": {
+        "REQUIRED": "Debe escribir el tipo de servicio.",
+        "INVALID": "El tipo de servicio es inválido."
+      },
+      "SERVICEPHONE": {
+        "REQUIRED": "Debe escribir el número de teléfono.",
+        "INVALID": "El número de teléfono es inválido."
+      },
+      "SERVICEADDRESS": {
+        "MAXLENGTH": "Debe contener 150 caracteres como máximo."
+      },
+      "SERVICENOTES": {
+        "MAXLENGTH": "Debe contener 500 caracteres como máximo."
+      }
+    }
+  },
+  "ALERT_LIST": {
+    "MENU": {
+      "VIEW_ALERT": "Ver alerta",
+      "EDIT_ALERT": "Editar alerta",
+      "DELETE_ALERT": "Eliminar alerta"
+    },
+    "DELETE_ALERT": {
+      "TITLE": "Eliminar alerta",
+      "MESSAGE": "¿Estás seguro?",
+      "CANCEL_BTN": "Cancelar",
+      "OK_BTN": "Aceptar"
+    }
+  },
+  "ALERT_DETAIL": {
+    "TITLE": {
+      "VACCINES": "Vacuna",
+      "VET": "Veterinaria",
+      "OTHER": "Otras alertas"
+    },
+    "NAME_LABEL": "Nombre",
+    "DATE_LABEL": "Fecha",
+    "SERVICE_LABEL": "Servicio",
+    "REMINDER_LABEL": "Recordatorio",
+    "REMINDER_TIME_LABEL": "Hora del recordatorio",
+    "NOTES_LABEL": "Notas",
+    "ERROR_MESSAGES": {
+      "ALERTNAME": {
+        "REQUIRED": "Debe escribir el nombre de la alerta.",
+        "MINLENGTH": "Debe contener por lo menos 3 caracteres."
+      },
+      "ALERTDATE": {
+        "REQUIRED": "Debe escribir la fecha."
+      },
+      "ALERTSERVICE": {
+        "INVALID": "El servicio es inválido."
+      },
+      "ALERTNOTES": {
+        "MAXLENGTH": "Debe contener 500 caracteres como máximo."
+      }
+    }
+  },
+  "SOS_MAIN": {
+    "TITLE": "SOS",
+    "SECTION_CURRENT_TITLE": "SOS actual",
+    "SECTION_HELPING_TITLE": "Ayudas",
+    "SECTION_MYSOS_TITLE": "Mis SOS",
+    "MENU": {
+      "VIEW_SOS": "Ver SOS",
+      "EDIT_SOS": "Editar SOS",
+      "DELETE_SOS": "Eliminar SOS",
+      "HELPOUT_SOS": "Ayudar",
+      "CANCEL_HELPOUT_SOS": "Cancelar ayuda",
+      "MESSAGES_SOS": "Mensajes",
+      "MARKED_AS_RESOLVED": "Marcar como solucionado"
+    },
+    "DELETE_ALERT": {
+      "TITLE": "Eliminar SOS",
+      "MESSAGE": "¿Estás seguro?",
+      "CANCEL_BTN": "Cancelar",
+      "OK_BTN": "Aceptar"
+    },
+    "HELPOUT_ALERT": {
+      "TITLE_YES": "Ayuda",
+      "TITLE_NO": "Cancelar ayuda",
+      "MESSAGE": "¿Estás seguro?",
+      "CANCEL_BTN": "Cancelar",
+      "OK_BTN": "Aceptar"
+    },
+    "MARK_AS_RESOLVED_ALERT": {
+      "TITLE": "Marcar como resuelto",
+      "MESSAGE": "¿Estás seguro?",
+      "CANCEL_BTN": "Cancelar",
+      "OK_BTN": "Aceptar"
+    }
+  },
+  "SOS_DETAIL": {
+    "TITLE": "Detalles de SOS",
+    "STATUS_LABEL": "Status:",
+    "SHORT_DESCRIPTION_LABEL": "SOS",
+    "SHORT_DESCRIPTION_PLACEHOLDER": "Describa la emergencia",
+    "NEED_LABEL": "Necesidades",
+    "NEED_PLACEHOLDER": "¿Qué necesita?",
+    "CONTACT_INFO_DIVIDER": "Información de contacto",
+    "CONTACT_NAME_LABEL": "Nombre",
+    "CONTACT_PHONE_LABEL": "Número de teléfono",
+    "CONTACT_EMAIL_LABEL": "Email",
+    "NOTES_DIVIDER": "Notas",
+    "ERROR_MESSAGES": {
+      "SOSSHORTDESCRIPTION": {
+        "REQUIRED": "Debe escribir la descripción del SOS.",
+        "MINLENGTH": "Debe contener por lo menos 10 caracteres.",
+        "MAXLENGTH": "Debe contener 100 caracteres como máximo."
+      },
+      "SOSNEED": {
+        "REQUIRED": "Debe escribir las necesidades del SOS.",
+        "MINLENGTH": "Debe contener por lo menos 5 caracteres.",
+        "MAXLENGTH": "Debe contener 100 caracteres como máximo."
+      },
+      "SOSSTATUS": {
+        "REQUIRED": "Debe escribir el estado del SOS.",
+        "INVALID": "El estado es inválido"
+      },
+      "SOSCONTACTNAME": {
+        "REQUIRED": "Debe escribir el contacto del SOS.",
+        "MINLENGTH": "Debe contener por lo menos 3 caracteres.",
+        "MAXLENGTH": "Debe contener 50 caracteres como máximo."
+      },
+      "SOSCONTACTPHONE": {
+        "INVALID": "El número de teléfono es inválido."
+      },
+      "SOSCONTACTEMAIL": {
+        "REQUIRED": "Debe escribir el email de contacto del SOS.",
+        "EMAIL": "El email es inválido"
+      }
+    },
+    "SECTION_GENERAL_INFO_TITLE": "General",
+    "SECTION_CONTACT_INFO_TITLE": "Contacto",
+    "SECTION_NOTES_INFO_TITLE": "Notas",
+    "SECTION_HELPERS_TITLE": "Colaboradores"
+  },
+  "SOS_MESSAGES": {
+    "TITLE": "Mensajes SOS"
+  },
+  "SOS_MESSAGES_DETAIL": {
+    "TITLE": "Detalles de mensajes SOS",
+    "SUBTITLE": "Chateando con"
+  },
+  "SOCIAL_MEDIA": {
+    "ERROR_MESSAGES": {
+      "URL": "La URL es inválida."
+    }
+  },
+  "PET_ALERTS": {
+    "TYPE": {
+      "VACCINES": "Vacunas",
+      "VET": "Veterinaria",
+      "OTHER": "Otras alertas"
+    }
+  },
+  "SOS_STATUS": {
+    "ACTIVE": "Activo",
+    "INACTIVE": "Resuelto"
+  },
+  "SERVER_ERRORS": {
+    "INTERNAL": "Error interno. Por favor, inténtalo de nuevo",
+    "GENERIC": "Ha ocurrido un problema. Por favor, inténtalo de nuevo"
   }
 }

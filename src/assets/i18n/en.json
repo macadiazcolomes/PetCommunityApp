@@ -10,7 +10,7 @@
     "PASSWORD_LABEL": "Password",
     "FORGOT": "Forgot password?",
     "LOGIN_BUTTON": "Login",
-    "SIGNUP_BUTTON": "Sing Up",
+    "SIGNUP_BUTTON": "Sign Up",
     "ERROR_MESSAGES": {
       "EMAIL": {
         "REQUIRED": "Email name is required.",
@@ -25,9 +25,9 @@
   },
   "FORGOT": {
     "TITLE": "Reset Password",
-    "STEP1_MESSAGE": "Don't panic. Give us the email address you use to log in to Pet Community and we'll send you the code for resetting your password.",
+    "STEP1_MESSAGE": "Don't panic. Give us the email address you use to log into Pet Community and we will send you the code to reset your password.",
     "STEP1_EMAIL_LABEL": "Email",
-    "STEP1_SEND_CODE_BUTTON": "Send me the Code!",
+    "STEP1_SEND_CODE_BUTTON": "Send me the Code",
     "STEP1_OK_TOAST_MESSAGE": "An email has been sent to your account",
     "STEP1_ERROR_MESSAGES": {
       "EMAIL": {
@@ -41,19 +41,19 @@
     "STEP2_VALIDATE_CODE_BUTTON": "Validate code",
     "STEP2_ERROR_MESSAGES": {
       "CODE": {
-        "REQUIRED": "Code is required.",
-        "INVALID": "The code is invalid"
+        "REQUIRED": "A code is required.",
+        "INVALID": "The code is invalid."
       }
     },
     "STEP3_MESSAGE": "Please, enter a new password.",
     "STEP3_PASSWORD_LABEL": "Password",
     "STEP3_REPEAT_PASSWORD_LABEL": "Repeat password",
-    "STEP3_RESET_PASSWORD_BUTTON": "Reset Password!",
+    "STEP3_RESET_PASSWORD_BUTTON": "Reset Password",
     "STEP3_ERROR_MESSAGES": {
       "PASSWORD": {
         "REQUIRED": "Password is required.",
         "MINLENGTH": "Must be at least 6 characters long.",
-        "MISMATCH": "Passwords are different"
+        "MISMATCH": "Passwords are different."
       }
     }
   },
@@ -63,7 +63,7 @@
     "EMAIL": "Email",
     "PASS": "Password",
     "REPEAT_PASS": "Repeat password",
-    "OK_TOAST_MESSAGE": "Congrats!, your account has been created. Please login",
+    "OK_TOAST_MESSAGE": "Congrats!, your account has been created. Please, login.",
     "ERROR_MESSAGES": {
       "USERNAME": {
         "REQUIRED": "Username is required.",
@@ -94,8 +94,8 @@
     "BIRTHDAY_LABEL": "Birthday",
     "CITY_LABEL": "City",
     "COUNTRY_LABEL": "Country",
-    "CITY_ALERT_TITLE": "City change detected",
-    "CITY_ALERT_MESSAGE": "We've detected that your city has change. Do you want to save the new city?",
+    "CITY_ALERT_TITLE": "Change of location detected",
+    "CITY_ALERT_MESSAGE": "We've detected that your location has changed. Do you want to save the new location?",
     "CITY_ALERT_CANCEL_BTN": "No",
     "CITY_ALERT_OK_BTN": "Yes",
     "ERROR_MESSAGES": {
@@ -110,7 +110,7 @@
       "USERPASSWORD": {
         "REQUIRED": "Password is required.",
         "MINLENGTH": "Must be at least 6 characters long.",
-        "MISMATCH": "Passwords are different"
+        "MISMATCH": "Passwords are different."
       },
       "USERCITY": {
         "REQUIRED": "City is required",
@@ -128,8 +128,8 @@
     "SOS_SUBSCRIPTION": "SOS Subscription",
     "LOGOUT": "Logout",
     "DELETE_ACCOUNT": "Delete account?",
-    "DELETE_ACCOUNT_ALERT_TITLE": "Delete account confirmation",
-    "DELETE_ACCOUNT_ALERT_MESSAGE": "Are you sure you want to delete this account? ",
+    "DELETE_ACCOUNT_ALERT_TITLE": "Delete account",
+    "DELETE_ACCOUNT_ALERT_MESSAGE": "Are you sure you want to delete this account?",
     "DELETE_ACCOUNT_ALERT_CANCEL_BTN": "Cancel",
     "DELETE_ACCOUNT_ALERT_OK_BTN": "OK",
     "DELETE_ACCOUNT_SUCCESSFULL_MESSAGE": "Your account has been deleted. We'll miss you!"
@@ -137,11 +137,11 @@
   "MY_PETS_MAIN": {
     "TITLE": "My Pets",
     "AGE": "{{ age }} years old",
-    "NO_AGE": "Age unknown",
+    "NO_AGE": "Unknown age",
     "ALERTS": {
       "VACCINES": "Vaccines",
       "VETERINARY": "Veterinary",
-      "OTHER": "Other"
+      "OTHER": "Others"
     }
   },
   "PET": {
@@ -154,10 +154,10 @@
     "GENDER_LABEL": "Gender",
     "BIRTHDAY_LABEL": "Birthday",
     "COLOR_LABEL": "Color",
-    "NEUTERED_LABEL": "Neutered/Sprayed",
+    "NEUTERED_LABEL": "Neutered/Spayed",
     "MICROCHIP_LABEL": "Microchip",
     "PERMANENT_HOME_LABEL": "Permanent home",
-    "PASS_AWAY_LABEL": "Pass away",
+    "PASS_AWAY_LABEL": "Passed away",
     "SOCIAL_MEDIA_QUESTION": "Does your pet have social media?",
     "GENDER_MALE": "Male",
     "GENDER_FEMALE": "Female",
@@ -168,7 +168,7 @@
       },
       "PETSPECIES": {
         "REQUIRED": "Species is required.",
-        "INVALID": "The species is invalid"
+        "INVALID": "The species is invalid."
       },
       "PETBREED": {
         "MINLENGTH": "Must be at least 3 characters long."
@@ -204,7 +204,7 @@
     "SERVICE_TYPE": {
       "VETERINARY_CARE": "Veterinary",
       "PET_STORE": "Pet Store",
-      "OTHER": "Other"
+      "OTHER": "Others"
     },
     "LOCATION_TYPE_LABEL": "Location:",
     "LOCATION_TYPE": {
@@ -224,10 +224,10 @@
     }
   },
   "SERVICE_DETAIL": {
-    "TITLE": "Service Detail",
-    "BUSINESS_NAME_LABEL": "Business Name",
+    "TITLE": "Service detail",
+    "BUSINESS_NAME_LABEL": "Business name",
     "TYPE_LABEL": "Type",
-    "PHONE_LABEL": "Phone",
+    "PHONE_LABEL": "Phone number",
     "ADDRESS_LABEL": "Address",
     "NOTES_LABEL": "Notes",
     "SOCIAL_MEDIA_LABEL": "Social media",
@@ -237,12 +237,12 @@
         "MINLENGTH": "Must be at least 3 characters long."
       },
       "SERVICETYPE": {
-        "REQUIRED": "Type name is required.",
+        "REQUIRED": "Service type is required.",
         "INVALID": "The type is invalid."
       },
       "SERVICEPHONE": {
-        "REQUIRED": "Phone is required.",
-        "INVALID": "The phone number is invalid."
+        "REQUIRED": "Phone number is required.",
+        "INVALID": "The Phone Number is invalid."
       },
       "SERVICEADDRESS": {
         "MAXLENGTH": "Must be at most 150 characters long."
@@ -269,12 +269,12 @@
     "TITLE": {
       "VACCINES": "Vaccine",
       "VET": "Veterinary",
-      "OTHER": "Other alert"
+      "OTHER": "Other alerts"
     },
     "NAME_LABEL": "Name",
     "DATE_LABEL": "Date",
     "SERVICE_LABEL": "Service",
-    "REMINDER_LABEL": "Remind",
+    "REMINDER_LABEL": "Reminder",
     "REMINDER_TIME_LABEL": "Reminder time",
     "NOTES_LABEL": "Notes",
     "ERROR_MESSAGES": {
@@ -303,9 +303,9 @@
       "EDIT_SOS": "Edit SOS",
       "DELETE_SOS": "Delete SOS",
       "HELPOUT_SOS": "Help OUT",
-      "CANCEL_HELPOUT_SOS": "Cancel Help OUT",
+      "CANCEL_HELPOUT_SOS": "Cancel help",
       "MESSAGES_SOS": "Messages",
-      "MARKED_AS_RESOLVED": "Mark as resolved"
+      "MARKED_AS_RESOLVED": "Mark as solved"
     },
     "DELETE_ALERT": {
       "TITLE": "Delete SOS",
@@ -315,13 +315,13 @@
     },
     "HELPOUT_ALERT": {
       "TITLE_YES": "Help OUT",
-      "TITLE_NO": "Cancel Help OUT",
+      "TITLE_NO": "Cancel help",
       "MESSAGE": "Are you sure?",
       "CANCEL_BTN": "Cancel",
       "OK_BTN": "Accept"
     },
     "MARK_AS_RESOLVED_ALERT": {
-      "TITLE": "Mark as resolved",
+      "TITLE": "Mark as solved",
       "MESSAGE": "Are you sure?",
       "CANCEL_BTN": "Cancel",
       "OK_BTN": "Accept"
@@ -329,14 +329,14 @@
   },
   "SOS_DETAIL": {
     "TITLE": "SOS Detail",
-    "STATUS_LABEL": "Status:",
+    "STATUS_LABEL": "State:",
     "SHORT_DESCRIPTION_LABEL": "SOS",
     "SHORT_DESCRIPTION_PLACEHOLDER": "Describe the emergency",
-    "NEED_LABEL": "Need",
+    "NEED_LABEL": "Needs",
     "NEED_PLACEHOLDER": "What do you need?",
     "CONTACT_INFO_DIVIDER": "Contact info",
     "CONTACT_NAME_LABEL": "Name",
-    "CONTACT_PHONE_LABEL": "Phone",
+    "CONTACT_PHONE_LABEL": "Phone number",
     "CONTACT_EMAIL_LABEL": "Email",
     "NOTES_DIVIDER": "Notes",
     "ERROR_MESSAGES": {
@@ -351,8 +351,8 @@
         "MAXLENGTH": "Must be at most 100 characters long."
       },
       "SOSSTATUS": {
-        "REQUIRED": "SOS status is required.",
-        "INVALID": "The status is invalid"
+        "REQUIRED": "SOS state is required.",
+        "INVALID": "The state is invalid"
       },
       "SOSCONTACTNAME": {
         "REQUIRED": "SOS contact name is required.",
@@ -393,10 +393,10 @@
   },
   "SOS_STATUS": {
     "ACTIVE": "Active",
-    "INACTIVE": "Reslved"
+    "INACTIVE": "Solved"
   },
   "SERVER_ERRORS": {
-    "INTERNAL": "Internal error, please try again",
-    "GENERIC": "There was a problem. Please, try again"
+    "INTERNAL": "Internal error. Please, try again",
+    "GENERIC": "There has been a problem. Please, try again"
   }
 }
