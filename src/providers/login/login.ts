@@ -4,7 +4,11 @@ import { User } from '../../models/user';
 import { Storage } from '@ionic/storage';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { UsersProvider } from '../users/users';
-import { MONGODB_URL, LOGIN_TOKEN_STORAGE_VAR } from '../../providers/config';
+import {
+  MONGODB_URL,
+  LOGIN_TOKEN_STORAGE_VAR,
+  USERID_STORAGE_VAR,
+} from '../../providers/config';
 import { TranslateService } from '@ngx-translate/core';
 /*
   Generated class for the LoginProvider provider.
@@ -17,8 +21,8 @@ const jwtHelper = new JwtHelperService();
 @Injectable()
 export class LoginProvider {
   private token: string;
-  //private user: User;
-  private userId: string;
+  private user: User;
+  //private userId: string;
 
   constructor(
     public translate: TranslateService,
@@ -35,12 +39,20 @@ export class LoginProvider {
       let url = MONGODB_URL + `/sessions`;
       this.http.post(url, { email: user, password: password }).subscribe(
         (data: { userId: string; token: string }) => {
-          this.userId = data.userId;
+          //this.userId = data.userId;
           this.token = data.token;
           this.storage
             .set(LOGIN_TOKEN_STORAGE_VAR, this.token)
             .then(() => resolve())
             .catch(err => reject(err));
+          this.storage
+            .set(USERID_STORAGE_VAR, data.userId)
+            .then(() => resolve())
+            .catch(err => reject(err));
+          this.users.getUser(data.userId).then(user => {
+            this.user = user;
+            resolve();
+          });
         },
         err => reject(err)
       );
@@ -50,10 +62,14 @@ export class LoginProvider {
   logout(): Promise<void> {
     console.log(`[LoginProvider] logout()`);
     return new Promise((resolve, reject) => {
-      this.token = null;
-      this.userId = null;
+      this.token = undefined;
+      this.user = undefined;
       this.storage
         .set(LOGIN_TOKEN_STORAGE_VAR, '')
+        .then(() => resolve())
+        .catch(err => reject(err));
+      this.storage
+        .set(USERID_STORAGE_VAR, '')
         .then(() => resolve())
         .catch(err => reject(err));
     });
@@ -84,6 +100,7 @@ export class LoginProvider {
   }
 
   forgotPasswordStep3(
+    userEmail: string,
     password: string,
     passwordConfirm: string
   ): Promise<void> {
@@ -91,7 +108,11 @@ export class LoginProvider {
     return new Promise((resolve, reject) => {
       let url = MONGODB_URL + `/forgot/step3`;
       this.http
-        .post(url, { password: password, passwordConfirm: passwordConfirm })
+        .post(url, {
+          userEmail: userEmail,
+          password: password,
+          passwordConfirm: passwordConfirm,
+        })
         .subscribe(() => resolve(), err => reject(err));
     });
   }
@@ -103,6 +124,19 @@ export class LoginProvider {
   }
 
   getUser(): Promise<User> {
-    return this.users.getUser(this.userId);
+    return new Promise<User>((resolve, reject) => {
+      if (this.user) {
+        return resolve(this.user);
+      }
+      this.storage
+        .get(USERID_STORAGE_VAR)
+        .then(userId => {
+          this.users.getUser(userId).then(user => {
+            this.user = user;
+            resolve(user);
+          });
+        })
+        .catch(err => reject(err));
+    });
   }
 }

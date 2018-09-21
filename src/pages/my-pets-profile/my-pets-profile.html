@@ -14,7 +14,7 @@
         </ion-buttons>
         <ion-title>{{ 'PET.TITLE' | translate }}</ion-title>
         <ion-buttons right>
-          <button ion-button icon-only *ngIf="mode!=='view'" (click)="save()" [disabled]="petProfileForm.invalid" >
+          <button ion-button icon-only *ngIf="mode!=='view'" (click)="doSaveChanges()" [disabled]="petProfileForm.invalid" >
             <ion-icon name="checkmark" ></ion-icon>
           </button>
           <button ion-button icon-only *ngIf="mode==='view' " (click)="edit()">
@@ -30,7 +30,7 @@
     <ion-row>
       <ion-col col-4></ion-col>
       <ion-col col-4>
-        <img src="assets/imgs/avatar.png">
+        <img  [src]=" pet.avatar ? pet.avatar : 'assets/imgs/avatar.png'">
       </ion-col>
       <ion-col col-4>
         <ion-fab top left #fab *ngIf="mode!=='view'">
@@ -38,10 +38,10 @@
             <ion-icon name="create"></ion-icon>
           </button>
           <ion-fab-list>
-            <button ion-fab>
+            <button ion-fab (click) ="selectAvatar()">
               <ion-icon name="images"></ion-icon>
             </button>
-            <button ion-fab>
+            <button ion-fab (click) ="captureAvatar()">
               <ion-icon name="camera"></ion-icon>
             </button>
           </ion-fab-list>
@@ -53,22 +53,22 @@
       <ion-item-divider color="light">{{ 'PET.REQUIRED_INFO' | translate }}</ion-item-divider>
       <ion-item>
         <ion-label floating>{{ 'PET.NAME_LABEL' | translate }}</ion-label>
-        <ion-input type="text" [readonly]="mode==='view'"  formControlName="petName"></ion-input>
+        <ion-input type="text" [readonly]="mode==='view'"  formControlName="name"></ion-input>
       </ion-item>
-      <ng-container *ngFor="let message of errorMessages.petName">
-        <div class="error" *ngIf="petProfileForm.get('petName').hasError(message.type) && petProfileForm.get('petName').dirty && petProfileForm.get('petName').touched">
+      <ng-container *ngFor="let message of errorMessages.name">
+        <div class="error" *ngIf="petProfileForm.get('name').hasError(message.type) && petProfileForm.get('name').dirty && petProfileForm.get('name').touched">
             {{  message.message |translate }}
         </div>
       </ng-container>
 
       <ion-item>
         <ion-label floating>{{ 'PET.SPECIES_LABEL' | translate }}</ion-label>
-        <ion-select [disableControl]="mode==='view'"  formControlName="petSpecies">
+        <ion-select [disableControl]="mode==='view'"  formControlName="species">
           <ion-option *ngFor="let specie of speciesList" [value] ="specie.code">{{ specie.code }}</ion-option> 
         </ion-select>
       </ion-item> 
-      <ng-container *ngFor="let message of errorMessages.petSpecies">
-        <div class="error" *ngIf="petProfileForm.get('petSpecies').hasError(message.type) && petProfileForm.get('petSpecies').dirty && petProfileForm.get('petSpecies').touched">
+      <ng-container *ngFor="let message of errorMessages.species">
+        <div class="error" *ngIf="petProfileForm.get('species').hasError(message.type) && petProfileForm.get('species').dirty && petProfileForm.get('species').touched">
             {{  message.message |translate }}
         </div>
       </ng-container>
@@ -77,64 +77,64 @@
 
       <ion-item>
         <ion-label floating>{{ 'PET.BREED_LABEL' | translate }}</ion-label>
-        <ion-input type="text" [readonly]="mode==='view'" formControlName="petBreed" ></ion-input>
+        <ion-input type="text" [readonly]="mode==='view'" formControlName="breed" ></ion-input>
       </ion-item>
-      <ng-container *ngFor="let message of errorMessages.petBreed">
-        <div class="error" *ngIf="petProfileForm.get('petBreed').hasError(message.type) && petProfileForm.get('petBreed').dirty && petProfileForm.get('petBreed').touched">
+      <ng-container *ngFor="let message of errorMessages.breed">
+        <div class="error" *ngIf="petProfileForm.get('breed').hasError(message.type) && petProfileForm.get('breed').dirty && petProfileForm.get('breed').touched">
             {{  message.message |translate }}
         </div>
       </ng-container>
 
       <ion-item>
         <ion-label floating>{{ 'PET.GENDER_LABEL' | translate }}</ion-label>
-        <ion-select [disableControl]="mode==='view'" formControlName="petGender">
+        <ion-select [disableControl]="mode==='view'" formControlName="gender">
           <ion-option *ngFor="let gender of petGenderList" [value] ="gender">{{ gender | genderCode | translate }}</ion-option> 
         </ion-select>
       </ion-item>
-      <ng-container *ngFor="let message of errorMessages.petGender">
-        <div class="error" *ngIf="petProfileForm.get('petGender').hasError(message.type) && petProfileForm.get('petGender').dirty && petProfileForm.get('petGender').touched">
+      <ng-container *ngFor="let message of errorMessages.gender">
+        <div class="error" *ngIf="petProfileForm.get('gender').hasError(message.type) && petProfileForm.get('gender').dirty && petProfileForm.get('gender').touched">
             {{  message.message |translate }}
         </div>
       </ng-container>
 
       <ion-item>
         <ion-label floating>{{ 'PET.COLOR_LABEL' | translate }}</ion-label>
-        <ion-input type="text" [readonly]="mode==='view'" formControlName="petColor" ></ion-input>
+        <ion-input type="text" [readonly]="mode==='view'" formControlName="color" ></ion-input>
       </ion-item>
-      <ng-container *ngFor="let message of errorMessages.petColor">
-        <div class="error" *ngIf="petProfileForm.get('petColor').hasError(message.type) && petProfileForm.get('petColor').dirty && petProfileForm.get('petColor').touched">
+      <ng-container *ngFor="let message of errorMessages.color">
+        <div class="error" *ngIf="petProfileForm.get('color').hasError(message.type) && petProfileForm.get('color').dirty && petProfileForm.get('color').touched">
             {{  message.message |translate }}
         </div>
       </ng-container>
 
       <ion-item>
         <ion-label floating>{{ 'PET.BIRTHDAY_LABEL' | translate }}</ion-label>
-        <ion-datetime [disableControl]="mode==='view'" displayFormat="MM/DD/YYYY" formControlName="petBirthday" ></ion-datetime>
+        <ion-datetime [disableControl]="mode==='view'"  [displayFormat]="dateformat" formControlName="birthday" ></ion-datetime>
       </ion-item>
 
       <ion-item>
         <ion-label>{{ 'PET.NEUTERED_LABEL' | translate }}</ion-label>
-        <ion-toggle [disableControl]="mode==='view'" formControlName="petNeutered" ></ion-toggle>
+        <ion-toggle [disableControl]="mode==='view'" formControlName="neutered" ></ion-toggle>
       </ion-item>
 
       <ion-item>
         <ion-label>{{ 'PET.PERMANENT_HOME_LABEL' | translate }}</ion-label>
-        <ion-toggle [disableControl]="mode==='view'" formControlName="petPermanentHome" ></ion-toggle>
+        <ion-toggle [disableControl]="mode==='view'" formControlName="permanentHome" ></ion-toggle>
       </ion-item>
 
       <ion-item>
         <ion-label floating>{{ 'PET.MICROCHIP_LABEL' | translate }}</ion-label>
-        <ion-input type="text" [readonly]="mode==='view'"  formControlName="petMicrochip" ></ion-input>
+        <ion-input type="text" [readonly]="mode==='view'"  formControlName="microchip" ></ion-input>
       </ion-item>
-      <ng-container *ngFor="let message of errorMessages.petMicrochip">
-        <div class="error" *ngIf="petProfileForm.get('petMicrochip').hasError(message.type) && petProfileForm.get('petMicrochip').dirty && petProfileForm.get('petMicrochip').touched">
+      <ng-container *ngFor="let message of errorMessages.microchip">
+        <div class="error" *ngIf="petProfileForm.get('microchip').hasError(message.type) && petProfileForm.get('microchip').dirty && petProfileForm.get('microchip').touched">
             {{  message.message |translate }}
         </div>
       </ng-container>
 
       <ion-item>
         <ion-label>{{ 'PET.PASS_AWAY_LABEL' | translate }}</ion-label>
-        <ion-toggle [disableControl]="mode==='view'" formControlName="petPassAway" ></ion-toggle>
+        <ion-toggle [disableControl]="mode==='view'" formControlName="passAway" ></ion-toggle>
       </ion-item>
       <ion-item-divider color="light">{{ 'PET.SOCIAL_MEDIA_QUESTION' | translate }}</ion-item-divider>
       <social-media-form [parent]="petProfileForm"  [socialMedia]="pet?.social_media" ></social-media-form>

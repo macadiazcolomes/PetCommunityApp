@@ -11,6 +11,8 @@ import {
 import { PetsProvider } from '../../providers/pets/pets';
 import { Pet } from '../../models/pet';
 import { TranslateService } from '@ngx-translate/core';
+import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
+import { LoginProvider } from '../../providers/login/login';
 
 /**
  * Generated class for the MyPetsMainPage page.
@@ -25,7 +27,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: 'my-pets-main.html',
 })
 export class MyPetsMainPage {
-  private myPets: Pet[];
+  public myPets: Pet[];
 
   //translation vars
   private alert_title: string;
@@ -38,6 +40,8 @@ export class MyPetsMainPage {
   private action_delete_title: string;
 
   constructor(
+    private login: LoginProvider,
+    private generalUtilities: GeneralUtilitiesProvider,
     private translate: TranslateService,
     private alertCtrl: AlertController,
     private actionSheetCtrl: ActionSheetController,
@@ -56,7 +60,6 @@ export class MyPetsMainPage {
     translate
       .get('PET.MENU.DELETE_PROFILE')
       .subscribe((text: string) => (this.action_delete_title = text));
-
     translate
       .get('PET.DELETE_ALERT.TITLE')
       .subscribe((text: string) => (this.alert_title = text));
@@ -75,10 +78,26 @@ export class MyPetsMainPage {
     console.log('ionViewDidLoad MyPetsMainPage');
     this.listPets();
   }
+  ionViewCanEnter() {
+    return this.login.isLoggedIn();
+  }
 
   listPets() {
     console.log('[MyPetsMainPage] listPets()');
-    this.myPets = this.pets.listPets().sort();
+    this.pets
+      .listPets()
+      .then((pets: Pet[]) => {
+        this.myPets = pets;
+      })
+      .catch(err => {
+        this.generalUtilities.errorCatching(err);
+        console.log('Error listPets', err);
+      });
+    //this.myPets = this.pets.listPets().sort();
+  }
+
+  getAge(birtthay: Date): number {
+    return this.pets.getAge(birtthay);
   }
 
   showPetMenu(pet: Pet) {
@@ -113,11 +132,31 @@ export class MyPetsMainPage {
     actionSheet.present();
   }
 
+  doAddPet() {
+    console.log('[MyPetsMainPage] doAddPet()');
+    let dlg = this.modalCtrl.create('MyPetsProfilePage', {
+      mode: 'add',
+      pet: this.pets.getEmptyPet(),
+    });
+    dlg.onDidDismiss(pet => {
+      if (pet) {
+        this.listPets();
+      }
+    });
+
+    dlg.present();
+  }
+
   doViewPetProfile(pet: Pet) {
     console.log('[MyPetsMainPage] doViewPetProfile()');
     let dlg = this.modalCtrl.create('MyPetsProfilePage', {
       mode: 'view',
       pet: pet,
+    });
+    dlg.onDidDismiss(pet => {
+      if (pet) {
+        this.listPets();
+      }
     });
     dlg.present();
   }
@@ -129,8 +168,11 @@ export class MyPetsMainPage {
       pet: pet,
     });
 
-    //TODO
-    ///dlg.onDidDismiss((pet) => {});
+    dlg.onDidDismiss(pet => {
+      if (pet) {
+        this.listPets();
+      }
+    });
     dlg.present();
   }
 
@@ -150,8 +192,14 @@ export class MyPetsMainPage {
         {
           text: this.alert_ok_btn,
           handler: () => {
-            //TODO
             console.log('OK clicked');
+            this.pets
+              .removePet(pet)
+              .then(() => {
+                console.log('pet deleted');
+                this.listPets();
+              })
+              .catch(err => this.generalUtilities.errorCatching(err));
           },
         },
       ],
@@ -163,6 +211,9 @@ export class MyPetsMainPage {
     let dlg = this.modalCtrl.create('MyPetsAlertListPage', {
       alertType: type,
       pet: pet,
+    });
+    dlg.onDidDismiss(() => {
+      this.listPets();
     });
     dlg.present();
   }

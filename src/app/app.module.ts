@@ -37,6 +37,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Camera } from '@ionic-native/camera';
 import { LocationProvider } from '../providers/location/location';
 import { CameraProvider } from '../providers/camera/camera';
+import { DateFormatProvider } from '../providers/date-format/date-format';
 
 @NgModule({
   declarations: [MyApp],
@@ -89,6 +90,7 @@ import { CameraProvider } from '../providers/camera/camera';
     Camera,
     LocationProvider,
     CameraProvider,
+    DateFormatProvider,
   ],
 })
 export class AppModule {}

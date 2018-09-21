@@ -3,10 +3,12 @@ import { Injectable } from '@angular/core';
 
 import { Pet } from '../../models/pet';
 import { LoginProvider } from '../login/login';
+import { MONGODB_URL } from '../../providers/config';
 
 import { socialMediaFormat } from '../../shared/functions/social-media-format';
 import { SocialMediaTypesProvider } from '../../providers/social-media-types/social-media-types';
 import { SocialMediaTypes } from '../../models/social-media-types';
+import { User } from '../../models/user';
 
 /*
   Generated class for the PetsProvider provider.
@@ -16,12 +18,19 @@ import { SocialMediaTypes } from '../../models/social-media-types';
 */
 @Injectable()
 export class PetsProvider {
-  private id: number = 0;
-  private pets: Pet[] = [];
   private socialMediaTypes: SocialMediaTypes[];
 
-  private getAge = function(birthday: Date): number {
+  constructor(
+    private SMTypesProvider: SocialMediaTypesProvider,
+    public http: HttpClient,
+    private login: LoginProvider
+  ) {
+    this.socialMediaTypes = this.SMTypesProvider.getSocialMediaTypes();
+  }
+
+  public getAge(birthday: Date): number {
     var today = new Date();
+    birthday = new Date(birthday);
     var thisYear = 0;
     if (today.getMonth() < birthday.getMonth()) {
       thisYear = 1;
@@ -33,62 +42,91 @@ export class PetsProvider {
     }
     var age = today.getFullYear() - birthday.getFullYear() - thisYear;
     return age;
-  };
+  }
 
-  constructor(
-    private SMTypesProvider: SocialMediaTypesProvider,
-    public http: HttpClient,
-    private login: LoginProvider
-  ) {
-    this.socialMediaTypes = this.SMTypesProvider.getSocialMediaTypes();
-
-    this.addPet({
-      name: 'Novak',
-      species: 'cat',
-      breed: 'Russian Blue',
-    });
-    this.addPet({
-      name: 'Mona',
-      species: 'dog',
-    });
-    this.addPet({
-      name: 'Maratito',
-      species: 'dog',
+  addPet(pet: Pet): Promise<Pet> {
+    console.log('[PetsProvider] addPet(' + JSON.stringify(pet) + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/pets`;
+          this.http
+            .post(url, pet)
+            .subscribe((pet: Pet) => resolve(pet), err => reject(err));
+        })
+        .catch(err => reject(err));
     });
   }
 
-  addPet(pet: Pet): Pet {
-    pet.id = this.id++;
-    this.pets.push(pet);
+  listPets(): Promise<Pet[]> {
+    console.log('[PetsProvider] listPets()');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/pets`;
+          this.http.get(url).subscribe(
+            (pets: Pet[]) => {
+              let petsObj: Pet[];
+              petsObj = pets.map(pet => {
+                pet.social_media = socialMediaFormat(
+                  pet.social_media,
+                  this.socialMediaTypes
+                );
+                return pet;
+              });
+              resolve(petsObj);
+            },
+            err => reject(err)
+          );
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  updatePet(pet: Pet): Promise<Pet> {
+    console.log('[PetsProvider] updatePet(' + JSON.stringify(pet) + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/pets/${pet.id}`;
+          this.http
+            .put(url, pet)
+            .subscribe((pet: Pet) => resolve(pet), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  removePet(pet: Pet): Promise<void> {
+    console.log('[PetsProvider] removePet(' + JSON.stringify(pet) + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/pets/${pet.id}`;
+          this.http.delete(url).subscribe(() => resolve(), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  getEmptyPet() {
+    let pet: Pet = {
+      name: '',
+      species: '',
+      alerts_qtys: {
+        vaccines: 0,
+        vet: 0,
+        other: 0,
+      },
+    };
+    pet.social_media = socialMediaFormat(
+      pet.social_media,
+      this.socialMediaTypes
+    );
     return pet;
-  }
-
-  listPets(): Pet[] {
-    return this.pets.map(pet => {
-      return {
-        id: pet.id,
-        name: pet.name,
-        species: pet.species,
-        breed: pet.breed,
-        social_media: socialMediaFormat(
-          pet.social_media,
-          this.socialMediaTypes
-        ),
-      };
-    });
-  }
-
-  updatePet(pet: Pet): Pet {
-    let index = this.pets.findIndex(_pet => _pet.id === pet.id);
-    if (index !== -1) {
-      this.pets[index] = pet;
-      return pet;
-    }
-  }
-
-  removePet(pet: Pet): boolean {
-    let index = this.pets.findIndex(_pet => _pet.id === pet.id);
-    if (index !== -1) this.pets.splice(index, 1);
-    return index !== -1;
   }
 }

@@ -26,8 +26,9 @@
       <ion-icon *ngIf="alertType==='vet'" name="pulse" item-start color="primary"></ion-icon>
       <ion-icon *ngIf="alertType==='other'" name="alert" item-start color="primary"></ion-icon>
       <h2>{{ alert.name }}</h2>
-      <p>{{ alert.date | date }}</p>
-      <ion-note item-end>ON</ion-note>
+      <p>{{ alert.date | date: dateformat }}</p>
+      <ion-note item-end *ngIf="alert.reminder" >ON</ion-note>
+      <ion-note item-end *ngIf="!alert.reminder" >OFF</ion-note>
       <button ion-button clear item-end (click)="showAlertMenu(alert)" >
         <ion-icon name="more"></ion-icon>
       </button>

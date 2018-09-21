@@ -21,7 +21,7 @@
       <ion-card-header>
         <ion-item no-padding >
           <h1 ion-text color="primary" class="title">{{ pet.name }}</h1>
-          <h3 *ngIf="pet.birthday">{{ 'MY_PETS_MAIN.AGE' | translate:{age:2} }}</h3>
+          <h3 *ngIf="pet.birthday">{{ 'MY_PETS_MAIN.AGE' | translate:{age: getAge(pet.birthday)} }}</h3>
           <h3 *ngIf="!pet.birthday">{{ 'MY_PETS_MAIN.NO_AGE' | translate }}</h3>
           <ion-icon name="more" item-right (click)="showPetMenu(pet)" ></ion-icon>
         </ion-item>
@@ -29,30 +29,34 @@
       <ion-card-content>
         <ion-row>
           <ion-col col-4>
-            <ion-img class='avatar_image' src='assets/imgs/avatar.png'></ion-img>
+            <img class='avatar_image' [src]="pet.avatar ? pet.avatar : 'assets/imgs/avatar.png'">
             
             <h5>{{ pet?.species}}</h5>
             <h5>{{ pet?.breed }}</h5>
           </ion-col>
           <ion-col col-8>
             <ion-list>
-              <ion-item (click)="showAlertList(pet,'vaccines')">
+              <ion-item no-padding (click)="showAlertList(pet,'vaccines')">
                 <ion-icon name="medical" item-start color="primary"></ion-icon>
                 <h2>{{ 'MY_PETS_MAIN.ALERTS.VACCINES' | translate }}</h2>
-                <ion-badge item-end>1</ion-badge>
+                <ion-badge item-end *ngIf="pet?.alerts_qtys?.vaccines > 0" >{{ pet.alerts_qtys.vaccines}}</ion-badge>
               </ion-item>
-              <ion-item (click)="showAlertList(pet,'vet')">
+              <ion-item  no-padding (click)="showAlertList(pet,'vet')">
                 <ion-icon name="pulse" item-start color="primary"></ion-icon>
                 <h2>{{ 'MY_PETS_MAIN.ALERTS.VETERINARY' | translate }}</h2>
+                <ion-badge item-end *ngIf="pet?.alerts_qtys?.vet > 0" >{{ pet.alerts_qtys.vet }}</ion-badge>
               </ion-item>
-              <ion-item (click)="showAlertList(pet,'other')">
+              <ion-item no-padding (click)="showAlertList(pet,'other')">
                 <ion-icon name="alert" item-start color="primary"></ion-icon>
                 <h2>{{ 'MY_PETS_MAIN.ALERTS.OTHER' | translate }}</h2>
-                <ion-badge item-end>2</ion-badge>
+                <ion-badge item-end *ngIf="pet?.alerts_qtys?.other> 0" >{{pet.alerts_qtys.other}}</ion-badge>
               </ion-item>
             </ion-list>
           </ion-col>
         </ion-row>
       </ion-card-content>
     </ion-card>
+    <ion-fab bottom right>
+      <button ion-fab (click)="doAddPet()" ><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
 </ion-content>

@@ -36,7 +36,7 @@ export class SavedServicesProvider {
   }
 
   addService(service: Service) {
-    service.id = this.id++;
+    service.id = (this.id++).toString();
     this.services.push(service);
     return service;
   }

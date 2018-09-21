@@ -159,7 +159,7 @@ export class ForgotPage {
     var passwordConfirm: string = this.changePasswordForm.value.passwordConfirm;
 
     this.login
-      .forgotPasswordStep3(password, passwordConfirm)
+      .forgotPasswordStep3(this.userEmail, password, passwordConfirm)
       .then(() => this.navCtrl.setRoot('LoginPage'))
       .catch(err =>
         this.generalUtilities.errorCatching(err, this.changePasswordForm)

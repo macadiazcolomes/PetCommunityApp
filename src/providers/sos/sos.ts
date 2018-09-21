@@ -37,11 +37,10 @@ export class SosProvider {
       short_description: 'Perro atropellado',
       need: 'translado a veterinaria',
       status: 'active',
-      location: { lat: 111, lng: 222 },
       city: 'San Antonio',
       country: 'Chile',
-      date: 1536152400000,
-      userID_creator: 1,
+      date: new Date(),
+      userID_creator: '1',
       contact_name: 'Peter Parker',
       contact_email: 'pparker@spiderman.com',
     });
@@ -50,11 +49,10 @@ export class SosProvider {
       short_description: 'Gatos sin hogar',
       need: 'hogar temporal',
       status: 'active',
-      location: { lat: 333, lng: 444 },
       city: 'San Antonio',
       country: 'Chile',
-      date: 1536152400000,
-      userID_creator: 1,
+      date: new Date(),
+      userID_creator: '1',
       contact_name: 'Bruce Wayne',
       contact_email: 'bwayne@batman.com',
     });
@@ -62,7 +60,7 @@ export class SosProvider {
   }
 
   addSOS(sos: SOS): SOS {
-    sos.id = this.id++;
+    sos.id = (this.id++).toString();
     this.sos.push(sos);
     return sos;
   }

@@ -24,7 +24,7 @@ export function createSocialMediaGroup(
   smT: SocialMediaTypes[],
   values: SocialMedia[]
 ) {
-  console.log(values);
+  //console.log(values);
   let sm2 = {};
   smT.forEach(sm => {
     //sm2[sm.name] = '';

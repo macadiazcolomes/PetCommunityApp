@@ -1,9 +1,9 @@
 export interface Message {
-  id?: number;
-  sosID: string;
-  timestamp: number;
-  from: string; //userID
-  to: string; //userID
+  id?: string;
+  sosId: string;
+  date: Date;
+  type: string; //from, to;
+  helperID: string;
   message: string;
   read: boolean;
 }

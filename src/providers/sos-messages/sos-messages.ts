@@ -20,12 +20,12 @@ export class SosMessagesProvider {
     console.log('Hello SosMessagesProvider Provider');
   }
 
-  sendMessage(sosID: string, from: string, to: string, message: string) {
+  sendMessage(sosId: string, type: string, helperID: string, message: string) {
     let msge: Message = {
-      sosID: sosID,
-      timestamp: new Date().getMilliseconds(),
-      from: from,
-      to: to,
+      sosId: sosId,
+      date: new Date(),
+      type: type,
+      helperID: helperID,
       message: message,
       read: false,
     };
@@ -60,19 +60,19 @@ export class SosMessagesProvider {
   getUserMessages(sosID: string, userID: string): Message[] {
     let messages: Message[] = [
       {
-        sosID: '1',
-        timestamp: 1536314400000,
-        from: '6',
-        to: '1',
+        sosId: '1',
+        date: new Date(),
+        type: 'to',
+        helperID: '1',
         message: "Hello, I'm Diana",
         read: true,
       },
       {
-        sosID: '1',
-        timestamp: 1536315500000,
-        from: '1',
-        to: '6',
-        message: 'hi!',
+        sosId: '1',
+        date: new Date(),
+        type: 'from',
+        helperID: '1',
+        message: "Hello, I'm Diana",
         read: true,
       },
     ];

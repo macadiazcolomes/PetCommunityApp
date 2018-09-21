@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 
 import { Alert } from '../../models/alert';
 import { LoginProvider } from '../login/login';
+import { MONGODB_URL } from '../../providers/config';
+import { User } from '../../models/user';
+import { Pet } from '../../models/pet';
 
 /*
   Generated class for the PetAlertsProvider provider.
@@ -12,52 +15,88 @@ import { LoginProvider } from '../login/login';
 */
 @Injectable()
 export class PetAlertsProvider {
-  private id: number = 0;
-  private petAlerts: Alert[] = [];
-
-  constructor(public http: HttpClient) {
+  constructor(private login: LoginProvider, public http: HttpClient) {
     console.log('Hello PetAlertsProvider Provider');
-
-    this.addPetAlert({
-      type: 'vaccines',
-      name: 'Triple',
-      date: 1538458827,
-    });
-    this.addPetAlert({
-      type: 'vaccines',
-      name: 'FeLV',
-      date: 1538458827,
-    });
   }
 
   getEmptyPetAlert(type: string): Alert {
     return {
       type: type,
       name: '',
-      date: new Date().getTime(),
+      date: undefined,
     };
   }
 
-  listPetAlerts(alertType: string): Alert[] {
-    return this.petAlerts;
+  listPetAlerts(pet: Pet, alertType: string): Promise<Alert[]> {
+    console.log('[PetAlertsProvider] listPetAlerts()');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL +
+            `/protected/users/${user.id}/pets/${pet.id}/alerts/t/${alertType}`;
+          this.http.get(url).subscribe(
+            (alerts: Alert[]) => {
+              resolve(alerts);
+            },
+            err => reject(err)
+          );
+        })
+        .catch(err => reject(err));
+    });
   }
 
-  addPetAlert(alert: Alert): Alert {
-    alert.id = this.id++;
-    this.petAlerts.push(alert);
-    return alert;
+  addPetAlert(pet: Pet, alert: Alert): Promise<Alert> {
+    console.log(
+      '[PetAlertsProvider] addPetAlert(' + JSON.stringify(alert) + ')'
+    );
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL + `/protected/users/${user.id}/pets/${pet.id}/alerts`;
+          this.http
+            .post(url, alert)
+            .subscribe((alert: Alert) => resolve(alert), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
   }
 
-  updatePetAlert(alert: Alert): Alert {
-    let index = this.petAlerts.findIndex(_petAlert => _petAlert === alert);
-    if (index != -1) {
-      this.petAlerts[index] = alert;
-      return alert;
-    }
+  updatePetAlert(pet: Pet, alert: Alert): Promise<Alert> {
+    console.log(
+      '[PetAlertsProvider] updatePetAlert(' + JSON.stringify(alert) + ')'
+    );
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL +
+            `/protected/users/${user.id}/pets/${pet.id}/alerts/${alert.id}`;
+          this.http
+            .put(url, alert)
+            .subscribe((alert: Alert) => resolve(alert), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
   }
-  removePetAlert(alert: Alert): boolean {
-    let index = this.petAlerts.findIndex(_alert => _alert.id === alert.id);
-    if (index !== -1) this.petAlerts.splice(index, 1);
-    return index !== -1;
+  removePetAlert(pet: Pet, alert: Alert): Promise<void> {
+    console.log(
+      '[PetAlertsProvider] updatePetAlert(' + JSON.stringify(alert) + ')'
+    );
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL +
+            `/protected/users/${user.id}/pets/${pet.id}/alerts/${alert.id}`;
+          this.http.delete(url).subscribe(() => resolve(), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
   }
 }

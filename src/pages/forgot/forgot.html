@@ -26,7 +26,7 @@
         </ion-item>
         <ion-item>
           <ion-label floating> {{ 'FORGOT.STEP1_EMAIL_LABEL' | translate }} </ion-label>
-          <ion-input type="text" formControlName="email"></ion-input>
+          <ion-input type="email" formControlName="email"></ion-input>
         </ion-item>
         <ng-container *ngFor="let message of errorMessages.email">
           <div class="error" *ngIf="resetPassForm.get('email').hasError(message.type) && resetPassForm.get('email').dirty && resetPassForm.get('email').touched">

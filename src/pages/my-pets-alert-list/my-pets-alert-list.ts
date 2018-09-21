@@ -12,7 +12,9 @@ import { PetAlertsProvider } from '../../providers/pet-alerts/pet-alerts';
 import { Alert } from '../../models/alert';
 import { Pet } from '../../models/pet';
 import { TranslateService } from '@ngx-translate/core';
-
+import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
+import { LoginProvider } from '../../providers/login/login';
+import { DateFormatProvider } from '../../providers/date-format/date-format';
 /**
  * Generated class for the MyPetsAlertListPage page.
  *
@@ -39,8 +41,11 @@ export class MyPetsAlertListPage {
   public alertType: string;
   public alerts: Alert[];
   public pet: Pet;
-
+  public dateformat: string;
   constructor(
+    private dateFormatProvider: DateFormatProvider,
+    private login: LoginProvider,
+    private generalUtilities: GeneralUtilitiesProvider,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public translate: TranslateService,
@@ -51,6 +56,8 @@ export class MyPetsAlertListPage {
   ) {
     this.alertType = this.navParams.get('alertType');
     this.pet = this.navParams.get('pet');
+
+    this.dateformat = this.dateFormatProvider.getDateFormat(true, '2');
 
     this.listPetAlerts();
 
@@ -82,9 +89,20 @@ export class MyPetsAlertListPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyPetsAlertListPage');
   }
+  ionViewCanEnter() {
+    return this.login.isLoggedIn();
+  }
 
   listPetAlerts() {
-    this.alerts = this.petAlertsProvider.listPetAlerts(this.alertType).sort();
+    console.log('[MyPetsAlertListPage] listPetAlerts()');
+    this.petAlertsProvider
+      .listPetAlerts(this.pet, this.alertType)
+      .then((alerts: Alert[]) => {
+        this.alerts = alerts;
+      })
+      .catch(err => {
+        this.generalUtilities.errorCatching(err);
+      });
   }
 
   showAlertMenu(alert: Alert) {
@@ -126,8 +144,11 @@ export class MyPetsAlertListPage {
       alert: this.petAlertsProvider.getEmptyPetAlert(this.alertType),
       pet: this.pet,
     });
-    //TODO
-    //dlg.onDidDismiss((alert) => {});
+    dlg.onDidDismiss(alert => {
+      if (alert) {
+        this.listPetAlerts();
+      }
+    });
 
     dlg.present();
   }
@@ -138,6 +159,11 @@ export class MyPetsAlertListPage {
       mode: 'view',
       alert: alert,
       pet: this.pet,
+    });
+    dlg.onDidDismiss(alert => {
+      if (alert) {
+        this.listPetAlerts();
+      }
     });
     dlg.present();
   }
@@ -150,8 +176,11 @@ export class MyPetsAlertListPage {
       pet: this.pet,
     });
 
-    //TODO
-    ///dlg.onDidDismiss((pet) => {});
+    dlg.onDidDismiss(alert => {
+      if (alert) {
+        this.listPetAlerts();
+      }
+    });
     dlg.present();
   }
 
@@ -171,8 +200,14 @@ export class MyPetsAlertListPage {
         {
           text: this.alert_ok_btn,
           handler: () => {
-            //TODO
             console.log('OK clicked');
+            this.petAlertsProvider
+              .removePetAlert(this.pet, alert)
+              .then(() => {
+                console.log('alert deleted');
+                this.listPetAlerts();
+              })
+              .catch(err => this.generalUtilities.errorCatching(err));
           },
         },
       ],

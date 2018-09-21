@@ -23,6 +23,7 @@ import { CameraProvider } from '../../providers/camera/camera';
 import { TranslateService } from '@ngx-translate/core';
 import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
 import { UsersProvider } from '../../providers/users/users';
+import { LoginProvider } from '../../providers/login/login';
 /**
  * Generated class for the UserPage page.
  *
@@ -56,6 +57,7 @@ export class UserPage {
   fab: FabContainer;
 
   constructor(
+    private login: LoginProvider,
     private usersProvider: UsersProvider,
     private generalUtilities: GeneralUtilitiesProvider,
     private cameraProvider: CameraProvider,
@@ -105,7 +107,10 @@ export class UserPage {
   ionViewDidEnter() {
     console.log('ionViewDidEnter UserPage');
   }
-  s;
+
+  ionViewCanEnter() {
+    return this.login.isLoggedIn();
+  }
   initUserProfileForm() {
     this.userProfileForm = this.formBuilder.group({
       name: [this.user.name, [Validators.required, Validators.minLength(4)]],

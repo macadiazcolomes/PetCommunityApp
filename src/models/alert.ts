@@ -1,12 +1,12 @@
 import { Service } from './service';
 
 export interface Alert {
-  id?: number;
+  id?: string;
   type: string;
   name: string;
-  date: number;
+  date: Date;
   service?: Service;
   notes?: string;
   reminder?: boolean;
-  reminder_time?: number;
+  reminder_time?: Date;
 }

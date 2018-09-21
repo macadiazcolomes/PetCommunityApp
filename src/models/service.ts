@@ -1,7 +1,7 @@
 import { SocialMedia } from './social-media';
 
 export interface Service {
-  id?: number;
+  id?: string;
   business_name: string;
   type: string;
   phone: string;
