@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   IonicPage,
   NavController,
+  FabContainer,
   NavParams,
   ActionSheetController,
+  ViewController,
 } from 'ionic-angular';
 
 import { SOS } from '../../models/sos';
@@ -14,8 +16,12 @@ import {
   validatePhoneNumber,
 } from '../../shared/form-validators/custom-form-validation-functions';
 import { SosStatusProvider } from '../../providers/sos-status/sos-status';
+import { SosProvider } from '../../providers/sos/sos';
 import { LoginProvider } from '../../providers/login/login';
 import { User } from '../../models/user';
+import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
+import { CameraProvider } from '../../providers/camera/camera';
+
 /**
  * Generated class for the SosDetailPage page.
  *
@@ -41,7 +47,14 @@ export class SosDetailPage {
   private user: User;
   public isOwner: boolean = false;
 
+  @ViewChild('fab')
+  fab: FabContainer;
+
   constructor(
+    private sosProvider: SosProvider,
+    private viewCtrl: ViewController,
+    private cameraProvider: CameraProvider,
+    private generalUtilities: GeneralUtilitiesProvider,
     public login: LoginProvider,
     public actionSheetCtrl: ActionSheetController,
     public sosStatusProvider: SosStatusProvider,
@@ -55,10 +68,11 @@ export class SosDetailPage {
 
     this.login
       .getUser()
-      .then((user: User) => (this.user = user))
-      .catch(err => console.log(err));
-
-    this.isOwner = this.user.id === this.sos.userID_creator.toString();
+      .then((user: User) => {
+        this.user = user;
+        this.isOwner = this.user.id === this.sos.userID_creator.toString();
+      })
+      .catch(err => this.generalUtilities.errorCatching(err));
 
     this.SOSStatusList = this.sosStatusProvider.getSosStatus();
 
@@ -70,9 +84,24 @@ export class SosDetailPage {
     console.log('ionViewDidLoad SosDetailPage');
   }
 
+  ionViewCanEnter() {
+    console.log('ionViewCanEnter ' + this.login.isLoggedIn());
+    let canEnter: boolean;
+    this.login
+      .isLoggedIn()
+      .then((value: boolean) => {
+        canEnter = value;
+      })
+      .catch(err => {
+        canEnter = false;
+      });
+
+    return canEnter;
+  }
+
   initSOSDetailForm() {
     this.SOSDetailForm = this.formBuilder.group({
-      sosShortDescription: [
+      short_description: [
         this.sos.short_description,
         [
           Validators.required,
@@ -80,7 +109,7 @@ export class SosDetailPage {
           Validators.maxLength(100),
         ],
       ],
-      sosNeed: [
+      need: [
         this.sos.need,
         [
           Validators.required,
@@ -88,13 +117,13 @@ export class SosDetailPage {
           Validators.maxLength(100),
         ],
       ],
-      sosStatus: [
+      status: [
         this.sos.status,
         [Validators.required, validateSOSStatus(this.SOSStatusList)],
       ],
-      sosCity: [this.sos.city],
-      sosCountry: [this.sos.country],
-      sosContactName: [
+      city: [this.sos.city],
+      country: [this.sos.country],
+      contact_name: [
         this.sos.contact_name,
         [
           Validators.required,
@@ -102,19 +131,19 @@ export class SosDetailPage {
           Validators.maxLength(50),
         ],
       ],
-      sosContactPhone: [this.sos.contact_phone, [validatePhoneNumber()]],
-      sosContactEmail: [
+      contact_phone: [this.sos.contact_phone, [validatePhoneNumber()]],
+      contact_email: [
         this.sos.contact_email,
         [Validators.required, Validators.email],
       ],
-      sosNotes: [this.sos.notes],
+      notes: [this.sos.notes],
     });
   }
 
   initErrorMessages() {
     const erBase: string = 'SOS_DETAIL.ERROR_MESSAGES.';
     this.errorMessages = {
-      sosShortDescription: [
+      short_description: [
         { type: 'required', message: `${erBase}SOSSHORTDESCRIPTION.REQUIRED` },
         {
           type: 'minlength',
@@ -125,36 +154,98 @@ export class SosDetailPage {
           message: `${erBase}SOSSHORTDESCRIPTION.MAXLENGTH`,
         },
       ],
-      sosNeed: [
+      need: [
         { type: 'required', message: `${erBase}SOSNEED.REQUIRED` },
         { type: 'minlength', message: `${erBase}SOSNEED.MINLENGTH` },
         { type: 'maxlength', message: `${erBase}SOSNEED.MAXLENGTH` },
       ],
-      sosStatus: [
+      status: [
         { type: 'required', message: `${erBase}SOSSTATUS.REQUIRED` },
         { type: 'invalid', message: `${erBase}SOSSTATUS.INVALID` },
       ],
-      sosContactName: [
+      contact_name: [
         { type: 'required', message: `${erBase}SOSCONTACTNAME.REQUIRED` },
         { type: 'minlength', message: `${erBase}SOSCONTACTNAME.MINLENGTH` },
         { type: 'maxlength', message: `${erBase}SOSCONTACTNAME.MAXLENGTH` },
       ],
-      sosContactPhone: [
+      contact_phone: [
         { type: 'invalid', message: `${erBase}SOSCONTACTPHONE.INVALID` },
       ],
-      sosContactEmail: [
+      contact_email: [
         { type: 'required', message: `${erBase}SOSCONTACTEMAIL.REQUIRED` },
         { type: 'email', message: `${erBase}SOSCONTACTEMAIL.EMAIL` },
       ],
     };
   }
 
-  close() {
-    console.log('[SosDetailPage] close()');
-    this.navCtrl.pop();
+  selectAvatar() {
+    console.log('[SosDetailPage] selectAvatar()');
+    this.fab.close();
+    this.cameraProvider
+      .selectImage()
+      .then((url: string) => {
+        console.log('[SosDetailPage] selectAvatar() RESPONSE OK ' + url);
+        //this.test = this.sanitizer.bypassSecurityTrustUrl(url);
+        this.sos.image = url;
+      })
+      .catch(err => {
+        console.log(JSON.stringify(err));
+      });
   }
 
-  save() {}
+  captureAvatar() {
+    console.log('[SosDetailPage] captureAvatar()');
+    this.fab.close();
+    this.cameraProvider
+      .captureImage()
+      .then((url: string) => {
+        this.sos.image = url;
+      })
+      .catch(err => {
+        console.log(JSON.stringify(err));
+      });
+  }
+
+  close() {
+    console.log('[SosDetailPage] close()');
+    this.viewCtrl.dismiss();
+  }
+
+  doSaveChanges() {
+    let values = this.SOSDetailForm.value;
+    if (this.SOSDetailForm.valid) {
+      let updatedSOS: SOS;
+
+      updatedSOS = Object.assign({}, this.sos, values);
+      updatedSOS.userID_creator = this.user.id;
+      updatedSOS.country = this.user.country;
+      updatedSOS.city = this.user.city;
+
+      if (this.mode === 'add') {
+        this.sosProvider
+          .addSOS(updatedSOS)
+          .then((sos: SOS) => {
+            console.log('SOS has been created successfully');
+            this.viewCtrl.dismiss(sos);
+          })
+          .catch(err => {
+            console.log('Error creating SOS');
+            this.generalUtilities.errorCatching(err);
+          });
+      } else if (this.mode === 'edit') {
+        this.sosProvider
+          .updateSOS(updatedSOS)
+          .then((sos: SOS) => {
+            console.log('SOS has been updated successfully');
+            this.viewCtrl.dismiss(sos);
+          })
+          .catch(err => {
+            console.log('Error updated SOS');
+            this.generalUtilities.errorCatching(err);
+          });
+      }
+    }
+  }
 
   edit() {
     this.mode = 'edit';

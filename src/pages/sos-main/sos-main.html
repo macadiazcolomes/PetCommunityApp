@@ -31,7 +31,7 @@
       <ion-list>
         <ion-item no-padding *ngFor="let current of currentSOSList">
           <ion-avatar item-start>
-            <img src="assets/imgs/avatar.png">
+            <img [src]=" current.image ? current.image : 'assets/imgs/avatar.png'">
           </ion-avatar>
           <h2>{{ current.short_description }}</h2>
           <p>{{ current.need }}</p>
@@ -42,13 +42,17 @@
           </button>
         </ion-item>
       </ion-list>
+      <ion-fab bottom right>
+          <button ion-fab (click)="doAddSOS()" ><ion-icon name="add"></ion-icon></button>
+        </ion-fab>
+  
     </div>
     <!--helping out-->
     <div *ngSwitchCase="'helping'">
       <ion-list>
         <ion-item no-padding *ngFor="let helping of helpingOutSOSList">
             <ion-avatar item-start>
-              <img src="assets/imgs/avatar.png">
+              <img [src]=" helping.image ? helping.image : 'assets/imgs/avatar.png'">
             </ion-avatar>
             <h2>{{ helping.short_description }}</h2>
             <p>{{ helping.need }}</p>
@@ -65,7 +69,7 @@
         <ion-list>
             <ion-item no-padding *ngFor="let mySOS of mySOSList">
                 <ion-avatar item-start>
-                  <img src="assets/imgs/avatar.png">
+                  <img [src]=" mySOS.image ? mySOS.image : 'assets/imgs/avatar.png'">
                 </ion-avatar>
                 <h2>{{ mySOS.short_description }}</h2>
                 <p>{{ mySOS.need }}</p>
@@ -76,6 +80,10 @@
                 </button>
               </ion-item>
             </ion-list>
+            <ion-fab bottom right>
+                <button ion-fab (click)="doAddSOS()" ><ion-icon name="add"></ion-icon></button>
+              </ion-fab>
+          
     </div>
   </div>
 </ion-content>

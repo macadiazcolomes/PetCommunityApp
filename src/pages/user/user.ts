@@ -109,7 +109,18 @@ export class UserPage {
   }
 
   ionViewCanEnter() {
-    return this.login.isLoggedIn();
+    console.log('ionViewCanEnter ' + this.login.isLoggedIn());
+    let canEnter: boolean;
+    this.login
+      .isLoggedIn()
+      .then((value: boolean) => {
+        canEnter = value;
+      })
+      .catch(err => {
+        canEnter = false;
+      });
+
+    return canEnter;
   }
   initUserProfileForm() {
     this.userProfileForm = this.formBuilder.group({

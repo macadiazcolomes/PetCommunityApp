@@ -79,7 +79,18 @@ export class MyPetsMainPage {
     this.listPets();
   }
   ionViewCanEnter() {
-    return this.login.isLoggedIn();
+    console.log('ionViewCanEnter ' + this.login.isLoggedIn());
+    let canEnter: boolean;
+    this.login
+      .isLoggedIn()
+      .then((value: boolean) => {
+        canEnter = value;
+      })
+      .catch(err => {
+        canEnter = false;
+      });
+
+    return canEnter;
   }
 
   listPets() {
@@ -93,7 +104,6 @@ export class MyPetsMainPage {
         this.generalUtilities.errorCatching(err);
         console.log('Error listPets', err);
       });
-    //this.myPets = this.pets.listPets().sort();
   }
 
   getAge(birtthay: Date): number {

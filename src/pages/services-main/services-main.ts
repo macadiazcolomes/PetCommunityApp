@@ -16,6 +16,8 @@ import {
   locationTypesList,
 } from '../../shared/variables/variables';
 import { TranslateService } from '@ngx-translate/core';
+import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
+import { LoginProvider } from '../../providers/login/login';
 
 /**
  * Generated class for the ServicesMainPage page.
@@ -52,6 +54,8 @@ export class ServicesMainPage {
   public foundServices: Service[];
 
   constructor(
+    private generalUtilities: GeneralUtilitiesProvider,
+    private login: LoginProvider,
     private translate: TranslateService,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,
@@ -97,11 +101,34 @@ export class ServicesMainPage {
     this.findServices();
   }
 
-  listSavedServices() {
-    console.log('[ServicesMainPage] listSavedServices');
-    this.savedServices = this.savedProvider.listServices().sort();
+  ionViewCanEnter() {
+    console.log('ionViewCanEnter ' + this.login.isLoggedIn());
+    let canEnter: boolean;
+    this.login
+      .isLoggedIn()
+      .then((value: boolean) => {
+        canEnter = value;
+      })
+      .catch(err => {
+        canEnter = false;
+      });
+
+    return canEnter;
   }
 
+  listSavedServices() {
+    console.log('[ServicesMainPage] listSavedServices');
+    this.savedProvider
+      .listServices()
+      .then((services: Service[]) => {
+        this.savedServices = services;
+      })
+      .catch(err => {
+        this.generalUtilities.errorCatching(err);
+      });
+  }
+
+  //TODO
   findServices() {
     console.log('[ServicesMainPage] findServices');
     console.log(
@@ -115,6 +142,7 @@ export class ServicesMainPage {
       this.location
     );
   }
+
   showServiceMenu(service: Service) {
     let actionSheet = this.actionSheetCtrl.create({
       buttons: [
@@ -147,11 +175,30 @@ export class ServicesMainPage {
     actionSheet.present();
   }
 
+  doAddService() {
+    console.log('[ServicesMainPage] doAddService()');
+    let dlg = this.modalCtrl.create('ServicesDetailPage', {
+      mode: 'add',
+      service: this.savedProvider.getEmptyService(),
+    });
+    dlg.onDidDismiss(service => {
+      if (service) {
+        this.listSavedServices();
+      }
+    });
+    dlg.present();
+  }
+
   doViewServiceDetail(service: Service) {
     console.log('[ServicesMainPage] doViewServiceDetail()');
     let dlg = this.modalCtrl.create('ServicesDetailPage', {
       mode: 'view',
       service: service,
+    });
+    dlg.onDidDismiss(service => {
+      if (service) {
+        this.listSavedServices();
+      }
     });
     dlg.present();
   }
@@ -163,8 +210,11 @@ export class ServicesMainPage {
       service: service,
     });
 
-    //TODO
-    ///dlg.onDidDismiss((pet) => {});
+    dlg.onDidDismiss(service => {
+      if (service) {
+        this.listSavedServices();
+      }
+    });
     dlg.present();
   }
 
@@ -184,8 +234,14 @@ export class ServicesMainPage {
         {
           text: this.alert_ok_btn,
           handler: () => {
-            //TODO
             console.log('OK clicked');
+            this.savedProvider
+              .removeService(service)
+              .then(() => {
+                console.log('service removed');
+                this.listSavedServices();
+              })
+              .catch(err => this.generalUtilities.errorCatching(err));
           },
         },
       ],

@@ -23,17 +23,18 @@
   <ion-item no-lines >
     <ion-icon name="mail" item-start color="primary"></ion-icon>
     <h1 ion-text color="primary"> {{ sos.short_description }}</h1>
-    <h2> {{ 'SOS_MESSAGES_DETAIL.SUBTITLE' | translate }} {{ user2.name }}</h2>
+    <h2 *ngIf="isOwner"> {{ 'SOS_MESSAGES_DETAIL.SUBTITLE' | translate }} {{ helper.name }}</h2>
+    <h2 *ngIf="!isOwner"> {{ 'SOS_MESSAGES_DETAIL.SUBTITLE' | translate }} {{ userSOSCreator?.name }}</h2>
   </ion-item>
   
   <ion-list no-lines>
-    <ion-item *ngFor="let message of messages" [ngClass]="message.from == user1.id ? 'user_1': 'user_2'" >
-    <ion-avatar item-start *ngIf="message.from == user2.id ">
-      <img src="assets/imgs/avatar.png">
+    <ion-item *ngFor="let message of messages" [ngClass]="message.type == 'to' ? 'user_1': 'user_2'" >
+    <ion-avatar item-start *ngIf="message.type == 'from'">
+      <img [src]=" helper.avatar ? helper.avatar : 'assets/imgs/avatar.png'">
     </ion-avatar>
     <h2>{{message.message}}</h2>
-    <ion-avatar item-end *ngIf="message.from == user1.id "> 
-        <img src="assets/imgs/avatar.png">
+    <ion-avatar item-end *ngIf="message.type == 'to' "> 
+        <img [src]=" userSOSCreator.avatar ? userSOSCreator.avatar : 'assets/imgs/avatar.png'">
       </ion-avatar>
     </ion-item>
   </ion-list>
@@ -43,8 +44,8 @@
 <ion-footer >
   <ion-list no-lines>
     <ion-item>
-      <ion-input type="text"></ion-input>
-      <button ion-button item-end>
+      <ion-textarea #textarea class="textarea" [(ngModel)]="messageText" type="text"></ion-textarea>
+      <button ion-button item-end (click)="doSendMessage()">
         <ion-icon name="send"></ion-icon>
       </button>
     </ion-item>

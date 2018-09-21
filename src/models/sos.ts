@@ -13,4 +13,5 @@ export interface SOS {
   contact_name: string;
   contact_phone?: string;
   contact_email: string;
+  helpers?: string[];
 }

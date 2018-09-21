@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { SOS } from '../../models/sos';
-import { SOSHelper } from '../../models/sos-helpers';
 import { User } from '../../models/user';
 import { LoginProvider } from '../login/login';
 import { UsersProvider } from '../users/users';
+
+import { MONGODB_URL } from '../../providers/config';
 
 /*
   Generated class for the SosProvider provider.
@@ -15,85 +16,135 @@ import { UsersProvider } from '../users/users';
 */
 @Injectable()
 export class SosProvider {
-  private id: number = 0;
-  private sos: SOS[] = [];
-  private user: User;
-  private sosHelperID: number = 0;
-  private soshelpers: SOSHelper[] = [];
-
   constructor(
     private usersprovider: UsersProvider,
     private login: LoginProvider,
     public http: HttpClient
   ) {
     console.log('Hello SosProvider Provider');
+  }
 
-    this.login
-      .getUser()
-      .then((user: User) => (this.user = user))
-      .catch(err => console.log(err));
-
-    this.addSOS({
-      short_description: 'Perro atropellado',
-      need: 'translado a veterinaria',
-      status: 'active',
-      city: 'San Antonio',
-      country: 'Chile',
-      date: new Date(),
-      userID_creator: '1',
-      contact_name: 'Peter Parker',
-      contact_email: 'pparker@spiderman.com',
+  addSOS(sos: SOS): Promise<SOS> {
+    console.log('[SosProvider] addSOS(' + JSON.stringify(sos) + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/sos`;
+          this.http
+            .post(url, sos)
+            .subscribe((sos: SOS) => resolve(sos), err => reject(err));
+        })
+        .catch(err => reject(err));
     });
+  }
 
-    this.addSOS({
-      short_description: 'Gatos sin hogar',
-      need: 'hogar temporal',
-      status: 'active',
-      city: 'San Antonio',
-      country: 'Chile',
-      date: new Date(),
-      userID_creator: '1',
-      contact_name: 'Bruce Wayne',
-      contact_email: 'bwayne@batman.com',
+  getSOS(sosId: string): Promise<SOS> {
+    console.log('[SosProvider] getSOS(' + sosId + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/sos/${sosId}`;
+          this.http
+            .get(url)
+            .subscribe((sos: SOS) => resolve(sos), err => reject(err));
+        })
+        .catch(err => reject(err));
     });
-    this.addSOSHelper('1', '1');
   }
 
-  addSOS(sos: SOS): SOS {
-    sos.id = (this.id++).toString();
-    this.sos.push(sos);
-    return sos;
-  }
-  getSOS(sosID: string): SOS {
-    return this.sos[1];
-  }
-
-  listCurrentSOS(): SOS[] {
-    return this.sos.sort();
-  }
-
-  listMySOS(): SOS[] {
-    return this.sos.sort();
+  listCurrentSOS(): Promise<SOS[]> {
+    console.log('[SosProvider] listCurrentSOS()');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/sos/current`;
+          this.http
+            .get(url)
+            .subscribe((sos: SOS[]) => resolve(sos), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
   }
 
-  updateSOS(sos: SOS): SOS {
-    let index = this.sos.findIndex(_sos => _sos.id === sos.id);
-    if (index !== -1) {
-      this.sos[index] = sos;
-      return sos;
-    }
+  listMySOS(): Promise<SOS[]> {
+    console.log('[SosProvider] listMySOS()');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/sos/createdby`;
+          this.http
+            .get(url)
+            .subscribe((sos: SOS[]) => resolve(sos), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
   }
 
-  removeSOS(sos: SOS): boolean {
-    let index = this.sos.findIndex(_sos => _sos.id === sos.id);
-    if (index !== -1) {
-      this.sos.splice(index, 1);
-    }
-    return index !== -1;
+  //lists all the sos where the user is helping out
+  listHelpingOutSOS(): Promise<SOS[]> {
+    console.log('[SosProvider] listHelpingOutSOS()');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/sos/helpedout`;
+          this.http
+            .get(url)
+            .subscribe((sos: SOS[]) => resolve(sos), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  updateSOS(sos: SOS): Promise<SOS> {
+    console.log('[SosProvider] updateSOS(' + JSON.stringify(sos) + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/sos/${sos.id}`;
+          this.http
+            .put(url, sos)
+            .subscribe((sos: SOS) => resolve(sos), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
+  }
+
+  removeSOS(sos: SOS): Promise<void> {
+    console.log('[SosProvider] removeSOS(' + JSON.stringify(sos) + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url = MONGODB_URL + `/protected/users/${user.id}/sos/${sos.id}`;
+          this.http.delete(url).subscribe(() => resolve(), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
   }
 
   //sosHelpers
-  addSOSHelper(sosID: string, userID: string): SOSHelper {
+  updateSOSHelper(sosId: string, doHelp: boolean): Promise<SOS> {
+    console.log('[SosProvider] addSOSHelper(' + sosId + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL + `/protected/users/${user.id}/sos/${sosId}/helper`;
+          this.http
+            .put(url, { doHelp: doHelp })
+            .subscribe((sos: SOS) => resolve(sos), err => reject(err));
+        })
+        .catch(err => reject(err));
+    });
+  }
+  /*addSOSHelper(sosID: string, userID: string): SOSHelper {
     let sosHelper: SOSHelper = {
       id: this.sosHelperID++,
       sosID: sosID,
@@ -101,28 +152,47 @@ export class SosProvider {
     };
     this.soshelpers.push(sosHelper);
     return sosHelper;
-  }
+  }*/
 
   //lists all the helpers (users) of a particular SOS
-  listSOShelpers(sosID): User[] {
-    let users: User[] = [];
-    return users;
-    //TODO
-    /* return this.soshelpers.map(sos_helper => {
-      this.usersprovider.getUserInfo(sos_helper.userID).then((user: User) =>{
-        return user;
+  listSOShelpers(sos: SOS): Promise<User[]> {
+    let usersPromise: Promise<User>[];
+    console.log('[SosProvider] listSOShelpers(' + sos.id + ')');
+    return new Promise((resolve, reject) => {
+      if (!sos.helpers) {
+        return resolve();
+      }
+      usersPromise = sos.helpers.map((userId: string) => {
+        return this.usersprovider.getUser(userId);
       });
-    });*/
-  }
-
-  //lists all the sos where the user is helping out
-  listHelpingOutSOS(): SOS[] {
-    return this.soshelpers.map(sos_helper => {
-      return this.getSOS(sos_helper.sosID);
+      return Promise.all(usersPromise)
+        .then((users: User[]) => {
+          resolve(users);
+        })
+        .catch(err => reject(err));
     });
   }
 
-  isUserHelpingOut(userID: string, sos: SOS): boolean {
-    return true;
+  isUserHelpingOut(userId: string, sos: SOS): boolean {
+    if (!sos.helpers) {
+      return false;
+    }
+    return sos.helpers.indexOf(userId) > -1;
+  }
+
+  getEmptySOS() {
+    let sos: SOS = {
+      short_description: '',
+      need: '',
+      status: 'active',
+      city: '',
+      country: '',
+      date: undefined,
+      userID_creator: '',
+      contact_name: '',
+      contact_email: '',
+    };
+
+    return sos;
   }
 }

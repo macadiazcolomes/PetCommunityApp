@@ -54,8 +54,12 @@ export class MyPetsAlertDetailPage {
 
     this.dateformat = this.dateFormatProvider.getDateFormat(true);
 
-    this.serviceList = this.savedServiceProvider.listServices();
-
+    this.savedServiceProvider
+      .listServices()
+      .then((services: Service[]) => {
+        this.serviceList = services;
+      })
+      .catch(err => this.generalUtilities.errorCatching(err));
     this.initPetAlertDetailForm();
     this.initErrorMessage();
   }

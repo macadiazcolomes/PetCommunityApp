@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../../models/user';
 import { Message } from '../../models/message';
-
+import { LoginProvider } from '../login/login';
 import { UsersProvider } from '../users/users';
+import { MONGODB_URL } from '../config';
 
 /*
   Generated class for the SosMessagesProvider provider.
@@ -13,71 +14,110 @@ import { UsersProvider } from '../users/users';
 */
 @Injectable()
 export class SosMessagesProvider {
-  private id: number = 0;
-  private user: User;
-  private messages: Message[] = [];
-  constructor(public userProvider: UsersProvider, public http: HttpClient) {
+  constructor(
+    private login: LoginProvider,
+    public userProvider: UsersProvider,
+    public http: HttpClient
+  ) {
     console.log('Hello SosMessagesProvider Provider');
   }
 
-  sendMessage(sosId: string, type: string, helperID: string, message: string) {
-    let msge: Message = {
-      sosId: sosId,
-      date: new Date(),
-      type: type,
-      helperID: helperID,
-      message: message,
-      read: false,
-    };
+  sendMessage(sosId: string, message: Message): Promise<Message> {
+    console.log(
+      '[SosMessagesProvider] sendMessage( sosId: ' +
+        sosId +
+        ', message: ' +
+        JSON.stringify(message) +
+        ')'
+    );
 
-    this.messages.push(msge);
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL + `/protected/users/${user.id}/sos/${sosId}/messages`;
+          this.http
+            .post(url, message)
+            .subscribe(
+              (message: Message) => resolve(message),
+              err => reject(err)
+            );
+        })
+        .catch(err => reject(err));
+    });
   }
 
-  getUsersList(sosID: string): User[] {
-    let usersList: User[] = [
-      {
-        id: '5',
-        email: 'aaa@aaa.com',
-        password: '',
-        name: 'Victor Stone',
-        sos_subscription: false,
-      },
-      {
-        id: '6',
-        email: 'bbb@bbb.com',
-        password: '',
-        name: 'Diana Prince',
-        sos_subscription: false,
-      },
-    ];
-    return usersList;
+  getUsersList(sosId: string): Promise<User[]> {
+    console.log('[SosMessagesProvider] getUsersList( sosId: ' + sosId + ')');
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL +
+            `/protected/users/${user.id}/sos/${sosId}/messages/helpers`;
+          this.http.get(url).subscribe(
+            (users: User[]) => {
+              resolve(users);
+            },
+            err => reject(err)
+          );
+        })
+        .catch(err => reject(err));
+    });
   }
 
   getUnreadCounter(sosID: string, to: string): number {
     return 3;
   }
 
-  getUserMessages(sosID: string, userID: string): Message[] {
-    let messages: Message[] = [
-      {
-        sosId: '1',
-        date: new Date(),
-        type: 'to',
-        helperID: '1',
-        message: "Hello, I'm Diana",
-        read: true,
-      },
-      {
-        sosId: '1',
-        date: new Date(),
-        type: 'from',
-        helperID: '1',
-        message: "Hello, I'm Diana",
-        read: true,
-      },
-    ];
-    return messages;
+  getUserMessages(sosId: string, helperId: string): Promise<Message[]> {
+    console.log('[SosMessagesProvider] getUserMessages( sosId: ' + sosId + ')');
+
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL +
+            `/protected/users/${
+              user.id
+            }/sos/${sosId}/messages/helper/${helperId}`;
+          this.http.get(url).subscribe(
+            (messages: Message[]) => {
+              resolve(messages);
+            },
+            err => reject(err)
+          );
+        })
+        .catch(err => reject(err));
+    });
   }
 
-  markMessageAsRead(messageID: string) {}
+  markMessageAsRead(sosId, message: Message): Promise<Message> {
+    console.log(
+      '[SosMessagesProvider] markMessageAsRead( sosId: ' +
+        sosId +
+        ' message: ' +
+        JSON.stringify(message) +
+        ')'
+    );
+    return new Promise((resolve, reject) => {
+      this.login
+        .getUser()
+        .then((user: User) => {
+          let url =
+            MONGODB_URL +
+            `/protected/users/${user.id}/sos/${sosId}/messages/${message.id}`;
+          this.http
+            .put(url, message)
+            .subscribe(
+              (message: Message) => resolve(message),
+              err => reject(err)
+            );
+        })
+        .catch(err => reject(err));
+    });
+  }
 }

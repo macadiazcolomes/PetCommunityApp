@@ -15,6 +15,8 @@ import { SOS } from '../../models/sos';
 import { User } from '../../models/user';
 
 import { TranslateService } from '@ngx-translate/core';
+import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
+
 /**
  * Generated class for the SosMainPage page.
  *
@@ -53,6 +55,7 @@ export class SosMainPage {
   private alert_ok_btn: string;
 
   constructor(
+    private generalUtilities: GeneralUtilitiesProvider,
     public alertCtrl: AlertController,
     public modalCtrl: ModalController,
     public translateService: TranslateService,
@@ -128,20 +131,46 @@ export class SosMainPage {
       this.alert_ok_btn = text;
     });
   }
+  ionViewCanEnter() {
+    console.log('ionViewCanEnter ' + this.login.isLoggedIn());
+    let canEnter: boolean;
+    this.login
+      .isLoggedIn()
+      .then((value: boolean) => {
+        canEnter = value;
+      })
+      .catch(err => {
+        canEnter = false;
+      });
+
+    return canEnter;
+  }
 
   listCurrentSOS() {
     console.log('[SosMainPage] listCurrentSOS');
-    this.currentSOSList = this.SOSProvider.listCurrentSOS();
+    this.SOSProvider.listCurrentSOS()
+      .then((sosList: SOS[]) => {
+        this.currentSOSList = sosList;
+      })
+      .catch(err => this.generalUtilities.errorCatching(err));
   }
 
   listHelpingOutSOS() {
     console.log('[SosMainPage] listHelpingOutSOS');
-    this.helpingOutSOSList = this.SOSProvider.listHelpingOutSOS();
+    this.SOSProvider.listHelpingOutSOS()
+      .then((sosList: SOS[]) => {
+        this.helpingOutSOSList = sosList;
+      })
+      .catch(err => this.generalUtilities.errorCatching(err));
   }
 
   listMySOS() {
     console.log('[SosMainPage] listMySOS');
-    this.mySOSList = this.SOSProvider.listMySOS();
+    this.SOSProvider.listMySOS()
+      .then((sosList: SOS[]) => {
+        this.mySOSList = sosList;
+      })
+      .catch(err => this.generalUtilities.errorCatching(err));
   }
 
   showSOSMenu(sos: SOS) {
@@ -213,7 +242,7 @@ export class SosMainPage {
 
     if (
       (this.sosSection === 'current' || this.sosSection === 'mySOS') &&
-      sos.userID_creator.toString() === this.user.id
+      sos.userID_creator === this.user.id
     ) {
       buttons.push(viewSOSButton);
       buttons.push(editSOSButton);
@@ -228,7 +257,7 @@ export class SosMainPage {
       sos.userID_creator.toString() !== this.user.id
     ) {
       buttons.push(viewSOSButton);
-      if (this.SOSProvider.isUserHelpingOut(this.user.id.toString(), sos)) {
+      if (this.SOSProvider.isUserHelpingOut(this.user.id, sos)) {
         buttons.push(cancelHelpOutSOSButton);
       } else {
         buttons.push(helpOutSOSButton);
@@ -247,32 +276,90 @@ export class SosMainPage {
 
   doViewSOSDetail(sos: SOS) {
     console.log('[SOSainPage] doViewSOSDetail()');
-    let helpersList: User[] = this.SOSProvider.listSOShelpers(sos);
+    let helpersList: User[] = [];
+    this.SOSProvider.listSOShelpers(sos)
+      .then((users: User[]) => {
+        helpersList = users;
+      })
+      .catch(err => this.generalUtilities.errorCatching(err));
+
     let dlg = this.modalCtrl.create('SosDetailPage', {
       mode: 'view',
       sos: sos,
       helpersList: helpersList,
     });
+    dlg.onDidDismiss(sos => {
+      if (sos) {
+        if (this.sosSection === 'current') {
+          this.listCurrentSOS();
+        } else if (this.sosSection === 'helping') {
+          this.listHelpingOutSOS();
+        } else if (this.sosSection === 'mySOS') {
+          this.listMySOS();
+        }
+      }
+    });
+    dlg.present();
+  }
+  doAddSOS() {
+    console.log('[SOSainPage] doAddSOS()');
+    let dlg = this.modalCtrl.create('SosDetailPage', {
+      mode: 'add',
+      sos: this.SOSProvider.getEmptySOS(),
+      helpersList: [],
+    });
+    dlg.onDidDismiss(sos => {
+      if (sos) {
+        this.listCurrentSOS();
+        this.listMySOS();
+      }
+    });
+
     dlg.present();
   }
 
   doEditSOSDetail(sos: SOS) {
     console.log('[SOSainPage] doEditSOSDetail()');
-    let helpersList: User[] = this.SOSProvider.listSOShelpers(sos);
+    let helpersList: User[] = [];
+    this.SOSProvider.listSOShelpers(sos)
+      .then((users: User[]) => {
+        helpersList = users;
+      })
+      .catch(err => this.generalUtilities.errorCatching(err));
+
     let dlg = this.modalCtrl.create('SosDetailPage', {
       mode: 'edit',
       sos: sos,
       helpersList: helpersList,
+    });
+    dlg.onDidDismiss(sos => {
+      if (sos) {
+        if (this.sosSection === 'current') {
+          this.listCurrentSOS();
+        } else if (this.sosSection === 'helping') {
+          this.listHelpingOutSOS();
+        } else if (this.sosSection === 'mySOS') {
+          this.listMySOS();
+        }
+      }
     });
     dlg.present();
   }
 
   doShowMessages(sos: SOS) {
     console.log('[SOSainPage] doShowMessages()');
-    let dlg = this.modalCtrl.create('SosMessagesPage', {
-      sos: sos,
-    });
-    dlg.present();
+    if (sos.userID_creator === this.user.id) {
+      let dlg = this.modalCtrl.create('SosMessagesPage', {
+        sos: sos,
+      });
+      dlg.present();
+    } else {
+      let dlg = this.modalCtrl.create('SosMessagesDetailPage', {
+        sos: sos,
+        helper: this.user,
+      });
+      dlg.present();
+    }
   }
 
   doDeleteSOS(sos: SOS) {
@@ -299,8 +386,14 @@ export class SosMainPage {
         {
           text: this.alert_ok_btn,
           handler: () => {
-            //TODO
             console.log('OK clicked');
+            this.SOSProvider.removeSOS(sos)
+              .then(() => {
+                console.log('sos removed');
+                this.listCurrentSOS();
+                this.listMySOS();
+              })
+              .catch(err => this.generalUtilities.errorCatching(err));
           },
         },
       ],
@@ -337,8 +430,14 @@ export class SosMainPage {
         {
           text: this.alert_ok_btn,
           handler: () => {
-            //TODO
             console.log('OK clicked');
+            this.SOSProvider.updateSOSHelper(sos.id, helpOut)
+              .then((sos: SOS) => {
+                this.listCurrentSOS();
+                this.listHelpingOutSOS();
+                this.listMySOS();
+              })
+              .catch(err => this.generalUtilities.errorCatching(err));
           },
         },
       ],
@@ -370,8 +469,15 @@ export class SosMainPage {
         {
           text: this.alert_ok_btn,
           handler: () => {
-            //TODO
             console.log('OK clicked');
+            sos.status = 'inactive';
+            this.SOSProvider.updateSOS(sos)
+              .then((sos: SOS) => {
+                this.listCurrentSOS();
+                this.listHelpingOutSOS();
+                this.listMySOS();
+              })
+              .catch(err => this.generalUtilities.errorCatching(err));
           },
         },
       ],

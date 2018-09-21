@@ -68,6 +68,9 @@ export class PetsProvider {
           let url = MONGODB_URL + `/protected/users/${user.id}/pets`;
           this.http.get(url).subscribe(
             (pets: Pet[]) => {
+              if (!pets) {
+                return resolve();
+              }
               let petsObj: Pet[];
               petsObj = pets.map(pet => {
                 pet.social_media = socialMediaFormat(

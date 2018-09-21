@@ -117,9 +117,18 @@ export class LoginProvider {
     });
   }
 
-  isLoggedIn() {
-    return this.storage.get(LOGIN_TOKEN_STORAGE_VAR).then(token => {
-      return !jwtHelper.isTokenExpired(token);
+  isLoggedIn(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.storage
+        .get(LOGIN_TOKEN_STORAGE_VAR)
+        .then(token => {
+          //console.log(' isLoggedIn token', token);
+          resolve(!jwtHelper.isTokenExpired(token));
+        })
+        .catch(err => {
+          //console.log('isLoggedIn error', err);
+          reject(err);
+        });
     });
   }
 
@@ -131,10 +140,13 @@ export class LoginProvider {
       this.storage
         .get(USERID_STORAGE_VAR)
         .then(userId => {
-          this.users.getUser(userId).then(user => {
-            this.user = user;
-            resolve(user);
-          });
+          this.users
+            .getUser(userId)
+            .then(user => {
+              this.user = user;
+              resolve(user);
+            })
+            .catch(err => reject(err));
         })
         .catch(err => reject(err));
     });

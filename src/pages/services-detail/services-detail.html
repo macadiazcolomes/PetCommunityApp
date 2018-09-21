@@ -14,7 +14,7 @@
       </ion-buttons>
       <ion-title>{{ 'SERVICE_DETAIL.TITLE' | translate }}</ion-title>
       <ion-buttons right>
-        <button ion-button icon-only *ngIf="mode!=='view'" (click)="save()" [disabled]="serviceDetailForm.invalid" >
+        <button ion-button icon-only *ngIf="mode!=='view'" (click)="doSaveChanges()" [disabled]="serviceDetailForm.invalid" >
           <ion-icon name="checkmark" ></ion-icon>
         </button>
         <button ion-button icon-only *ngIf="mode==='view' " (click)="edit()">
@@ -31,7 +31,7 @@
       <ion-row>
         <ion-col col-4></ion-col>
         <ion-col col-4>
-          <img src="assets/imgs/avatar.png">
+          <img [src]=" service.image ? service.image : 'assets/imgs/avatar.png'">
         </ion-col>
         <ion-col col-4>
           <ion-fab top left #fab *ngIf="mode!=='view'">
@@ -39,10 +39,10 @@
               <ion-icon name="create"></ion-icon>
             </button>
             <ion-fab-list>
-              <button ion-fab>
+              <button ion-fab  (click) ="selectAvatar()">
                 <ion-icon name="images"></ion-icon>
               </button>
-              <button ion-fab>
+              <button ion-fab  (click) ="captureAvatar()">
                 <ion-icon name="camera"></ion-icon>
               </button>
             </ion-fab-list>
@@ -53,42 +53,42 @@
       <ion-list>
         <ion-item>
           <ion-label floating>{{ 'SERVICE_DETAIL.BUSINESS_NAME_LABEL' | translate }}</ion-label>
-          <ion-input type="text" [readonly]="mode==='view'" formControlName="serviceBusinessName"></ion-input>
+          <ion-input type="text" [readonly]="mode==='view'" formControlName="business_name"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.serviceBusinessName">
-          <div class="error" *ngIf="serviceDetailForm.get('serviceBusinessName').hasError(message.type) && serviceDetailForm.get('serviceBusinessName').dirty && serviceDetailForm.get('serviceBusinessName').touched">
+        <ng-container *ngFor="let message of errorMessages.business_name">
+          <div class="error" *ngIf="serviceDetailForm.get('business_name').hasError(message.type) && serviceDetailForm.get('business_name').dirty && serviceDetailForm.get('business_name').touched">
             {{ message.message | translate }}
           </div>
         </ng-container>
 
         <ion-item>
           <ion-label floating>{{ 'SERVICE_DETAIL.TYPE_LABEL' | translate }}</ion-label>
-          <ion-select [disableControl]="mode==='view'" formControlName="serviceType">
+          <ion-select [disableControl]="mode==='view'" formControlName="type">
             <ion-option *ngFor="let type of serviceTypes" [value]="type">{{ type | serviceTypeCode | translate }}</ion-option>
           </ion-select>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.serviceType">
-          <div class="error" *ngIf="serviceDetailForm.get('serviceType').hasError(message.type) && serviceDetailForm.get('serviceType').dirty && serviceDetailForm.get('serviceType').touched">
+        <ng-container *ngFor="let message of errorMessages.type">
+          <div class="error" *ngIf="serviceDetailForm.get('type').hasError(message.type) && serviceDetailForm.get('type').dirty && serviceDetailForm.get('type').touched">
             {{ message.message | translate }}
           </div>
         </ng-container>
 
         <ion-item>
           <ion-label floating>{{ 'SERVICE_DETAIL.PHONE_LABEL' | translate }}</ion-label>
-          <ion-input type="tel" [readonly]="mode==='view'" formControlName="servicePhone"></ion-input>
+          <ion-input type="tel" [readonly]="mode==='view'" formControlName="phone"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.servicePhone">
-          <div class="error" *ngIf="serviceDetailForm.get('servicePhone').hasError(message.type) && serviceDetailForm.get('servicePhone').dirty && serviceDetailForm.get('servicePhone').touched">
+        <ng-container *ngFor="let message of errorMessages.phone">
+          <div class="error" *ngIf="serviceDetailForm.get('phone').hasError(message.type) && serviceDetailForm.get('phone').dirty && serviceDetailForm.get('phone').touched">
             {{ message.message | translate }}
           </div>
         </ng-container>
 
         <ion-item>
           <ion-label floating>{{ 'SERVICE_DETAIL.ADDRESS_LABEL' | translate }}</ion-label>
-          <ion-input type="text" [readonly]="mode==='view'" formControlName="serviceAddress"></ion-input>
+          <ion-input type="text" [readonly]="mode==='view'" formControlName="address"></ion-input>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.serviceAddress">
-          <div class="error" *ngIf="serviceDetailForm.get('serviceAddress').hasError(message.type) && serviceDetailForm.get('serviceAddress').dirty && serviceDetailForm.get('serviceAddress').touched">
+        <ng-container *ngFor="let message of errorMessages.address">
+          <div class="error" *ngIf="serviceDetailForm.get('address').hasError(message.type) && serviceDetailForm.get('address').dirty && serviceDetailForm.get('address').touched">
             {{ message.message | translate }}
           </div>
         </ng-container>
@@ -96,10 +96,10 @@
 
         <ion-item>
           <ion-label floating>{{ 'SERVICE_DETAIL.NOTES_LABEL' | translate }}</ion-label>
-          <ion-textarea type="text" [readonly]="mode==='view'" formControlName="serviceNotes"></ion-textarea>
+          <ion-textarea type="text" [readonly]="mode==='view'" formControlName="notes"></ion-textarea>
         </ion-item>
-        <ng-container *ngFor="let message of errorMessages.serviceNotes">
-          <div class="error" *ngIf="serviceDetailForm.get('serviceNotes').hasError(message.type) && serviceDetailForm.get('serviceNotes').dirty && serviceDetailForm.get('serviceNotes').touched">
+        <ng-container *ngFor="let message of errorMessages.notes">
+          <div class="error" *ngIf="serviceDetailForm.get('notes').hasError(message.type) && serviceDetailForm.get('notes').dirty && serviceDetailForm.get('notes').touched">
             {{ message.message | translate }}
           </div>
         </ng-container>

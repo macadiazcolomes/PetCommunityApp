@@ -31,6 +31,17 @@ export class LoginPage {
     public navParams: NavParams,
     private login: LoginProvider
   ) {
+    this.login
+      .isLoggedIn()
+      .then((value: boolean) => {
+        if (value) {
+          this.navCtrl.setRoot('MenuPage');
+        }
+      })
+      .catch(err => {
+        this.generalUtilities.errorCatching(err);
+      });
+
     this.initLoginForm();
     this.initErrorMessages();
 

@@ -14,7 +14,7 @@
       </ion-buttons>
       <ion-title>{{ 'SOS_DETAIL.TITLE' | translate }}</ion-title>
       <ion-buttons right>
-        <button ion-button icon-only *ngIf="mode!=='view'" (click)="save()" [disabled]="SOSDetailForm.invalid" >
+        <button ion-button icon-only *ngIf="mode!=='view'" (click)="doSaveChanges()" [disabled]="SOSDetailForm.invalid" >
           <ion-icon name="checkmark" ></ion-icon>
         </button>
         <button ion-button icon-only *ngIf="mode==='view' && isOwner " (click)="edit()">
@@ -27,7 +27,7 @@
         <ion-segment-button value="general">{{ 'SOS_DETAIL.SECTION_GENERAL_INFO_TITLE' | translate }}</ion-segment-button>
         <ion-segment-button value="contact">{{ 'SOS_DETAIL.SECTION_CONTACT_INFO_TITLE' | translate }}</ion-segment-button>
         <ion-segment-button value="notes">{{ 'SOS_DETAIL.SECTION_NOTES_INFO_TITLE' | translate }}</ion-segment-button>
-        <ion-segment-button value="helpers" *ngIf="mode==='view'" >{{ 'SOS_DETAIL.SECTION_HELPERS_TITLE' | translate }}</ion-segment-button>
+        <ion-segment-button value="helpers" *ngIf="mode==='view'  && isOwner " >{{ 'SOS_DETAIL.SECTION_HELPERS_TITLE' | translate }}</ion-segment-button>
       </ion-segment>
     </ion-toolbar>
 </ion-header>
@@ -39,17 +39,17 @@
     <div [hidden]="SOSDetailSection !== 'general'" >
       <ion-row>
         <ion-col col-4>
-          <ion-img class='avatar_image' src='assets/imgs/avatar.png'></ion-img> 
+          <img class='avatar_image' [src]=" sos.image ? sos.image : 'assets/imgs/avatar.png'">
           <h5> {{ 'SOS_DETAIL.STATUS_LABEL' | translate }} {{ sos.status | sosStatusCode | translate }}</h5>
           <ion-fab top right  #fab *ngIf="mode!=='view'">
             <button ion-fab mini>
               <ion-icon name="create"></ion-icon>
             </button>
             <ion-fab-list>
-              <button ion-fab>
+              <button ion-fab  (click) ="selectAvatar()">
                 <ion-icon name="images"></ion-icon>
               </button>
-              <button ion-fab>
+              <button ion-fab (click) ="captureAvatar()">
                 <ion-icon name="camera"></ion-icon>
               </button>
             </ion-fab-list>
@@ -60,10 +60,10 @@
             <ion-item>
               <!--<ion-icon name="megaphone" item-start color="primary"></ion-icon>-->
               <ion-label floating>{{ 'SOS_DETAIL.SHORT_DESCRIPTION_LABEL' | translate }}</ion-label>
-              <ion-input type="text" [readonly]="mode==='view'" placeholder="this is a placeholder" formControlName="sosShortDescription" ></ion-input>
+              <ion-input type="text" [readonly]="mode==='view'" formControlName="short_description" ></ion-input>
             </ion-item>
-            <ng-container *ngFor="let message of errorMessages.sosShortDescription">
-              <div class="error" *ngIf="SOSDetailForm.get('sosShortDescription').hasError(message.type) && SOSDetailForm.get('sosShortDescription').dirty && SOSDetailForm.get('sosShortDescription').touched">
+            <ng-container *ngFor="let message of errorMessages.short_description">
+              <div class="error" *ngIf="SOSDetailForm.get('short_description').hasError(message.type) && SOSDetailForm.get('short_description').dirty && SOSDetailForm.get('short_description').touched">
                 {{ message.message | translate }}
               </div>
             </ng-container>
@@ -71,10 +71,10 @@
             <ion-item>
               <!--<ion-icon name="download" item-start color="primary"></ion-icon>-->
               <ion-label floating>{{ 'SOS_DETAIL.NEED_LABEL' | translate }}</ion-label>
-              <ion-input type="text" [readonly] ="mode==='view'" formControlName="sosNeed"></ion-input>
+              <ion-input type="text" [readonly] ="mode==='view'" formControlName="need"></ion-input>
             </ion-item>
-            <ng-container *ngFor="let message of errorMessages.sosNeed">
-              <div class="error" *ngIf="SOSDetailForm.get('sosNeed').hasError(message.type) && SOSDetailForm.get('sosNeed').dirty && SOSDetailForm.get('sosNeed').touched">
+            <ng-container *ngFor="let message of errorMessages.need">
+              <div class="error" *ngIf="SOSDetailForm.get('need').hasError(message.type) && SOSDetailForm.get('need').dirty && SOSDetailForm.get('need').touched">
                 {{ message.message | translate }}
               </div>
             </ng-container>
@@ -90,10 +90,10 @@
       <ion-item-divider color="light">{{ 'SOS_DETAIL.CONTACT_INFO_DIVIDER' | translate }}</ion-item-divider>
       <ion-item>
         <ion-label floating>{{ 'SOS_DETAIL.CONTACT_NAME_LABEL' | translate }}</ion-label>
-        <ion-input type="text" [readonly] ="mode==='view'" formControlName="sosContactName" ></ion-input>
+        <ion-input type="text" [readonly] ="mode==='view'" formControlName="contact_name" ></ion-input>
       </ion-item>
-      <ng-container *ngFor="let message of errorMessages.sosContactName">
-        <div class="error" *ngIf="SOSDetailForm.get('sosContactName').hasError(message.type) && SOSDetailForm.get('sosContactName').dirty && SOSDetailForm.get('sosContactName').touched">
+      <ng-container *ngFor="let message of errorMessages.contact_name">
+        <div class="error" *ngIf="SOSDetailForm.get('contact_name').hasError(message.type) && SOSDetailForm.get('contact_name').dirty && SOSDetailForm.get('contact_name').touched">
           {{ message.message | translate }}
         </div>
       </ng-container>
@@ -101,20 +101,20 @@
 
       <ion-item>
         <ion-label floating>{{ 'SOS_DETAIL.CONTACT_PHONE_LABEL' | translate }}</ion-label>
-        <ion-input type="phone" [readonly] ="mode==='view'" formControlName="sosContactPhone"></ion-input>
+        <ion-input type="phone" [readonly] ="mode==='view'" formControlName="contact_phone"></ion-input>
       </ion-item>
-      <ng-container *ngFor="let message of errorMessages.sosContactPhone">
-        <div class="error" *ngIf="SOSDetailForm.get('sosContactPhone').hasError(message.type) && SOSDetailForm.get('sosContactPhone').dirty && SOSDetailForm.get('sosContactPhone').touched">
+      <ng-container *ngFor="let message of errorMessages.contact_phone">
+        <div class="error" *ngIf="SOSDetailForm.get('contact_phone').hasError(message.type) && SOSDetailForm.get('contact_phone').dirty && SOSDetailForm.get('contact_phone').touched">
           {{ message.message | translate }}
         </div>
       </ng-container>
 
       <ion-item>
         <ion-label floating>{{ 'SOS_DETAIL.CONTACT_EMAIL_LABEL' | translate }}</ion-label>
-        <ion-input type="mail" [readonly] ="mode==='view'" formControlName="sosContactEmail"></ion-input>
+        <ion-input type="mail" [readonly] ="mode==='view'" formControlName="contact_email"></ion-input>
       </ion-item>
-      <ng-container *ngFor="let message of errorMessages.sosContactEmail">
-        <div class="error" *ngIf="SOSDetailForm.get('sosContactEmail').hasError(message.type) && SOSDetailForm.get('sosContactEmail').dirty && SOSDetailForm.get('sosContactEmail').touched">
+      <ng-container *ngFor="let message of errorMessages.contact_email">
+        <div class="error" *ngIf="SOSDetailForm.get('contact_email').hasError(message.type) && SOSDetailForm.get('contact_email').dirty && SOSDetailForm.get('contact_email').touched">
           {{ message.message | translate }}
         </div>
       </ng-container>
@@ -123,7 +123,7 @@
     <!--notes-->
     <ion-list [hidden]= "SOSDetailSection !=='notes'">
       <ion-item-divider color="light">{{ 'SOS_DETAIL.NOTES_DIVIDER' | translate }}</ion-item-divider>
-      <ion-textarea type="text"[readonly]="mode==='view'" formControlName="sosNotes" ></ion-textarea>
+      <ion-textarea type="text"[readonly]="mode==='view'" formControlName="notes" ></ion-textarea>
     </ion-list>
 
   </form>
@@ -131,7 +131,7 @@
   <ion-list [hidden]="SOSDetailSection !== 'helpers' || !isOwner">
     <ion-item *ngFor="let helper of SOSHelpersList" >
       <ion-avatar item-start>
-        <img src="assets/imgs/avatar.png">
+        <img [src]=" helper.avatar ? helper.avatar  : 'assets/imgs/avatar.png'">
       </ion-avatar>
       <h2> {{ helper.name }} </h2>
       <button ion-button clear item-end (click)="doMessage(helper)">

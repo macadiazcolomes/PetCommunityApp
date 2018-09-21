@@ -40,6 +40,9 @@
           </button>
         </ion-item>
       </ion-list> 
+      <ion-fab bottom right>
+          <button ion-fab (click)="doAddService()" ><ion-icon name="add"></ion-icon></button>
+        </ion-fab>
     </div>
     <!--search-->
     <div *ngSwitchCase="'search'">
