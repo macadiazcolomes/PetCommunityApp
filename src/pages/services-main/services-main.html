@@ -31,7 +31,7 @@
       <ion-list>
         <ion-item no-padding *ngFor="let savedService of savedServices">
           <ion-avatar item-start>
-            <img src='assets/imgs/avatar.png'>
+            <img [src]=" savedService.image ? savedService.image : 'assets/imgs/avatar.png'">
           </ion-avatar>
           <h2> {{ savedService.business_name }}</h2>
           <p> {{ savedService.phone }}</p>
@@ -72,7 +72,7 @@
     <ion-list>
       <ion-item no-padding *ngFor="let service of foundServices">
         <ion-avatar item-start>
-          <img src='assets/imgs/avatar.png'>
+          <img [src]=" service.image ? service.image : 'assets/imgs/avatar.png'">
         </ion-avatar>
         <h2> {{ service.business_name }}</h2>
         <p> {{ service.phone }}</p>

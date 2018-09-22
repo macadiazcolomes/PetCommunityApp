@@ -23,7 +23,7 @@ export class PetAlertsProvider {
     return {
       type: type,
       name: '',
-      date: undefined,
+      date: new Date(),
     };
   }
 

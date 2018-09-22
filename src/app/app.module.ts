@@ -35,6 +35,7 @@ import { NativeGeocoder } from '@ionic-native/native-geocoder';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { Camera } from '@ionic-native/camera';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 import { LocationProvider } from '../providers/location/location';
 import { CameraProvider } from '../providers/camera/camera';
 import { DateFormatProvider } from '../providers/date-format/date-format';
@@ -88,6 +89,7 @@ import { DateFormatProvider } from '../providers/date-format/date-format';
     Geolocation,
     AndroidPermissions,
     Camera,
+    LocalNotifications,
     LocationProvider,
     CameraProvider,
     DateFormatProvider,

@@ -14,6 +14,8 @@ import {
 
 import { UsersProvider } from '../../providers/users/users';
 import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
+import { LocationProvider } from '../../providers/location/location';
+
 /**
  * Generated class for the SignupPage page.
  *
@@ -29,8 +31,12 @@ import { GeneralUtilitiesProvider } from '../../providers/general-utilities/gene
 export class SignupPage {
   private signupForm: FormGroup;
   public errorMessages: object;
+  public city: string;
+  public country: string;
+  public locationStr: string;
 
   constructor(
+    private locationProvider: LocationProvider,
     private generalUtilities: GeneralUtilitiesProvider,
     private usersProvider: UsersProvider,
     private formBuilder: FormBuilder,
@@ -113,6 +119,21 @@ export class SignupPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SignupPage');
+    this.getCityAndCountry();
+  }
+
+  getCityAndCountry() {
+    this.locationProvider
+      .getCityAndCountryFromLocation()
+      .then(result => {
+        console.log('get city successfully');
+        this.city = result.city;
+        this.country = result.country;
+        this.locationStr = this.city + ', ' + this.country;
+      })
+      .catch(err => {
+        console.log('Error getting city: ' + JSON.stringify(err));
+      });
   }
 
   doCreateUser() {
@@ -124,6 +145,9 @@ export class SignupPage {
         password: values.password,
         sos_subscription: false,
       };
+      if (this.city) user.city = this.city;
+      if (this.country) user.country = this.country;
+
       let pswdConfirm = {
         confirm_password: values.passwordConfirm,
       };

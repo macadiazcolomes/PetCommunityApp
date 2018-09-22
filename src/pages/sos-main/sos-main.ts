@@ -68,7 +68,13 @@ export class SosMainPage {
     this.sosSection = 'current';
     this.login
       .getUser()
-      .then((user: User) => (this.user = user))
+      .then((user: User) => {
+        this.user = user;
+        console.log('AAAAA', this.user);
+        if (!this.user.city || !this.user.country) {
+          this.doShowNoLocationAlert();
+        }
+      })
       .catch(err => console.log(err));
     this.translate = translateService;
     //translations
@@ -105,11 +111,34 @@ export class SosMainPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SosMainPage');
+  }
+
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter SosMainPage');
     this.listCurrentSOS();
     this.listHelpingOutSOS();
     this.listMySOS();
 
-    console.log(this.helpingOutSOSList);
+    //console.log(this.helpingOutSOSList);
+  }
+
+  ionViewCanEnter() {
+    console.log('ionViewCanEnter ' + this.login.isLoggedIn());
+    let canEnter: boolean;
+    this.login
+      .isLoggedIn()
+      .then((value: boolean) => {
+        canEnter = value;
+        if (!canEnter) {
+          this.navCtrl.setRoot('LoginPage');
+        }
+      })
+      .catch(err => {
+        canEnter = false;
+        this.navCtrl.setRoot('LoginPage');
+      });
+
+    return canEnter;
   }
 
   alertSetup(
@@ -130,20 +159,6 @@ export class SosMainPage {
     this.translate.get(ok_btn).subscribe((text: string) => {
       this.alert_ok_btn = text;
     });
-  }
-  ionViewCanEnter() {
-    console.log('ionViewCanEnter ' + this.login.isLoggedIn());
-    let canEnter: boolean;
-    this.login
-      .isLoggedIn()
-      .then((value: boolean) => {
-        canEnter = value;
-      })
-      .catch(err => {
-        canEnter = false;
-      });
-
-    return canEnter;
   }
 
   listCurrentSOS() {
@@ -301,6 +316,7 @@ export class SosMainPage {
     });
     dlg.present();
   }
+
   doAddSOS() {
     console.log('[SOSainPage] doAddSOS()');
     let dlg = this.modalCtrl.create('SosDetailPage', {
@@ -360,6 +376,30 @@ export class SosMainPage {
       });
       dlg.present();
     }
+  }
+
+  doShowNoLocationAlert() {
+    console.log('[SOSainPage] doShowNoLocationAlert()');
+    this.alertSetup(
+      'SOS_MAIN.NO_LOCATION_ALERT.TITLE',
+      'SOS_MAIN.NO_LOCATION_ALERT.MESSAGE',
+      'SOS_MAIN.NO_LOCATION_ALERT.OK_BTN',
+      'SOS_MAIN.NO_LOCATION_ALERT.OK_BTN'
+    );
+
+    let alert = this.alertCtrl.create({
+      title: this.alert_title,
+      message: this.alert_message,
+      buttons: [
+        {
+          text: this.alert_ok_btn,
+          handler: () => {
+            console.log('OK clicked');
+          },
+        },
+      ],
+    });
+    alert.present();
   }
 
   doDeleteSOS(sos: SOS) {

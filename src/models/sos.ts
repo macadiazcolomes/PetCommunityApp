@@ -4,7 +4,7 @@ export interface SOS {
   need: string;
   status: string;
   image?: string;
-  location?: { lat: number; lng: number };
+  location?: { latitude: number; longitude: number };
   city: string;
   country: string;
   notes?: string;

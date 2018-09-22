@@ -76,9 +76,13 @@ export class MenuPage {
       .isLoggedIn()
       .then((value: boolean) => {
         canEnter = value;
+        if (!canEnter) {
+          this.navCtrl.setRoot('LoginPage');
+        }
       })
       .catch(err => {
         canEnter = false;
+        this.navCtrl.setRoot('LoginPage');
       });
 
     return canEnter;

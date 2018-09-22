@@ -9,4 +9,5 @@ export interface Alert {
   notes?: string;
   reminder?: boolean;
   reminder_time?: Date;
+  reminder_id?: number;
 }

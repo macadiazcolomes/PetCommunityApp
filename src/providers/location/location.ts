@@ -114,29 +114,46 @@ export class LocationProvider {
     });
   }
 
-  getCityAndCountryFromLocation(): Promise<{ city: string; country: string }> {
+  getCityAndCountryFromLocation(
+    lat?: number,
+    lng?: number
+  ): Promise<{ city: string; country: string }> {
     return new Promise((resolve, reject) => {
-      this.getlocation()
-        .then(location => {
-          this.nativeGeocoder
-            .reverseGeocode(
-              location.latitude,
-              location.longitude,
-              this.nativeGeocoderOptions
-            )
-            .then((result: NativeGeocoderReverseResult[]) => {
-              resolve({
-                city: result[0].locality,
-                country: result[0].countryName,
-              });
-            })
-            .catch(err => {
-              reject({ desc: 'error 3', error: err });
+      if (lat && lng) {
+        this.nativeGeocoder
+          .reverseGeocode(lat, lng, this.nativeGeocoderOptions)
+          .then((result: NativeGeocoderReverseResult[]) => {
+            resolve({
+              city: result[0].locality,
+              country: result[0].countryName,
             });
-        })
-        .catch(err => {
-          reject({ desc: 'error 4', error: err });
-        });
+          })
+          .catch(err => {
+            reject({ desc: 'error 3', error: err });
+          });
+      } else {
+        this.getlocation()
+          .then(location => {
+            this.nativeGeocoder
+              .reverseGeocode(
+                location.latitude,
+                location.longitude,
+                this.nativeGeocoderOptions
+              )
+              .then((result: NativeGeocoderReverseResult[]) => {
+                resolve({
+                  city: result[0].locality,
+                  country: result[0].countryName,
+                });
+              })
+              .catch(err => {
+                reject({ desc: 'error 3', error: err });
+              });
+          })
+          .catch(err => {
+            reject({ desc: 'error 4', error: err });
+          });
+      }
     });
   }
 

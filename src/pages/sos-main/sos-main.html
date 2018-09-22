@@ -36,7 +36,7 @@
           <h2>{{ current.short_description }}</h2>
           <p>{{ current.need }}</p>
           <p>{{ current.date | date }}</p>
-          <ion-note item-end>3,2 km</ion-note>
+          <!--<ion-note item-end>3,2 km</ion-note>-->
           <button ion-button clear item-end (click)="showSOSMenu(current)" >
             <ion-icon name="more"></ion-icon>
           </button>
@@ -57,7 +57,6 @@
             <h2>{{ helping.short_description }}</h2>
             <p>{{ helping.need }}</p>
             <p>{{ helping.date | date }}</p>
-            <ion-note item-end>3,2 km</ion-note>
             <button ion-button clear item-end (click)="showSOSMenu(helping)" >
               <ion-icon name="more"></ion-icon>
             </button>

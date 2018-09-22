@@ -6,6 +6,7 @@ import {
   ActionSheetController,
   ModalController,
   AlertController,
+  Platform,
 } from 'ionic-angular';
 
 import { PetAlertsProvider } from '../../providers/pet-alerts/pet-alerts';
@@ -15,6 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
 import { LoginProvider } from '../../providers/login/login';
 import { DateFormatProvider } from '../../providers/date-format/date-format';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 /**
  * Generated class for the MyPetsAlertListPage page.
  *
@@ -43,6 +45,8 @@ export class MyPetsAlertListPage {
   public pet: Pet;
   public dateformat: string;
   constructor(
+    private platform: Platform,
+    private localNotifications: LocalNotifications,
     private dateFormatProvider: DateFormatProvider,
     private login: LoginProvider,
     private generalUtilities: GeneralUtilitiesProvider,
@@ -96,9 +100,13 @@ export class MyPetsAlertListPage {
       .isLoggedIn()
       .then((value: boolean) => {
         canEnter = value;
+        if (!canEnter) {
+          this.navCtrl.setRoot('LoginPage');
+        }
       })
       .catch(err => {
         canEnter = false;
+        this.navCtrl.setRoot('LoginPage');
       });
 
     return canEnter;
@@ -216,6 +224,9 @@ export class MyPetsAlertListPage {
               .removePetAlert(this.pet, alert)
               .then(() => {
                 console.log('alert deleted');
+                if (alert.reminder_id) {
+                  this.localNotifications.cancel(alert.reminder_id);
+                }
                 this.listPetAlerts();
               })
               .catch(err => this.generalUtilities.errorCatching(err));

@@ -80,6 +80,24 @@ export class SosMessagesDetailPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad SosMessagesDetailPage');
   }
+  ionViewCanEnter() {
+    console.log('ionViewCanEnter ' + this.login.isLoggedIn());
+    let canEnter: boolean;
+    this.login
+      .isLoggedIn()
+      .then((value: boolean) => {
+        canEnter = value;
+        if (!canEnter) {
+          this.navCtrl.setRoot('LoginPage');
+        }
+      })
+      .catch(err => {
+        canEnter = false;
+        this.navCtrl.setRoot('LoginPage');
+      });
+
+    return canEnter;
+  }
 
   doCreateMessage(): Message {
     let msje: Message = {

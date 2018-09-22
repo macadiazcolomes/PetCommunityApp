@@ -307,6 +307,11 @@
       "MESSAGES_SOS": "Messages",
       "MARKED_AS_RESOLVED": "Mark as solved"
     },
+    "NO_LOCATION_ALERT": {
+      "TITLE": "Location not set",
+      "MESSAGE": "Your location has not been set. Please, update your profile",
+      "OK_BTN": "Accept"
+    },
     "DELETE_ALERT": {
       "TITLE": "Delete SOS",
       "MESSAGE": "Are you sure?",
@@ -339,6 +344,7 @@
     "CONTACT_PHONE_LABEL": "Phone number",
     "CONTACT_EMAIL_LABEL": "Email",
     "NOTES_DIVIDER": "Notes",
+    "MAP_DIRECTIONS": "Please, drag the marker to set the SOS location",
     "ERROR_MESSAGES": {
       "SOSSHORTDESCRIPTION": {
         "REQUIRED": "SOS description is required.",

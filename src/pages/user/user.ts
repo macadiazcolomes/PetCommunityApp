@@ -115,13 +115,18 @@ export class UserPage {
       .isLoggedIn()
       .then((value: boolean) => {
         canEnter = value;
+        if (!canEnter) {
+          this.navCtrl.setRoot('LoginPage');
+        }
       })
       .catch(err => {
         canEnter = false;
+        this.navCtrl.setRoot('LoginPage');
       });
 
     return canEnter;
   }
+
   initUserProfileForm() {
     this.userProfileForm = this.formBuilder.group({
       name: [this.user.name, [Validators.required, Validators.minLength(4)]],

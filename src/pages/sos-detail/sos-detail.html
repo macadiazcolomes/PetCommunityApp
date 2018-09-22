@@ -83,7 +83,14 @@
           </ion-list>
         </ion-col>
       </ion-row>
-      <div #map id="map">ACÁ VA EL MAPA</div>
+      <div class="location">
+        
+        <div ion-text>{{ 'SOS_DETAIL.MAP_DIRECTIONS' | translate }}</div>
+        <div class="location-map">
+          <div #map id="map" no-padding></div>
+        </div>
+        
+      </div> 
     </div>
     <!--contact info-->
     <ion-list [hidden] = "SOSDetailSection !== 'contact'">
@@ -111,7 +118,7 @@
 
       <ion-item>
         <ion-label floating>{{ 'SOS_DETAIL.CONTACT_EMAIL_LABEL' | translate }}</ion-label>
-        <ion-input type="mail" [readonly] ="mode==='view'" formControlName="contact_email"></ion-input>
+        <ion-input type="email" [readonly] ="mode==='view'" formControlName="contact_email"></ion-input>
       </ion-item>
       <ng-container *ngFor="let message of errorMessages.contact_email">
         <div class="error" *ngIf="SOSDetailForm.get('contact_email').hasError(message.type) && SOSDetailForm.get('contact_email').dirty && SOSDetailForm.get('contact_email').touched">

@@ -30,7 +30,6 @@
   <form novalidate [formGroup]="petAlertDetailForm" >
     <h1 ion-text color="primary">{{ alert.type | alertDetailTitleCode | translate }}</h1>
     
-    
     <ion-list>
       <ion-item>
         <ion-label floating>{{ 'ALERT_DETAIL.NAME_LABEL' | translate }}</ion-label>
@@ -44,7 +43,7 @@
 
       <ion-item>
         <ion-label floating>{{ 'ALERT_DETAIL.DATE_LABEL' | translate }}</ion-label>
-        <ion-datetime [disableControl]="mode==='view'" [displayFormat]="dateformat" formControlName="date" ></ion-datetime>
+        <ion-datetime [disableControl]="mode==='view'" [displayFormat]="dateformat" [min]="localdate" formControlName="date" ></ion-datetime>
       </ion-item>
       <ng-container *ngFor="let message of errorMessages.date">
         <div class="error" *ngIf="petAlertDetailForm.get('date').hasError(message.type)  && petAlertDetailForm.get('date').touched">
@@ -71,7 +70,7 @@
 
       <ion-item *ngIf="petAlertDetailForm.get('reminder').value === true" >
         <ion-label floating>{{ 'ALERT_DETAIL.REMINDER_TIME_LABEL' | translate }}</ion-label>
-        <ion-datetime [disableControl]="mode==='view'" [displayFormat]="dateformat"  formControlName="reminder_time" ></ion-datetime>
+        <ion-datetime [disableControl]="mode==='view'" [displayFormat]="dateformat"  [min]="petAlertDetailForm.get('date').value ? petAlertDetailForm.get('date').value : localdate"  formControlName="reminder_time" ></ion-datetime>
       </ion-item>
       
       <ion-item>

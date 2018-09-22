@@ -97,6 +97,10 @@ export class ServicesMainPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ServicesMainPage');
+  }
+
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter PlaylistsPage');
     this.listSavedServices();
     this.findServices();
   }
@@ -108,9 +112,13 @@ export class ServicesMainPage {
       .isLoggedIn()
       .then((value: boolean) => {
         canEnter = value;
+        if (!canEnter) {
+          this.navCtrl.setRoot('LoginPage');
+        }
       })
       .catch(err => {
         canEnter = false;
+        this.navCtrl.setRoot('LoginPage');
       });
 
     return canEnter;

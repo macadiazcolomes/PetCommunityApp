@@ -68,7 +68,10 @@
         </div>
       </ng-container>
 
-      <ion-item></ion-item>
+      <ion-item no-lines>
+        {{locationStr}}
+      </ion-item>
+      <div hidden></div>
     </ion-list>
     
     <button type="submit" ion-button color="primary" block [disabled]="signupForm.invalid">{{ 'SIGNUP.SIGNUP' | translate }}</button>

@@ -31,7 +31,8 @@ export class LoginPage {
     public navParams: NavParams,
     private login: LoginProvider
   ) {
-    this.login
+    console.log('on constructor');
+    /* this.login
       .isLoggedIn()
       .then((value: boolean) => {
         if (value) {
@@ -40,7 +41,7 @@ export class LoginPage {
       })
       .catch(err => {
         this.generalUtilities.errorCatching(err);
-      });
+      });*/
 
     this.initLoginForm();
     this.initErrorMessages();
@@ -80,17 +81,6 @@ export class LoginPage {
       })
       .catch(err => {
         this.generalUtilities.errorCatching(err, this.loginForm);
-        /*if (err.error.type) {
-          if (err.error.type === 'form') {
-            let control: AbstractControl = this.loginForm.get(
-              err.error.control
-            );
-            let val: ValidationErrors = err.error.data;
-            control.setErrors(val);
-          } else if (err.error.type === 'toast') {
-            this.presentToast(err.error.data);
-          }
-        }*/
       });
   }
 

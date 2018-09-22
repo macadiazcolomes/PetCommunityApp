@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import {
   IonicPage,
   NavController,
@@ -21,6 +21,7 @@ import { LoginProvider } from '../../providers/login/login';
 import { User } from '../../models/user';
 import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
 import { CameraProvider } from '../../providers/camera/camera';
+import { LocationProvider } from '../../providers/location/location';
 
 /**
  * Generated class for the SosDetailPage page.
@@ -47,10 +48,16 @@ export class SosDetailPage {
   private user: User;
   public isOwner: boolean = false;
 
+  public map: any;
+
   @ViewChild('fab')
   fab: FabContainer;
 
+  @ViewChild('map')
+  mapElement: ElementRef;
+
   constructor(
+    private locationProvider: LocationProvider,
     private sosProvider: SosProvider,
     private viewCtrl: ViewController,
     private cameraProvider: CameraProvider,
@@ -82,6 +89,25 @@ export class SosDetailPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad SosDetailPage');
+    /* this.geoLocation = { latitude: -33.5862133, longitude: -71.5971445 };
+
+    this.goeCity = 'San Antonio';
+    this.geoCountry = 'Chile';
+    this.actualLocationStr =
+      '[' + this.geoLocation.latitude + ', ' + this.geoLocation.longitude + ']';
+
+    this.actualCityCountry = this.goeCity + ', ' + this.geoCountry;
+
+    this.loadMap();*/
+    if (this.mode === 'add') {
+      this.getCurrentLocationAndDisplayMap();
+    } else {
+      if (this.sos.location) {
+        this.loadMap();
+      } else {
+        this.getCurrentLocationAndDisplayMap();
+      }
+    }
   }
 
   ionViewCanEnter() {
@@ -91,12 +117,89 @@ export class SosDetailPage {
       .isLoggedIn()
       .then((value: boolean) => {
         canEnter = value;
+        if (!canEnter) {
+          this.navCtrl.setRoot('LoginPage');
+        }
       })
       .catch(err => {
         canEnter = false;
+        this.navCtrl.setRoot('LoginPage');
       });
 
     return canEnter;
+  }
+
+  getCurrentLocationAndDisplayMap() {
+    this.locationProvider
+      .getlocation()
+      .then(location => {
+        this.sos.location = location;
+        this.getCityAndCountryFromLocation();
+        this.loadMap();
+      })
+      .catch(err => {
+        //get a location based on city
+        if (this.user.city && this.user.country) {
+          this.locationProvider
+            .getLocationFromCityName(this.user.city + ', ' + this.user.country)
+            .then(data => {
+              this.sos.location = {
+                latitude: Number(data[0].latitude),
+                longitude: Number(data[0].longitude),
+              };
+              this.getCityAndCountryFromLocation();
+              this.loadMap();
+            });
+        }
+        this.generalUtilities.errorCatching(err);
+      });
+  }
+
+  getCityAndCountryFromLocation() {
+    this.locationProvider
+      .getCityAndCountryFromLocation()
+      .then(data => {
+        this.sos.city = data.city;
+        this.sos.country = data.country;
+      })
+      .catch(err => {
+        this.sos.city = this.user.city;
+        this.sos.country = this.user.country;
+      });
+  }
+
+  loadMap() {
+    let latLng = new google.maps.LatLng(
+      this.sos.location.latitude,
+      this.sos.location.longitude
+    );
+    let mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+    };
+    this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+    this.addMarker(latLng, 'SOS');
+  }
+
+  addMarker(posInfo, info) {
+    let marker = new google.maps.Marker({
+      map: this.map,
+      animation: google.maps.Animation.DROP,
+      position: posInfo,
+      draggable: true,
+      label: info,
+    });
+    marker.addListener('dragend', () => {
+      let position = marker.getPosition();
+      console.log('marker pos', position.lat(), position.lng());
+      this.setGeoDataFromLocation(position.lat(), position.lng());
+    });
+  }
+
+  setGeoDataFromLocation(lat: number, lng: number) {
+    this.sos.location = { latitude: lat, longitude: lng };
+    this.getCityAndCountryFromLocation();
   }
 
   initSOSDetailForm() {

@@ -76,8 +76,14 @@ export class MyPetsMainPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad MyPetsMainPage');
+    // this.listPets();
+  }
+
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter MyPetsMainPage');
     this.listPets();
   }
+
   ionViewCanEnter() {
     console.log('ionViewCanEnter ' + this.login.isLoggedIn());
     let canEnter: boolean;
@@ -85,9 +91,13 @@ export class MyPetsMainPage {
       .isLoggedIn()
       .then((value: boolean) => {
         canEnter = value;
+        if (!canEnter) {
+          this.navCtrl.setRoot('LoginPage');
+        }
       })
       .catch(err => {
         canEnter = false;
+        this.navCtrl.setRoot('LoginPage');
       });
 
     return canEnter;
