@@ -5,27 +5,24 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
     <ion-toolbar color="primary">
       <ion-buttons left>
         <button ion-button icon-only (click)="close()">
           <ion-icon name="close"></ion-icon>
         </button>
       </ion-buttons>
-      <ion-title>{{ 'SOS_MESSAGES_DETAIL.TITLE' | translate }}</ion-title>
-      
+     <!-- <ion-title>{{ 'SOS_MESSAGES_DETAIL.TITLE' | translate }}</ion-title>-->
+      <ion-title>{{ sos.short_description }}</ion-title>
     </ion-toolbar>
-
+    <ion-item no-lines >
+      <ion-icon name="mail" item-start color="primary"></ion-icon>
+      <h2 *ngIf="isOwner"> {{ 'SOS_MESSAGES_DETAIL.SUBTITLE' | translate }} {{ helper.name }}</h2>
+      <h2 *ngIf="!isOwner"> {{ 'SOS_MESSAGES_DETAIL.SUBTITLE' | translate }} {{ userSOSCreator?.name }}</h2>
+    </ion-item>
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item no-lines >
-    <ion-icon name="mail" item-start color="primary"></ion-icon>
-    <h1 ion-text color="primary"> {{ sos.short_description }}</h1>
-    <h2 *ngIf="isOwner"> {{ 'SOS_MESSAGES_DETAIL.SUBTITLE' | translate }} {{ helper.name }}</h2>
-    <h2 *ngIf="!isOwner"> {{ 'SOS_MESSAGES_DETAIL.SUBTITLE' | translate }} {{ userSOSCreator?.name }}</h2>
-  </ion-item>
   
   <ion-list no-lines>
     <ion-item *ngFor="let message of messages" [ngClass]="message.type == 'to' ? 'user_1': 'user_2'" text-wrap>
@@ -41,7 +38,7 @@
   
 </ion-content>
 
-<ion-footer >
+<ion-footer no-lines>
   <ion-list no-lines>
     <ion-item>
       <ion-textarea #textarea class="textarea" [(ngModel)]="messageText" type="text"></ion-textarea>
