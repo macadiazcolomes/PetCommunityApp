@@ -5,6 +5,7 @@ import {
   NavParams,
   ViewController,
   DateTime,
+  Content,
 } from 'ionic-angular';
 import { User } from '../../models/user';
 import { SOS } from '../../models/sos';
@@ -14,6 +15,9 @@ import { Message } from '../../models/message';
 import { LoginProvider } from '../../providers/login/login';
 import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
 import { UsersProvider } from '../../providers/users/users';
+import { Socket } from 'ng-socket-io';
+import { Observable } from 'rxjs';
+
 /**
  * Generated class for the SosMessagesDetailPage page.
  *
@@ -37,7 +41,10 @@ export class SosMessagesDetailPage {
 
   @ViewChild('textarea')
   textarea;
+  @ViewChild(Content)
+  content: Content;
   constructor(
+    private socket: Socket,
     public viewCtrl: ViewController,
     public userProvider: UsersProvider,
     public login: LoginProvider,
@@ -66,6 +73,14 @@ export class SosMessagesDetailPage {
     console.log('helper: ' + this.helper, 'sos: ' + this.sos.id);
 
     this.getMessages();
+
+    //single messages received via socket
+    this.getMessagesViaSocket().subscribe((message: Message) => {
+      this.messages.push(message);
+      setTimeout(() => {
+        this.content.scrollToBottom();
+      }, 100);
+    });
   }
 
   getMessages() {
@@ -73,10 +88,28 @@ export class SosMessagesDetailPage {
       .getUserMessages(this.sos.id, this.helper.id)
       .then((messages: Message[]) => {
         this.messages = messages;
+
+        //conecting via socket
+        this.socket.connect();
+        this.socket.emit('join:room', this.sos.id);
       })
       .catch(err => this.generalUtilities.errorCatching(err));
   }
+  getMessagesViaSocket() {
+    let observable = new Observable(observer => {
+      this.socket.on('message', data => {
+        observer.next(data);
+      });
+    });
+    return observable;
+  }
 
+  ionViewWillEnter() {
+    console.log('ionViewWillEnter SosMessagesDetailPage');
+    setTimeout(() => {
+      this.content.scrollToBottom();
+    }, 200);
+  }
   ionViewDidLoad() {
     console.log('ionViewDidLoad SosMessagesDetailPage');
   }
@@ -116,18 +149,21 @@ export class SosMessagesDetailPage {
     this.msgeProvider
       .sendMessage(this.sos.id, this.doCreateMessage())
       .then((message: Message) => {
+        //sending socket broadcast
+        this.socket.emit('message', message);
         console.log('message sent');
         this.messageText = '';
         setTimeout(() => {
           this.textarea.setFocus();
         }, 0);
-        this.getMessages();
+        //this.getMessages();
       })
       .catch(err => this.generalUtilities.errorCatching(err));
   }
 
   close() {
     console.log('[SosMessagesDetailPage] close()');
+    this.socket.disconnect();
     this.viewCtrl.dismiss();
   }
 }

@@ -27,7 +27,11 @@ import { SosMessagesProvider } from '../providers/sos-messages/sos-messages';
 
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { IonicStorageModule, Storage } from '@ionic/storage';
-import { MONGODB_URL_BASE, LOGIN_TOKEN_STORAGE_VAR } from '../providers/config';
+import {
+  MONGODB_URL_BASE,
+  LOGIN_TOKEN_STORAGE_VAR,
+  SOCKET_URL,
+} from '../providers/config';
 import { GeneralUtilitiesProvider } from '../providers/general-utilities/general-utilities';
 
 import { Globalization } from '@ionic-native/globalization';
@@ -39,6 +43,13 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { LocationProvider } from '../providers/location/location';
 import { CameraProvider } from '../providers/camera/camera';
 import { DateFormatProvider } from '../providers/date-format/date-format';
+
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+
+const config: SocketIoConfig = {
+  url: SOCKET_URL,
+  options: {},
+};
 
 @NgModule({
   declarations: [MyApp],
@@ -53,6 +64,7 @@ import { DateFormatProvider } from '../providers/date-format/date-format';
         deps: [HttpClient],
       },
     }),
+    SocketIoModule.forRoot(config),
     DirectivesModule,
     PipesModule,
     SocialMediaFormModule,
