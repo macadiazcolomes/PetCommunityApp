@@ -71,9 +71,7 @@ export class LoginProvider {
                           this.user = user;
                         })
                         .catch(err => reject(err));
-                    } /*else {
-                      console.log('no need to update user...', pushData);
-                    }*/
+                    }
                   });
                   resolve();
                 })

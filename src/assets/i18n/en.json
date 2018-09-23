@@ -217,6 +217,7 @@
       "OTHER": "Other"
     },
     "MENU": {
+      "ADD_SERVICE": "Add service",
       "VIEW_SERVICE": "View service",
       "EDIT_SERVICE": "Edit service",
       "DELETE_SERVICE": "Delete service"

@@ -51,6 +51,9 @@ export class SavedServicesProvider {
           let url = MONGODB_URL + `/protected/users/${user.id}/services`;
           this.http.get(url).subscribe(
             (services: Service[]) => {
+              if (!services) {
+                return resolve();
+              }
               let serviceObj = services.map(service => {
                 service.social_media = socialMediaFormat(
                   service.social_media,
@@ -59,6 +62,7 @@ export class SavedServicesProvider {
 
                 return service;
               });
+              console.log(serviceObj);
               resolve(serviceObj);
             },
             err => reject(err)

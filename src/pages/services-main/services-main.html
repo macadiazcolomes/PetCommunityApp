@@ -16,8 +16,8 @@
   
   <ion-toolbar no-border-top color="primary">
     <ion-segment [(ngModel)]="serviceSection" color="light">
-      <ion-segment-button value="saved">{{ 'SERVICES_MAIN.SECTION_SAVED_TITLE' | translate }}</ion-segment-button>
-      <ion-segment-button value="search">{{ 'SERVICES_MAIN.SECTION_SEARCH_TITLE' | translate }}</ion-segment-button>
+      <ion-segment-button value="saved" (click)= listSavedServices()>{{ 'SERVICES_MAIN.SECTION_SAVED_TITLE' | translate }}</ion-segment-button>
+      <ion-segment-button value="search" (click)="findServices()">{{ 'SERVICES_MAIN.SECTION_SEARCH_TITLE' | translate }}</ion-segment-button>
     </ion-segment>
   </ion-toolbar>
   
@@ -50,10 +50,10 @@
         <ion-item>
           <ion-label>{{ 'SERVICES_MAIN.SERVICE_TYPE_LABEL' | translate }}</ion-label>
           <ion-select [(ngModel)]="serviceSearchType" (ionChange)="findServices()" >
-            <ion-option *ngFor="let serviceType of serviceTypesList" [value]="serviceType">{{ serviceType | serviceTypeCode | translate }}</ion-option>
+            <ion-option *ngFor="let serviceType of serviceTypeListNoOther" [value]="serviceType">{{ serviceType | serviceTypeCode | translate }}</ion-option>
           </ion-select>
         </ion-item>
-        <ion-item>
+        <!--<ion-item>
           <ion-label>{{ 'SERVICES_MAIN.LOCATION_TYPE_LABEL' | translate }}</ion-label>
           <ion-select [(ngModel)]="serviceLocationType" (ionChange)="findServices()">
             <ion-option *ngFor="let locationType of locationTypesList" [value]="locationType">{{ locationType | serviceLocationTypeCode | translate }}</ion-option>
@@ -65,10 +65,10 @@
           <button ion-button clear item-end   (click)= "findServices()">
             <ion-icon name="search"></ion-icon>
           </button>
-        </ion-item>
+        </ion-item>-->
 
     </ion-list>
- 
+    <ion-spinner *ngIf="showSpinner === true"></ion-spinner>
     <ion-list>
       <ion-item no-padding *ngFor="let service of foundServices">
         <ion-avatar item-start>
@@ -76,6 +76,9 @@
         </ion-avatar>
         <h2> {{ service.business_name }}</h2>
         <p> {{ service.phone }}</p>
+        <button ion-button clear item-end (click)="showFoundServiceMenu(service)" >
+          <ion-icon name="more"></ion-icon>
+        </button>
       </ion-item>
       
     </ion-list>

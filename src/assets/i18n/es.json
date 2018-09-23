@@ -217,6 +217,7 @@
       "OTHER": "Otros"
     },
     "MENU": {
+      "ADD_SERVICE": "Agregar servicio",
       "VIEW_SERVICE": "Ver servicio",
       "EDIT_SERVICE": "Editar servicio",
       "DELETE_SERVICE": "Eliminar servicio"

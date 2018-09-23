@@ -41,17 +41,21 @@ export class ServicesMainPage {
   private action_view_title: string;
   private action_edit_title: string;
   private action_delete_title: string;
+  private action_add_title: string;
 
   public serviceSection: string;
   public serviceSearchType: string;
   public serviceLocationType: string;
-  public location: string;
+  public locationStr: string;
 
   public serviceTypesList = serviceTypesList;
+  public serviceTypeListNoOther: string[];
   public locationTypesList = locationTypesList;
 
   public savedServices: Service[];
   public foundServices: Service[];
+
+  public showSpinner: boolean = false;
 
   constructor(
     private generalUtilities: GeneralUtilitiesProvider,
@@ -65,12 +69,14 @@ export class ServicesMainPage {
     public navCtrl: NavController,
     public navParams: NavParams
   ) {
+    this.serviceTypeListNoOther = ['veterinary_care', 'pet_store'];
     this.serviceSection = 'saved';
     this.serviceSearchType = 'veterinary_care';
-    this.serviceLocationType = 'current';
-    this.location = '';
 
     //translations
+    translate
+      .get('SERVICES_MAIN.MENU.ADD_SERVICE')
+      .subscribe((text: string) => (this.action_add_title = text));
     translate
       .get('SERVICES_MAIN.MENU.VIEW_SERVICE')
       .subscribe((text: string) => (this.action_view_title = text));
@@ -102,7 +108,6 @@ export class ServicesMainPage {
   ionViewWillEnter() {
     console.log('ionViewWillEnter PlaylistsPage');
     this.listSavedServices();
-    this.findServices();
   }
 
   ionViewCanEnter() {
@@ -130,25 +135,28 @@ export class ServicesMainPage {
       .listServices()
       .then((services: Service[]) => {
         this.savedServices = services;
+        console.log('saved services', this.savedServices);
       })
       .catch(err => {
         this.generalUtilities.errorCatching(err);
       });
   }
 
-  //TODO
   findServices() {
     console.log('[ServicesMainPage] findServices');
-    console.log(
-      this.serviceSearchType,
-      this.serviceLocationType,
-      this.location
-    );
-    this.foundServices = this.searchProvider.findServices(
-      this.serviceSearchType,
-      this.serviceLocationType,
-      this.location
-    );
+    //console.log(this.serviceSearchType);
+
+    this.searchProvider
+      .findServices(this.serviceSearchType)
+      .then((services: Service[]) => {
+        this.foundServices = services;
+        console.log('found services', this.foundServices);
+        this.showSpinner = false;
+      })
+      .catch(err => {
+        this.showSpinner = false;
+        this.generalUtilities.errorCatching(err);
+      });
   }
 
   showServiceMenu(service: Service) {
@@ -176,6 +184,31 @@ export class ServicesMainPage {
           handler: () => {
             console.log('delete service ');
             this.doDeleteService(service);
+          },
+        },
+      ],
+    });
+    actionSheet.present();
+  }
+
+  showFoundServiceMenu(service: Service) {
+    let actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: this.action_add_title,
+          icon: 'add',
+          handler: () => {
+            console.log('Add service detail');
+            let dlg = this.modalCtrl.create('ServicesDetailPage', {
+              mode: 'add',
+              service: service,
+            });
+            dlg.onDidDismiss(service => {
+              if (service) {
+                this.listSavedServices();
+              }
+            });
+            dlg.present();
           },
         },
       ],
