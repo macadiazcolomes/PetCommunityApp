@@ -130,7 +130,7 @@
     <!--notes-->
     <ion-list [hidden]= "SOSDetailSection !=='notes'">
       <ion-item-divider color="light">{{ 'SOS_DETAIL.NOTES_DIVIDER' | translate }}</ion-item-divider>
-      <ion-textarea type="text"[readonly]="mode==='view'" formControlName="notes" ></ion-textarea>
+      <ion-textarea class="textarea-no-radius" type="text"[readonly]="mode==='view'" formControlName="notes" ></ion-textarea>
     </ion-list>
 
   </form>

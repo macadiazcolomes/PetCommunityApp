@@ -14,4 +14,5 @@ export interface User {
   services?: string[];
   resetPasswordToken?: string;
   resetPasswordExpires?: Date;
+  push_notification_ids?: string[];
 }

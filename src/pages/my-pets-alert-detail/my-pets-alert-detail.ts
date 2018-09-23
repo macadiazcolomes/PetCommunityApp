@@ -20,7 +20,6 @@ import { SavedServicesProvider } from '../../providers/services/saved';
 import { PetAlertsProvider } from '../../providers/pet-alerts/pet-alerts';
 import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
 import { DateFormatProvider } from '../../providers/date-format/date-format';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 import { LoginProvider } from '../../providers/login/login';
 import * as moment from 'moment';
 import 'moment/locale/es';
@@ -51,7 +50,6 @@ export class MyPetsAlertDetailPage {
 
   constructor(
     private login: LoginProvider,
-    private localNotifications: LocalNotifications,
     private viewCtrl: ViewController,
     private dateFormatProvider: DateFormatProvider,
     private generalUtilities: GeneralUtilitiesProvider,
@@ -63,14 +61,6 @@ export class MyPetsAlertDetailPage {
   ) {
     console.log('constructor MyPetsAlertDetailPage');
     this.localdate = moment().format();
-
-    /*this.platform.ready().then(readySource => {
-      this.localNotifications.on('click', (notification, state) => {
-        console.log('notification clicked', JSON.parse(notification.data));
-
-        this.initialization();
-      });
-    });*/
 
     this.initialization();
   }
@@ -151,7 +141,9 @@ export class MyPetsAlertDetailPage {
         'reminder_time'
       );
       if (reminder) {
-        reminder_time.setValue(moment().format());
+        if (!this.alert.reminder) {
+          reminder_time.setValue(moment().format());
+        }
       } else {
         reminder_time.setValue(null);
       }
@@ -185,7 +177,6 @@ export class MyPetsAlertDetailPage {
           .addPetAlert(this.pet, updatedAlert)
           .then(alert => {
             console.log('alert created successfully');
-            this.scheduleNotification(alert);
             this.viewCtrl.dismiss(alert);
           })
           .catch(err => this.generalUtilities.errorCatching(err));
@@ -195,35 +186,14 @@ export class MyPetsAlertDetailPage {
           .then(alert => {
             console.log('alert updated successfully');
             if (updatedAlert.reminder) {
-              this.scheduleNotification(alert);
             } else if (this.alert.reminder_id) {
-              this.localNotifications.cancel(this.alert.reminder_id);
+              //TODO CANCEL PUSH NOTIFICATION
             }
 
             this.viewCtrl.dismiss(alert);
           })
           .catch(err => this.generalUtilities.errorCatching(err));
       }
-    }
-  }
-
-  scheduleNotification(alert: Alert) {
-    let pet: Pet = this.pet;
-    if (pet.avatar) {
-      delete pet.avatar;
-    }
-    if (alert.reminder) {
-      let text = '[' + alert.date.toLocaleString() + '] ';
-      if (alert.notes) {
-        text = text + alert.notes;
-      }
-      this.localNotifications.schedule({
-        id: alert.reminder_id,
-        title: alert.name,
-        text: text,
-        data: { type: 'alert', alert: alert, pet: this.pet },
-        at: new Date(alert.reminder_time).getTime(),
-      });
     }
   }
 

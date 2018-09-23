@@ -161,6 +161,11 @@
     "SOCIAL_MEDIA_QUESTION": "Does your pet have social media?",
     "GENDER_MALE": "Male",
     "GENDER_FEMALE": "Female",
+    "SPECIES_TEXT": {
+      "DOG": "Dog",
+      "CAT": "Cat",
+      "OTHER": "Other"
+    },
     "ERROR_MESSAGES": {
       "PETNAME": {
         "REQUIRED": "Petname is required.",

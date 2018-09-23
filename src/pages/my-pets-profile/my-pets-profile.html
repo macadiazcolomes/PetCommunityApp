@@ -64,7 +64,7 @@
       <ion-item>
         <ion-label floating>{{ 'PET.SPECIES_LABEL' | translate }}</ion-label>
         <ion-select [disableControl]="mode==='view'"  formControlName="species">
-          <ion-option *ngFor="let specie of speciesList" [value] ="specie.code">{{ specie.code }}</ion-option> 
+          <ion-option *ngFor="let specie of speciesList" [value] ="specie.code">{{ specie.code | speciesCode | translate }}</ion-option> 
         </ion-select>
       </ion-item> 
       <ng-container *ngFor="let message of errorMessages.species">

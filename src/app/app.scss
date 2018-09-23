@@ -64,3 +64,16 @@ ion-modal > .modal-wrapper {
   height: 100%;
   contain: strict;
 }
+
+.textarea {
+  border-radius: 10px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.textarea-no-radius {
+  border: 1px solid #cccccc;
+  padding: 5px;
+  margin: 0px;
+}

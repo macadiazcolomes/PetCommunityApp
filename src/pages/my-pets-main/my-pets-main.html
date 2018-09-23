@@ -31,7 +31,7 @@
           <ion-col col-4>
             <img class='avatar_image' [src]="pet.avatar ? pet.avatar : 'assets/imgs/avatar.png'">
             
-            <h5>{{ pet?.species}}</h5>
+            <h5>{{ pet?.species | speciesCode | translate }}</h5>
             <h5>{{ pet?.breed }}</h5>
           </ion-col>
           <ion-col col-8>

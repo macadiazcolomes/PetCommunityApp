@@ -96,7 +96,7 @@
 
         <ion-item>
           <ion-label floating>{{ 'SERVICE_DETAIL.NOTES_LABEL' | translate }}</ion-label>
-          <ion-textarea type="text" [readonly]="mode==='view'" formControlName="notes"></ion-textarea>
+          <ion-textarea class="textarea-no-radius" type="text" [readonly]="mode==='view'" formControlName="notes"></ion-textarea>
         </ion-item>
         <ng-container *ngFor="let message of errorMessages.notes">
           <div class="error" *ngIf="serviceDetailForm.get('notes').hasError(message.type) && serviceDetailForm.get('notes').dirty && serviceDetailForm.get('notes').touched">

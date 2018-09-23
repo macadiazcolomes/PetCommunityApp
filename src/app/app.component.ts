@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { Platform, ModalController } from 'ionic-angular';
+import { Platform, ModalController, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TranslateService } from '@ngx-translate/core';
 import { Globalization } from '@ionic-native/globalization';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 import { LoginProvider } from '../providers/login/login';
+import { OneSignal } from '@ionic-native/onesignal';
+import { ONE_SIGNAL_APP_ID, FIREBASE_SENDER_ID } from '../providers/config';
 
 @Component({
   templateUrl: 'app.html',
@@ -15,9 +16,10 @@ export class MyApp {
   rootPage: any;
 
   constructor(
+    private alertCtrl: AlertController,
+    private oneSignal: OneSignal,
     private login: LoginProvider,
     public modalCtrl: ModalController,
-    private localNotifications: LocalNotifications,
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
@@ -44,29 +46,42 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
 
       statusBar.styleDefault();
-
       this.initTranslate();
 
-      this.localNotifications.on('click', (notification, state) => {
-        let data = JSON.parse(notification.data);
-        console.log('notification clicked', data, data.type, state);
-
-        if (data.type === 'alert') {
-          console.log('is an alert notification');
-          this.rootPage = 'MenuPage';
-          setTimeout(() => {
-            let dlg = this.modalCtrl.create('MyPetsAlertDetailPage', {
-              mode: 'view',
-              alert: data.alert,
-              pet: data.pet,
-            });
-            dlg.present();
-          }, 0);
-        }
-      });
+      console.log('PLATFORM', platform);
+      if (platform.is('cordova')) {
+        this.setupPush();
+      }
 
       //splashScreen.hide();
     });
+  }
+
+  setupPush() {
+    this.oneSignal.startInit(ONE_SIGNAL_APP_ID, FIREBASE_SENDER_ID);
+
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
+      console.log('We received a push: ', data);
+    });
+    this.oneSignal.inFocusDisplaying(
+      this.oneSignal.OSInFocusDisplayOption.Notification
+    );
+    this.oneSignal.handleNotificationOpened().subscribe(data => {
+      console.log('We opened a push: ', data);
+      //TODO... actions dependind on push data...
+      let additionalData = data.notification.payload.additionalData;
+      if (additionalData.action === 'open') {
+        this.rootPage = 'MenuPage';
+        setTimeout(() => {
+          let dlg = this.modalCtrl.create(
+            additionalData.page,
+            additionalData.params
+          );
+          dlg.present();
+        }, 0);
+      }
+    });
+    this.oneSignal.endInit();
   }
 
   initTranslate() {

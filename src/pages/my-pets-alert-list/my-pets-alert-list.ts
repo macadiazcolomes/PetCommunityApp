@@ -16,7 +16,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { GeneralUtilitiesProvider } from '../../providers/general-utilities/general-utilities';
 import { LoginProvider } from '../../providers/login/login';
 import { DateFormatProvider } from '../../providers/date-format/date-format';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 /**
  * Generated class for the MyPetsAlertListPage page.
  *
@@ -46,7 +45,6 @@ export class MyPetsAlertListPage {
   public dateformat: string;
   constructor(
     private platform: Platform,
-    private localNotifications: LocalNotifications,
     private dateFormatProvider: DateFormatProvider,
     private login: LoginProvider,
     private generalUtilities: GeneralUtilitiesProvider,
@@ -225,7 +223,7 @@ export class MyPetsAlertListPage {
               .then(() => {
                 console.log('alert deleted');
                 if (alert.reminder_id) {
-                  this.localNotifications.cancel(alert.reminder_id);
+                  //TODO CANCEL PUSH NOTIFICATION
                 }
                 this.listPetAlerts();
               })

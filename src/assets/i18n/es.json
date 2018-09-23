@@ -161,6 +161,11 @@
     "SOCIAL_MEDIA_QUESTION": "Tu mascota, ¿tiene alguna red social?",
     "GENDER_MALE": "Macho",
     "GENDER_FEMALE": "Hembra",
+    "SPECIES_TEXT": {
+      "DOG": "Perro",
+      "CAT": "Gato",
+      "OTHER": "Otro"
+    },
     "ERROR_MESSAGES": {
       "PETNAME": {
         "REQUIRED": "Debe escribir el nombre de la mascota.",

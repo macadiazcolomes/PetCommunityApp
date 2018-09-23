@@ -10,4 +10,5 @@ export interface Alert {
   reminder?: boolean;
   reminder_time?: Date;
   reminder_id?: number;
+  push_notification_id?: string;
 }

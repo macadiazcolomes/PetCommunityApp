@@ -70,12 +70,12 @@
 
       <ion-item *ngIf="petAlertDetailForm.get('reminder').value === true" >
         <ion-label floating>{{ 'ALERT_DETAIL.REMINDER_TIME_LABEL' | translate }}</ion-label>
-        <ion-datetime [disableControl]="mode==='view'" [displayFormat]="dateformat"  [min]="petAlertDetailForm.get('date').value ? petAlertDetailForm.get('date').value : localdate"  formControlName="reminder_time" ></ion-datetime>
+        <ion-datetime [disableControl]="mode==='view'" [displayFormat]="dateformat"  [min]="localdate"  formControlName="reminder_time" ></ion-datetime>
       </ion-item>
       
       <ion-item>
         <ion-label floating>{{ 'ALERT_DETAIL.NOTES_LABEL' | translate }}</ion-label>
-        <ion-textarea type="text" [readonly]="mode==='view'" formControlName="notes"></ion-textarea>
+        <ion-textarea class="textarea-no-radius" type="text" [readonly]="mode==='view'" formControlName="notes"></ion-textarea>
       </ion-item>
       <ng-container *ngFor="let message of errorMessages.notes">
         <div class="error" *ngIf="petAlertDetailForm.get('notes').hasError(message.type) && petAlertDetailForm.get('notes').dirty && petAlertDetailForm.get('notes').touched">

@@ -10,6 +10,8 @@ import {
   USERID_STORAGE_VAR,
 } from '../../providers/config';
 import { TranslateService } from '@ngx-translate/core';
+import { OneSignal } from '@ionic-native/onesignal';
+
 /*
   Generated class for the LoginProvider provider.
 
@@ -25,6 +27,7 @@ export class LoginProvider {
   //private userId: string;
 
   constructor(
+    private oneSignal: OneSignal,
     public translate: TranslateService,
     public users: UsersProvider,
     public storage: Storage,
@@ -41,7 +44,44 @@ export class LoginProvider {
         (data: { userId: string; token: string }) => {
           //this.userId = data.userId;
           this.token = data.token;
-          this.storage
+          let promises: Promise<void>[] = [
+            this.storage.set(LOGIN_TOKEN_STORAGE_VAR, this.token),
+            this.storage.set(USERID_STORAGE_VAR, data.userId),
+          ];
+          Promise.all(promises)
+            .then(() => {
+              this.users
+                .getUser(data.userId)
+                .then(user => {
+                  //get user
+                  this.user = user;
+                  //console.log('getting the user...');
+                  // get onsignal push id,
+                  this.oneSignal.getIds().then(pushData => {
+                    //console.log('getting push ids...', pushData);
+                    if (
+                      user.push_notification_ids.indexOf(pushData.userId) === -1
+                    ) {
+                      //update user
+                      this.user.push_notification_ids.push(pushData.userId);
+                      //console.log('update user', this.user);
+                      this.users
+                        .updateUser(this.user)
+                        .then((user: User) => {
+                          this.user = user;
+                        })
+                        .catch(err => reject(err));
+                    } /*else {
+                      console.log('no need to update user...', pushData);
+                    }*/
+                  });
+                  resolve();
+                })
+                .catch(err => reject(err));
+            })
+            .catch(err => reject(err));
+
+          /*this.storage
             .set(LOGIN_TOKEN_STORAGE_VAR, this.token)
             .then(() => resolve())
             .catch(err => reject(err));
@@ -50,9 +90,28 @@ export class LoginProvider {
             .then(() => resolve())
             .catch(err => reject(err));
           this.users.getUser(data.userId).then(user => {
+            //get user
             this.user = user;
+            console.log('getting the user...');
+            // get onsignal push id,
+            this.oneSignal.getIds().then(pushData => {
+              console.log('getting push ids...', pushData);
+              if (user.push_notification_ids.indexOf(pushData.userId) === -1) {
+                //update user
+                this.user.push_notification_ids.push(pushData.userId);
+                console.log('update user', this.user);
+                this.users
+                  .updateUser(this.user)
+                  .then((user: User) => {
+                    this.user = user;
+                  })
+                  .catch(err => reject(err));
+              } else {
+                console.log('no need to update user...', pushData);
+              }
+            });
             resolve();
-          });
+          });*/
         },
         err => reject(err)
       );
