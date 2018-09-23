@@ -82,6 +82,7 @@
             <div hidden></div>
           </ion-list>
         </ion-col>
+    
       </ion-row>
       <div class="location">
         
@@ -89,7 +90,11 @@
         <div class="location-map">
           <div #map id="map" no-padding></div>
         </div>
-        
+        <ion-fab mini bottom left  #fabHelpOut *ngIf="!isOwner && !isHelping">
+          <button ion-fab mini (click) ="doHelpOut()">
+            <ion-icon name="help-buoy"></ion-icon>
+          </button>
+        </ion-fab>
       </div> 
     </div>
     <!--contact info-->

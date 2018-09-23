@@ -6,6 +6,7 @@ import {
   NavParams,
   ActionSheetController,
   ViewController,
+  ModalController,
 } from 'ionic-angular';
 
 import { SOS } from '../../models/sos';
@@ -47,6 +48,7 @@ export class SosDetailPage {
   public SOSHelpersList: User[];
   private user: User;
   public isOwner: boolean = false;
+  public isHelping: boolean = false;
 
   public map: any;
 
@@ -57,6 +59,7 @@ export class SosDetailPage {
   mapElement: ElementRef;
 
   constructor(
+    private modalCtrl: ModalController,
     private locationProvider: LocationProvider,
     private sosProvider: SosProvider,
     private viewCtrl: ViewController,
@@ -78,6 +81,10 @@ export class SosDetailPage {
       .then((user: User) => {
         this.user = user;
         this.isOwner = this.user.id === this.sos.userID_creator.toString();
+        this.isHelping = this.sosProvider.isUserHelpingOut(
+          this.user.id,
+          this.sos
+        );
       })
       .catch(err => this.generalUtilities.errorCatching(err));
 
@@ -179,17 +186,27 @@ export class SosDetailPage {
       mapTypeId: google.maps.MapTypeId.ROADMAP,
     };
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    this.addMarker(latLng, 'SOS');
+    let draggable: boolean = this.mode !== 'view';
+    let marker = this.addMarker(latLng, 'SOS', draggable);
+    console.log('mode', this.mode);
+    if (this.mode !== 'view') {
+      console.log('calling marker lstener function');
+      this.addMarkerListener(marker);
+    }
   }
 
-  addMarker(posInfo, info) {
+  addMarker(posInfo, info, draggable) {
     let marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
       position: posInfo,
-      draggable: true,
+      draggable: draggable,
       label: info,
     });
+    return marker;
+  }
+
+  addMarkerListener(marker) {
     marker.addListener('dragend', () => {
       let position = marker.getPosition();
       console.log('marker pos', position.lat(), position.lng());
@@ -309,9 +326,12 @@ export class SosDetailPage {
       });
   }
 
-  close() {
-    console.log('[SosDetailPage] close()');
-    this.viewCtrl.dismiss();
+  doMessage(helper: User) {
+    let dlg = this.modalCtrl.create('SosMessagesDetailPage', {
+      sos: this.sos,
+      helper: helper,
+    });
+    dlg.present();
   }
 
   doSaveChanges() {
@@ -349,8 +369,23 @@ export class SosDetailPage {
       }
     }
   }
+  doHelpOut() {
+    this.sosProvider
+      .updateSOSHelper(this.sos.id, true)
+      .then((sos: SOS) => {
+        this.sos = sos;
+        this.isHelping = true;
+        this.generalUtilities.presentToast('SOS_DETAIL.HELP_OUT_TOAST_MESSAGE');
+      })
+      .catch(err => this.generalUtilities.errorCatching(err));
+  }
 
   edit() {
     this.mode = 'edit';
+  }
+
+  close() {
+    console.log('[SosDetailPage] close()');
+    this.viewCtrl.dismiss(this.sos);
   }
 }

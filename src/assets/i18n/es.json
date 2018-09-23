@@ -350,7 +350,8 @@
     "CONTACT_PHONE_LABEL": "Número de teléfono",
     "CONTACT_EMAIL_LABEL": "Email",
     "NOTES_DIVIDER": "Notas",
-    "MAP_DIRECTIONS": "Please, drag the marker to set the SOS location",
+    "MAP_DIRECTIONS": "Arrastra el pin a la ubicacón deseada",
+    "HELP_OUT_TOAST_MESSAGE": "¡Gracias por ayudar!",
     "ERROR_MESSAGES": {
       "SOSSHORTDESCRIPTION": {
         "REQUIRED": "Debe escribir la descripción del SOS.",

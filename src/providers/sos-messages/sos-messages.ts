@@ -69,7 +69,8 @@ export class SosMessagesProvider {
   }
 
   getUnreadCounter(sosID: string, to: string): number {
-    return 3;
+    //TODO
+    return 0;
   }
 
   getUserMessages(sosId: string, helperId: string): Promise<Message[]> {

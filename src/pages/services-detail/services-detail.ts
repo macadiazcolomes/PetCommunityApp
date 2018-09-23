@@ -182,7 +182,7 @@ export class ServicesDetailPage {
 
       //CREATE updated service
       updatedService = Object.assign({}, this.service, values);
-
+      console.log('service to save', updatedService);
       //database
       if (this.mode === 'add') {
         this.savedServiceProvider

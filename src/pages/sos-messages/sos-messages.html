@@ -30,7 +30,7 @@
         <img [src]=" user.avatar ? user.avatar : 'assets/imgs/avatar.png'">
       </ion-avatar>
       <h2> {{ user.name }}</h2>
-      <ion-badge item-end>{{ getNotReadCount(user.id) }}</ion-badge>
+      <ion-badge item-end *ngIf="getNotReadCount(user.id) > 0">{{ getNotReadCount(user.id) }}</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

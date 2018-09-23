@@ -70,7 +70,6 @@ export class SosMainPage {
       .getUser()
       .then((user: User) => {
         this.user = user;
-        console.log('AAAAA', this.user);
         if (!this.user.city || !this.user.country) {
           this.doShowNoLocationAlert();
         }
@@ -295,26 +294,30 @@ export class SosMainPage {
     this.SOSProvider.listSOShelpers(sos)
       .then((users: User[]) => {
         helpersList = users;
+
+        let dlg = this.modalCtrl.create('SosDetailPage', {
+          mode: 'view',
+          sos: sos,
+          helpersList: helpersList,
+        });
+        dlg.onDidDismiss(sos => {
+          if (sos) {
+            if (this.sosSection === 'current') {
+              this.listCurrentSOS();
+            } else if (this.sosSection === 'helping') {
+              this.listHelpingOutSOS();
+            } else if (this.sosSection === 'mySOS') {
+              this.listMySOS();
+            } else {
+              this.listCurrentSOS();
+              this.listMySOS();
+              this.listHelpingOutSOS();
+            }
+          }
+        });
+        dlg.present();
       })
       .catch(err => this.generalUtilities.errorCatching(err));
-
-    let dlg = this.modalCtrl.create('SosDetailPage', {
-      mode: 'view',
-      sos: sos,
-      helpersList: helpersList,
-    });
-    dlg.onDidDismiss(sos => {
-      if (sos) {
-        if (this.sosSection === 'current') {
-          this.listCurrentSOS();
-        } else if (this.sosSection === 'helping') {
-          this.listHelpingOutSOS();
-        } else if (this.sosSection === 'mySOS') {
-          this.listMySOS();
-        }
-      }
-    });
-    dlg.present();
   }
 
   doAddSOS() {
@@ -328,6 +331,7 @@ export class SosMainPage {
       if (sos) {
         this.listCurrentSOS();
         this.listMySOS();
+        this.listHelpingOutSOS();
       }
     });
 
@@ -340,26 +344,29 @@ export class SosMainPage {
     this.SOSProvider.listSOShelpers(sos)
       .then((users: User[]) => {
         helpersList = users;
+        let dlg = this.modalCtrl.create('SosDetailPage', {
+          mode: 'edit',
+          sos: sos,
+          helpersList: helpersList,
+        });
+        dlg.onDidDismiss(sos => {
+          if (sos) {
+            if (this.sosSection === 'current') {
+              this.listCurrentSOS();
+            } else if (this.sosSection === 'helping') {
+              this.listHelpingOutSOS();
+            } else if (this.sosSection === 'mySOS') {
+              this.listMySOS();
+            } else {
+              this.listCurrentSOS();
+              this.listMySOS();
+              this.listHelpingOutSOS();
+            }
+          }
+        });
+        dlg.present();
       })
       .catch(err => this.generalUtilities.errorCatching(err));
-
-    let dlg = this.modalCtrl.create('SosDetailPage', {
-      mode: 'edit',
-      sos: sos,
-      helpersList: helpersList,
-    });
-    dlg.onDidDismiss(sos => {
-      if (sos) {
-        if (this.sosSection === 'current') {
-          this.listCurrentSOS();
-        } else if (this.sosSection === 'helping') {
-          this.listHelpingOutSOS();
-        } else if (this.sosSection === 'mySOS') {
-          this.listMySOS();
-        }
-      }
-    });
-    dlg.present();
   }
 
   doShowMessages(sos: SOS) {
