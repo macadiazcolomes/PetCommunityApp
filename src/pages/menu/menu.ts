@@ -169,20 +169,18 @@ export class MenuPage {
           text: this.alert_ok_btn,
           handler: () => {
             console.log('Ok clicked');
-            this.login
-              .logout()
+
+            this.users
+              .deleteUser(this.user)
               .then(() => {
-                this.users
-                  .deleteUser(this.user)
-                  .then(() =>
-                    this.generalUtilities.presentToast(
-                      'MENU.DELETE_ACCOUNT_SUCCESSFULL_MESSAGE',
-                      () => {
-                        this.navCtrl.setRoot('LoginPage');
-                      }
-                    )
-                  )
-                  .catch(err => this.generalUtilities.errorCatching(err));
+                this.login.logout().then(() => {
+                  this.generalUtilities.presentToast(
+                    'MENU.DELETE_ACCOUNT_SUCCESSFULL_MESSAGE',
+                    () => {
+                      this.navCtrl.setRoot('LoginPage');
+                    }
+                  );
+                });
               })
               .catch(err => this.generalUtilities.errorCatching(err));
           },
