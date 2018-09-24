@@ -5,6 +5,7 @@ import {
   NavParams,
   AlertController,
   FabContainer,
+  ViewController,
 } from 'ionic-angular';
 
 import { User } from '../../models/user';
@@ -16,7 +17,10 @@ import {
   validateCity,
 } from '../../shared/form-validators/custom-form-validation-functions';
 
-import { createSocialMediaGroup } from '../../shared/functions/social-media-format';
+import {
+  createSocialMediaGroup,
+  socialMediaFormat,
+} from '../../shared/functions/social-media-format';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { LocationProvider } from '../../providers/location/location';
 import { CameraProvider } from '../../providers/camera/camera';
@@ -57,6 +61,7 @@ export class UserPage {
   fab: FabContainer;
 
   constructor(
+    private viewCtrl: ViewController,
     private login: LoginProvider,
     private usersProvider: UsersProvider,
     private generalUtilities: GeneralUtilitiesProvider,
@@ -209,14 +214,19 @@ export class UserPage {
 
   initFormValueChanges() {
     this.userProfileForm.get('password').valueChanges.subscribe(password => {
-      this.userProfileForm
-        .get('passwordConfirm')
-        .setValidators([
-          Validators.required,
-          Validators.minLength(6),
-          validateEqualsTo('password'),
-        ]);
-      this.userProfileForm.get('passwordConfirm').markAsDirty();
+      console.log('PASS CHANGE', password);
+      if (password !== '') {
+        this.userProfileForm
+          .get('passwordConfirm')
+          .setValidators([
+            Validators.required,
+            Validators.minLength(6),
+            validateEqualsTo('password'),
+          ]);
+        this.userProfileForm.get('passwordConfirm').markAsDirty();
+      } else {
+        this.userProfileForm.get('passwordConfirm').clearValidators();
+      }
       this.userProfileForm.get('passwordConfirm').updateValueAndValidity();
     });
   }
@@ -309,15 +319,15 @@ export class UserPage {
       this.locationProvider
         .getLocationFromCityName(cityName)
         .then(locations => {
-          console.log('city and country validation ok');
+          console.log('city and country validation ok', cityName, locations);
         })
         .catch(err => {
           console.log('city and country invalid', err);
           this.userProfileForm.get('city').setErrors({ invalid: true });
+          //this.userProfileForm.get('city').updateValueAndValidity();
           return;
         });
     }
-
     if (this.userProfileForm.valid) {
       var updatedUser: User;
       if (values.password === '') {
@@ -345,7 +355,10 @@ export class UserPage {
         .updateUser(updatedUser)
         .then((user: User) => {
           console.log('user updated succesfully');
-          this.navCtrl.pop();
+          user.social_media = socialMediaFormat(user.social_media, this.smT);
+
+          this.user = user;
+          this.viewCtrl.dismiss(user);
         })
         .catch(err => {
           console.error('user udate error', err);
@@ -356,6 +369,6 @@ export class UserPage {
 
   close() {
     console.log('[UserPage] close()');
-    this.navCtrl.pop();
+    this.viewCtrl.dismiss(this.user);
   }
 }

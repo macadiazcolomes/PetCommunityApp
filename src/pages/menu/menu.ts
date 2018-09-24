@@ -108,10 +108,11 @@ export class MenuPage {
       user: this.user,
     });
     dlg.onDidDismiss(data => {
-      this.login
+      this.user = data;
+      /*this.login
         .getUser()
         .then((user: User) => (this.user = user))
-        .catch(err => this.generalUtilities.errorCatching(err));
+        .catch(err => this.generalUtilities.errorCatching(err));*/
     });
     dlg.present();
   }
@@ -138,10 +139,14 @@ export class MenuPage {
       user: this.user,
     });
     dlg.onDidDismiss(data => {
-      this.login
+      this.user = data;
+      /* this.login
         .getUser()
-        .then((user: User) => (this.user = user))
-        .catch(err => this.generalUtilities.errorCatching(err));
+        .then((user: User) => {
+
+          this.user = user;
+        })
+        .catch(err => this.generalUtilities.errorCatching(err));*/
     });
     dlg.present();
   }
@@ -164,16 +169,21 @@ export class MenuPage {
           text: this.alert_ok_btn,
           handler: () => {
             console.log('Ok clicked');
-            this.users
-              .deleteUser(this.user)
-              .then(() =>
-                this.generalUtilities.presentToast(
-                  'MENU.DELETE_ACCOUNT_SUCCESSFULL_MESSAGE',
-                  () => {
-                    this.navCtrl.setRoot('LoginPage');
-                  }
-                )
-              )
+            this.login
+              .logout()
+              .then(() => {
+                this.users
+                  .deleteUser(this.user)
+                  .then(() =>
+                    this.generalUtilities.presentToast(
+                      'MENU.DELETE_ACCOUNT_SUCCESSFULL_MESSAGE',
+                      () => {
+                        this.navCtrl.setRoot('LoginPage');
+                      }
+                    )
+                  )
+                  .catch(err => this.generalUtilities.errorCatching(err));
+              })
               .catch(err => this.generalUtilities.errorCatching(err));
           },
         },
